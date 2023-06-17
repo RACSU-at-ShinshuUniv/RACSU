@@ -4,18 +4,12 @@ require("firebase-functions/logger/compat");
 const express = require("express");
 const {initializeApp, cert} = require("firebase-admin/app");
 const firebase_functions = require("firebase-functions");
-const firebase_firestore = require("firebase-admin/firestore");
-const linebot_sdk = require("@line/bot-sdk");
-const linebot_account = require("./keys/LineAccount.json");
 
 // --- 初期化処理 ---------------------------------------------
 // firebaseクライアント
 const serviceAccount = require("./keys/ServiceAccount.json");
 initializeApp({credential: cert(serviceAccount)});
 // firebase_initializeApp(); // 本番デプロイ時は上を無効化してこっち
-
-// LINE返信クライアント
-const linebot_client = new linebot_sdk.Client(linebot_account);
 
 // LINEエンドポイント用Expressフレームワーク
 const app = express();

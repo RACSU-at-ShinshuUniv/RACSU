@@ -1,0 +1,106 @@
+{
+    "type": "bubble",
+    "size": "giga",
+    "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+                "type": "text",
+                "text": "信州大学生専用",
+                "color": "#1b5aad",
+                "size": "sm",
+                "weight": "bold"
+            },
+            {
+                "type": "text",
+                "text": "課題一覧確認サービスRACSU",
+                "color": "#1b5aad",
+                "size": "md",
+                "weight": "bold"
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "友達登録ありがとうございます！",
+                        "size": "lg",
+                        "margin": "md",
+                        "align": "center"
+                    }
+                ]
+            }
+        ],
+        "paddingBottom": "none"
+    },
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "このアカウントは非公式です。\n信州大学への問い合わせは\n絶対にしないでください。",
+                                "size": "lg",
+                                "align": "center",
+                                "color": "#ffd700",
+                                "weight": "bold",
+                                "wrap": true
+                            }
+                        ],
+                        "backgroundColor": "#000000",
+                        "paddingAll": "sm"
+                    },
+                    {
+                        "type": "text",
+                        "text": "はじめに、学生認証を行います",
+                        "size": "xl",
+                        "align": "center",
+                        "color": "#ff3d3d",
+                        "weight": "bold",
+                        "margin": "md"
+                    },
+                    {
+                        "type": "text",
+                        "text": "あなたの学籍番号をメッセージ欄に入力し、",
+                        "wrap": true,
+                        "margin": "md",
+                        "align": "center"
+                    },
+                    {
+                        "type": "text",
+                        "text": "送信してください 例）21T2000A",
+                        "align": "center"
+                    }
+                ],
+                "paddingAll": "lg",
+                "borderColor": "#1b5aad",
+                "borderWidth": "medium",
+                "cornerRadius": "md"
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "※学籍番号は、サービス運用上のメール送信にのみ使用します。その他目的に使用することはありません。",
+                        "margin": "lg",
+                        "wrap": true,
+                        "size": "sm"
+                    }
+                ]
+            }
+        ],
+        "paddingAll": "xl"
+    }
+}

@@ -1,0 +1,120 @@
+{
+    "type": "bubble",
+    "size": "giga",
+    "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+                "type": "text",
+                "text": "信州大学生専用",
+                "color": "#1b5aad",
+                "size": "sm",
+                "weight": "bold"
+            },
+            {
+                "type": "text",
+                "text": "課題一覧確認サービスRACSU",
+                "color": "#1b5aad",
+                "size": "md",
+                "weight": "bold"
+            }
+        ],
+        "paddingBottom": "none"
+    },
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "認証メールを",
+                        "size": "xl",
+                        "align": "center",
+                        "color": "#ff3d3d",
+                        "weight": "bold",
+                        "wrap": true
+                    },
+                    {
+                        "type": "text",
+                        "text": "$1",
+                        "size": "xl",
+                        "align": "center",
+                        "color": "#ff3d3d",
+                        "weight": "bold",
+                        "wrap": true
+                    },
+                    {
+                        "type": "text",
+                        "text": "宛に送信しました",
+                        "size": "xl",
+                        "align": "center",
+                        "color": "#ff3d3d",
+                        "weight": "bold",
+                        "wrap": true
+                    },
+                    {
+                        "type": "text",
+                        "wrap": true,
+                        "margin": "md",
+                        "align": "center",
+                        "text": "メール記載の認証コードを入力し、"
+                    },
+                    {
+                        "type": "text",
+                        "text": "送信してください",
+                        "align": "center"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "メール未受信・初めからやり直す場合は",
+                                "size": "sm",
+                                "flex": 0
+                            },
+                            {
+                                "type": "text",
+                                "text": "こちら",
+                                "size": "sm",
+                                "color": "#1a0dab",
+                                "decoration": "underline",
+                                "flex": 0,
+                                "action": {
+                                    "type": "message",
+                                    "text": "メールの再送をする"
+                                }
+                            }
+                        ],
+                        "justifyContent": "center",
+                        "margin": "md"
+                    }
+                ],
+                "paddingAll": "lg",
+                "borderColor": "#1b5aad",
+                "borderWidth": "medium",
+                "cornerRadius": "md"
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "※学籍番号は、サービス運用上のメール送信にのみ使用します。その他目的に使用することはありません。",
+                        "margin": "lg",
+                        "wrap": true,
+                        "size": "sm"
+                    }
+                ]
+            }
+        ],
+        "paddingAll": "xl"
+    }
+}

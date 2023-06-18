@@ -18,9 +18,13 @@ exports.add_user = async ({user_id="", user_name=""}) => {
     process_status: "",
     user_name: `${user_name}`
   });
+  await db.collection("tasks").doc(user_id).set({});
   return Promise.resolve("done");
 }
-
+// key = 'kagi';
+// dict = {[key]: 'value'};
+// console.log(dict);
+// >> {kagi: "value"}
 // ユーザー削除
 exports.delete_user = async({user_id=""}) => {
   if (user_id == ""){
@@ -36,5 +40,13 @@ exports.set_data = async ({collection="", doc="", data={}}) => {
     return Promise.reject(new Error("Parameter not defined"));
   }
   await db.collection(collection).doc(doc).update(data);
+  return Promise.resolve("done");
+}
+
+//授業データ追加
+exports.add_class_name_data = async({class_code="", class_name=""}) => {
+  await db.collection("overall").doc("classes").set({
+    [class_code]: `${class_name}`
+  },{ merge: true})
   return Promise.resolve("done");
 }

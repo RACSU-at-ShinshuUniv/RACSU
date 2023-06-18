@@ -41,11 +41,11 @@ exports.get_cal_url = async({user_id=""}) => {
     return Promise.reject(new Error("Data not found"));
   } else {
     const user_data = doc_data.data();
-    const today = new Date();
-    const term = today.setMonth(today.getMonth()-3);
+    const term = new Date();
+    term.setMonth(term.getMonth()-3);
     const user_department = user_data.student_id.match(/[LEJSMTAF]/i);
 
-    const url_g = `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/${user_department}/calendar/export_execute.php?userid=${user_data.moodle_general_id}&authtoken=${user_data.moodle_general_token}&preset_what=all&preset_time=recentupcoming`
+    const url_g = `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/g/calendar/export_execute.php?userid=${user_data.moodle_general_id}&authtoken=${user_data.moodle_general_token}&preset_what=all&preset_time=recentupcoming`
     const url_s = `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/${user_department}/calendar/export_execute.php?userid=${user_data.moodle_specific_id}&authtoken=${user_data.moodle_specific_token}&preset_what=all&preset_time=recentupcoming`
 
     return Promise.resolve([url_g, url_s]);

@@ -54,7 +54,7 @@ exports.add_class_name_data = async({class_code="", class_name=""}) => {
 // exports.save_task = async({user_id, class_name, class_code, user_name}) => {
 //   await db.collection("tasks").doc(user_id).set({
 //     class_name: `${class_name}`,
-//     display: false, 
+//     display: false,
 //     finish:
 //     serial_id:
 //     task_limit:
@@ -62,6 +62,7 @@ exports.add_class_name_data = async({class_code="", class_name=""}) => {
 //   });
 // }
 
+//課題の完了処理
 exports.set_task_status = async({user_id="", is_finish=null, task_serial_id=0}) =>{
   if (user_id == ""|| is_finish == null || task_serial_id == 0){
     return Promise.reject(new Error("Parameter not found"));

@@ -1,5 +1,4 @@
 const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
-const { user } = require('firebase-functions/v1/auth');
 const db = getFirestore();
 
 exports.get_account_data = async({user_id=""}) => {
@@ -48,6 +47,6 @@ exports.get_cal_url = async({user_id=""}) => {
     const url_g = `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/g/calendar/export_execute.php?userid=${user_data.moodle_general_id}&authtoken=${user_data.moodle_general_token}&preset_what=all&preset_time=recentupcoming`
     const url_s = `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/${user_department}/calendar/export_execute.php?userid=${user_data.moodle_specific_id}&authtoken=${user_data.moodle_specific_token}&preset_what=all&preset_time=recentupcoming`
 
-    return Promise.resolve([url_g, url_s]);
+    return Promise.resolve({general: url_g, specific: url_s});
   }
 }

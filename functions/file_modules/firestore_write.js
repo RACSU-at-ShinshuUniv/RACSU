@@ -34,7 +34,6 @@ exports.add_user = async ({user_id="", user_name=""}) => {
 // ----------------------------------------------
 // データ更新
 // ----------------------------------------------
-// データ更新
 /**
  * 指定のデータを更新する
  * @param {String} collection コレクション名
@@ -51,12 +50,36 @@ exports.set_data = async ({collection="", doc="", data={}}) => {
 }
 
 //授業データ追加
-exports.add_class_name_data = async({class_code="", class_name=""}) => {
+exports.add_class_data = async({class_code="", class_name=""}) => {
   await db.collection("overall").doc("classes").set({
     [class_code]: `${class_name}`
   },{ merge: true})
   return Promise.resolve("done");
 }
+
+// 課題データ追加
+// exports.add_task_data = async({user_id="", task_data={}}) => {
+//   await db.collection("tasks").doc(user_id).set({
+//     class_name:
+//     display: false,
+//     finish:
+//     serial_id:
+//     task_limit:
+//     task_name:
+//   });
+// }
+
+//課題の完了処理
+// exports.set_task_status = async({user_id="", task_serial_id=0, is_finish=null}) =>{
+//   if (user_id == ""|| is_finish == null || task_serial_id == 0){
+//     return Promise.reject(new Error("Parameter not found"));
+//   }
+//   await db.collection("tasks").doc(user_id).update({
+//     //このままだと授業名指定されていないので入りません(要改善)
+//     display: is_finish
+
+//   })
+// }
 
 
 // ----------------------------------------------

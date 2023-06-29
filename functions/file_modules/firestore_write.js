@@ -10,11 +10,11 @@ const db = getFirestore();
  * @param {String} user_name ユーザーのLINEネーム
  * @returns {Promise<String>} done
  */
-exports.add_user = async ({user_id="", user_name=""}) => {
+exports.add_user = ({user_id="", user_name=""}) => {
   if (user_id == "" || user_name == ""){
     return Promise.reject(new Error("Parameter not defined"));
   }
-  await db.collection("users").doc(user_id).set({
+  db.collection("users").doc(user_id).set({
     account_status: "authenticating",
     moodle_general_id: "",
     moodle_general_token: "",
@@ -26,7 +26,7 @@ exports.add_user = async ({user_id="", user_name=""}) => {
     process_status: "",
     user_name: `${user_name}`
   });
-  await db.collection("tasks").doc(user_id).set({});
+  db.collection("tasks").doc(user_id).set({});
   return Promise.resolve("done");
 }
 
@@ -41,7 +41,15 @@ exports.add_user = async ({user_id="", user_name=""}) => {
  * @param {Object} data 更新するデータ
  * @returns
  */
-exports.set_data = async ({collection="", doc="", data={}}) => {
+exports.set_data = ({collection="", doc="", data={}}) => {
+  if (collection == "" || doc == "" || data == {}){
+    return Promise.reject(new Error("Parameter not defined"));
+  }
+  db.collection(collection).doc(doc).update(data);
+  return Promise.resolve("done");
+}
+
+exports.async_set_data = async ({collection="", doc="", data={}}) => {
   if (collection == "" || doc == "" || data == {}){
     return Promise.reject(new Error("Parameter not defined"));
   }
@@ -49,9 +57,9 @@ exports.set_data = async ({collection="", doc="", data={}}) => {
   return Promise.resolve("done");
 }
 
-//授業データ追加
-exports.add_class_data = async({class_code="", class_name=""}) => {
-  await db.collection("overall").doc("classes").set({
+// 授業データ追加
+exports.add_class_data = ({class_code="", class_name=""}) => {
+  db.collection("overall").doc("classes").set({
     [class_code]: `${class_name}`
   },{ merge: true})
   return Promise.resolve("done");
@@ -87,10 +95,11 @@ exports.add_class_data = async({class_code="", class_name=""}) => {
 // ----------------------------------------------
 
 // ユーザー削除
-exports.delete_user = async({user_id=""}) => {
+exports.delete_user = ({user_id=""}) => {
   if (user_id == ""){
     return Promise.reject(new Error("Parameter not defined"));
   }
-  await db.collection("users").doc(user_id).delete();
+  db.collection("users").doc(user_id).delete();
+  db.collection("tasks").doc(user_id).delete();
   return Promise.resolve("done");
 }

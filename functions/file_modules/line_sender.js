@@ -9,6 +9,10 @@ class Line_Sender {
     return user_name;
   }
 
+  contents_push({user_id="", contents={}}){
+    this.client.pushMessage(user_id, contents);
+  }
+
 
   text({message=""}){
     this.client.replyMessage(this.reply_token, {
@@ -77,6 +81,22 @@ class Line_Sender {
       contents: JSON.parse(JSON.stringify(json_link_guide)
         .replace("$1", url_1)
         .replace("$2", url_2))
+    });
+  }
+
+  flex_task_list({contents=[], alt_text=""}){
+    this.client.replyMessage(this.reply_token, {
+      type: "flex",
+      altText: alt_text,
+      contents: {
+        "type": "bubble",
+        "size": "giga",
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": contents
+        }
+      }
     });
   }
 }

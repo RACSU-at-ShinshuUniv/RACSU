@@ -6,17 +6,20 @@ const serviceAccount = require("./keys/ServiceAccount.json");
 initializeApp({credential: cert(serviceAccount)});
 // firebase_initializeApp(); // 本番デプロイ時は上を無効化してこっち
 
-// LINEbotSDK
+// LINE_bot_SDKインスタンス作成
 const linebot_sdk = require("@line/bot-sdk");
 const linebot_account = require("./keys/LineAccount.json");
 const linebot_client = new linebot_sdk.Client(linebot_account);
 
-// Express
+// ExpressApp作成
 const express = require("express");
 const app = express();
 
 // メッセージハンドラ
 const message_handler = require("./file_modules/message_handler")
+
+// タイムゾーン設定
+process.env.TZ = "Asia/Tokyo";
 
 // ----------------------------------------------
 // エンドポイント公開設定

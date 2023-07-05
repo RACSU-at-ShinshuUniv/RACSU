@@ -31,6 +31,39 @@ exports.get_all_data = async({collection=""}) => {
   }
 }
 
+exports.get_data = async({collection="", doc=""}) => {
+  if (collection == "" || doc == ""){
+    return Promise.reject(new Error("Parameter not defined"));
+  }
+  const doc_data = await db.collection(collection).doc(doc).get();
+  if (!doc_data.exists){
+    return Promise.reject(new Error("Data not found"));
+  } else {
+    return Promise.resolve(doc_data.data());
+  }
+}
+
+exports.get_task = async({user_id=""}) => {
+  if (user_id == ""){
+    return Promise.reject(new Error("Parameter not defined"));
+  }
+  const doc_data = await db.collection("tasks").doc(user_id).get();
+  if (!doc_data.exists){
+    return Promise.reject(new Error("Data not found"));
+  } else {
+    const res = doc_data.data();
+    Object.keys(doc_data.data()).forEach((key) => {
+      const limit_jst = doc_data.data()[key].task_limit.toDate();
+      // 日本標準時に戻す必要があったら下を有効化
+      // limit_jst.setHours(limit_jst.getHours()+9);
+      // console.log("overwrite: ", doc_data.data()[key].task_limit.toDate(), " -> ", limit_jst)
+      res[key].task_limit = Timestamp.fromDate(limit_jst);
+    })
+
+    return Promise.resolve(res);
+  }
+}
+
 exports.get_cal_url = async({user_id=""}) => {
   if (user_id == ""){
     return Promise.reject(new Error("Parameter not defined"));

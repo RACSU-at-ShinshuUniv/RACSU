@@ -4,6 +4,7 @@ const firestore_read = require("./firestore_read");
 const firestore_write = require("./firestore_write");
 const mail_sender = require("./mail_sender")
 const ical = require("./ical_fetch")
+const data_formatter = require("./data_formatter")
 
 exports.set_client = async({client=null, reply_token=""}) => {
   this.line_sender = new Line_Sender({
@@ -104,6 +105,58 @@ exports.handle = async({event_data=""}) => {
           })
           break;
 
+        case "linked":
+          switch (event_data.message.text){
+            case "課題を表示":
+              // Firestoreから課題データ取得
+              const tasks = await firestore_read.get_task({
+                user_id: event_data.source.userId
+              });
+
+              // Firestore保存形式をflexデータに変換
+              const flex_data = data_formatter.json_to_flex({
+                tasks: tasks
+              });
+
+              this.line_sender.flex_task_list({
+                contents: flex_data.contents,
+                alt_text: flex_data.alt_text
+              })
+              break;
+
+            case "課題を更新":
+              const url = await firestore_read.get_cal_url({
+                user_id: event_data.source.userId
+              });
+              const ical_data_general = await ical.get_contents({
+                url: url.general
+              })
+              const ical_data_specific = await ical.get_contents({
+                url: url.specific
+              })
+
+              // icalデータをFirestore保存形式に変換
+              const task_data_general = await data_formatter.ical_to_json({
+                ical_data: ical_data_general
+              })
+              const task_data_specific = await data_formatter.ical_to_json({
+                ical_data: ical_data_specific
+              })
+
+              // Firestoreに保存
+              firestore_write.set_data({
+                collection: "tasks",
+                doc: event_data.source.userId,
+                data: {...task_data_general, ...task_data_specific}
+              });
+
+              this.line_sender.text({
+                message: "課題を更新しました"
+              });
+              break;
+          }
+          break;
+
       }
 
     // テキストメッセージ以外は除外
@@ -171,6 +224,8 @@ const accept_student_id = async({event_data=""}) => {
     });
   }
 }
+
+// ------------------------------------------------------------------------------------------------------
 
 const set_calendar_url = async({event_data="", account_data={}}) => {
   const url_param = event_data.message.text.split(/[/=&?]/);

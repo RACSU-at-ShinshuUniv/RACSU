@@ -352,7 +352,83 @@ exports.json_to_flex = ({tasks={}}) => {
 
   const result = {
     "contents": task_data_json,
-    "alt_text": `本日提出${todays_task_count}件 今後提出${other_task_count}`
+    "alt_text": `本日提出${todays_task_count}件 今後提出${other_task_count}件`
   }
   return result;
+}
+
+exports.json_to_mail_param = ({tasks = {}}) => {
+  // 当日：当日の00時01分～24時00分（翌0時）
+  // 翌日：翌日の00時01分～24時00分（翌0時）
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate()+1);
+  console.log(today.toFormat("YYYYMMDD"));
+
+
+  // -----------------データ整形--------------------
+  // ソート済みキー配列取得
+  const keys_sorted = get_sorted_keys({
+    task_data: tasks
+  });
+
+  // ソート済みキー配列を今日・明日・明日以降・過去に仕分け
+  let keys_today=[], keys_tomorrow=[], keys_after_tomorrow=[], keys_past=[];
+  keys_sorted.forEach(key => {
+    const task = tasks[key];
+
+    // 翌0時→当日の24時の表記にするために、該当提出日時を一度23時59分55秒にセット
+    if (task.task_limit.toDate().toFormat("HH24:MI") == "00:00"){
+      const overwrite_day = task.task_limit.toDate();
+      overwrite_day.setDate(overwrite_day.getDate()-1);
+      overwrite_day.setHours(23);
+      overwrite_day.setMinutes(59);
+      overwrite_day.setSeconds(55);
+      task.task_limit = Timestamp.fromDate(overwrite_day);
+    }
+
+
+    if (task.task_limit.toDate().toFormat("YYYYMMDD") == today.toFormat("YYYYMMDD") && task.display){
+      keys_today.push(key)
+      console.log("today")
+
+    } else if (task.task_limit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD") && task.display){
+      keys_tomorrow.push(key)
+      console.log("tomorrow")
+
+    } else if (task.task_limit.toDate() < today && task.display){
+      keys_past.push(key)
+      console.log("past")
+
+    } else if (task.display) {
+      keys_after_tomorrow.push(key)
+      console.log("after")
+
+    }
+  })
+
+  const keys_other = [...keys_tomorrow, ...keys_past, ...keys_after_tomorrow];
+
+  let tasks_today = {};
+  keys_today.forEach((key) => {
+    const limit = (() => {
+      if (tasks[key].task_limit.toDate().toFormat("HH24:MI:SS") == "23:59:55"){
+        return "24:00"
+      } else {
+        return tasks[key].task_limit.toDate().toFormat("HH24:MI")
+      }
+    })();
+    tasks_today[key] = {
+      task_name: tasks[key].task_name,
+      task_limit_time: limit,
+      class_name: tasks[key].class_name
+    }
+  });
+
+  const res = {
+    tasks_today: tasks_today,
+    others: keys_other.length
+  }
+
+  return res;
 }

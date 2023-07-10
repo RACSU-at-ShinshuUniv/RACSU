@@ -41,13 +41,14 @@ exports.handle = async({event_data=""}) => {
       });
 
       switch(account_data.account_status){
-        case "authenticating":
+        case "authenticating": {
           accept_student_id({
             event_data: event_data
           });
-          break;
+          return;
+        }
 
-        case "confirm_token":
+        case "confirm_token": {
           if (event_data.message.text == "初めからやり直す"){
             this.line_sender.flex_added_friend();
             firestore_write.set_data({
@@ -76,9 +77,10 @@ exports.handle = async({event_data=""}) => {
               message: "認証に失敗しました。\nもう一度メールをご確認の上、アルファベットを含めた認証コードを送信してください。\nメール未受信の場合、「初めからやり直す」と送信してください。"
             });
           }
-          break;
+          return;
+        }
 
-        case "authenticated":
+        case "authenticated": {
           if (event_data.message.text == "利用規約に同意し、\n初期設定を開始する"){
             this.line_sender.flex_link_guide({
               student_id: account_data.student_id
@@ -96,18 +98,20 @@ exports.handle = async({event_data=""}) => {
               message: "利用するには、利用規約に同意をお願いします。"
             });
           }
-          break;
+          return;
+        }
 
-        case "linking":
+        case "linking": {
           set_calendar_url({
             event_data: event_data,
             account_data: account_data
           })
-          break;
+          return;
+        }
 
-        case "linked":
+        case "linked": {
           switch (event_data.message.text){
-            case "課題を表示":
+            case "課題を表示": {
               // Firestoreから課題データ取得
               const tasks = await firestore_read.get_task({
                 user_id: event_data.source.userId
@@ -118,16 +122,21 @@ exports.handle = async({event_data=""}) => {
                 tasks: tasks
               });
 
+              // LINE送信
               this.line_sender.flex_task_list({
                 contents: flex_data.contents,
                 alt_text: flex_data.alt_text
               })
-              break;
+              return;
+            }
 
-            case "課題を更新":
+            case "課題を更新":{
+              // ical取得先URLを取得
               const url = await firestore_read.get_cal_url({
                 user_id: event_data.source.userId
               });
+
+              // icalデータを取得
               const ical_data_general = await ical.get_contents({
                 url: url.general
               })
@@ -143,6 +152,11 @@ exports.handle = async({event_data=""}) => {
                 ical_data: ical_data_specific
               })
 
+              // Firestore保存形式をflexデータに変換
+              const flex_data = data_formatter.json_to_flex({
+                tasks: {...task_data_general, ...task_data_specific}
+              });
+
               // Firestoreに保存
               firestore_write.set_data({
                 collection: "tasks",
@@ -150,13 +164,17 @@ exports.handle = async({event_data=""}) => {
                 data: {...task_data_general, ...task_data_specific}
               });
 
-              this.line_sender.text({
-                message: "課題を更新しました"
+              // LINE送信
+              this.line_sender.flex_task_list({
+                contents: flex_data.contents,
+                alt_text: flex_data.alt_text,
+                refresh: true
               });
-              break;
+              return;
+            }
           }
-          break;
-
+          return;
+        }
       }
 
     // テキストメッセージ以外は除外
@@ -194,7 +212,6 @@ const accept_student_id = async({event_data=""}) => {
 
     // 認証メール送信
     mail_sender({
-      method: "auth",
       data: {
         method: "auth",
         address: user_address,
@@ -224,8 +241,6 @@ const accept_student_id = async({event_data=""}) => {
     });
   }
 }
-
-// ------------------------------------------------------------------------------------------------------
 
 const set_calendar_url = async({event_data="", account_data={}}) => {
   const url_param = event_data.message.text.split(/[/=&?]/);

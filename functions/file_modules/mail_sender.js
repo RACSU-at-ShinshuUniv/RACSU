@@ -1,22 +1,11 @@
-const request = require('request');
+const axios = require('axios');
 const gas = require("../keys/GASUrl.json")
 
-module.exports = async({method="", data={}}) => {
-  return new Promise((resolve, reject) => {
-    if (method == "auth"){
-      request({
-        url: gas.url,
-        method: 'POST',
-        followAllRedirects: true,
-        form: data
-      }, (error, response, body) => {
-        if (error){
-          reject(new Error("Cannot send gmail"));
-        } else {
-          resolve(body);
-        }
-      });
-    }
-  });
+module.exports = async({data={}}) => {
+  try {
+    const response = await axios.post(gas.url, data);
+    return Promise.resolve(response.data);
+  } catch (error) {
+    return Promise.reject(error.message);
+  }
 }
-

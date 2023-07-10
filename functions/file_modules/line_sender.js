@@ -84,20 +84,40 @@ class Line_Sender {
     });
   }
 
-  flex_task_list({contents=[], alt_text=""}){
-    this.client.replyMessage(this.reply_token, {
-      type: "flex",
-      altText: alt_text,
-      contents: {
-        "type": "bubble",
-        "size": "giga",
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": contents
+  flex_task_list({contents=[], alt_text="", refresh=false}){
+    if (!refresh) {
+      this.client.replyMessage(this.reply_token, {
+        type: "flex",
+        altText: alt_text,
+        contents: {
+          "type": "bubble",
+          "size": "giga",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": contents
+          }
         }
-      }
-    });
+      });
+
+    } else {
+      this.client.replyMessage(this.reply_token, [{
+        type: "flex",
+        altText: alt_text,
+        contents: {
+          "type": "bubble",
+          "size": "giga",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": contents
+          }
+        }
+      },{
+        type: "text",
+        text: "課題を最新に更新しました。"
+      }]);
+    }
   }
 }
 

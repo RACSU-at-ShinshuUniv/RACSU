@@ -4,12 +4,6 @@ const db = getFirestore();
 // ----------------------------------------------
 // データ作成
 // ----------------------------------------------
-/**
- * 新規ユーザーデータの作成
- * @param {String} user_id ユーザーのLINEID
- * @param {String} user_name ユーザーのLINEネーム
- * @returns {Promise<String>} done
- */
 exports.add_user = ({user_id="", user_name=""}) => {
   if (user_id == "" || user_name == ""){
     return Promise.reject(new Error("Parameter not defined"));
@@ -34,13 +28,6 @@ exports.add_user = ({user_id="", user_name=""}) => {
 // ----------------------------------------------
 // データ更新
 // ----------------------------------------------
-/**
- * 指定のデータを更新する
- * @param {String} collection コレクション名
- * @param {String} doc ドキュメント名
- * @param {Object} data 更新するデータ
- * @returns
- */
 exports.set_data = ({collection="", doc="", data={}}) => {
   if (collection == "" || doc == "" || data == {}){
     return Promise.reject(new Error("Parameter not defined"));

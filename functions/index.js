@@ -4,7 +4,7 @@ const {initializeApp, cert} = require("firebase-admin/app");
 const firebase_functions = require("firebase-functions");
 const serviceAccount = require("./keys/ServiceAccount.json");
 initializeApp({credential: cert(serviceAccount)});
-// firebase_initializeApp(); // 本番デプロイ時は上を無効化してこっち
+// initializeApp(); // 本番デプロイ時は上を無効化してこっち
 
 // LINE_bot_SDKインスタンス作成
 const linebot_sdk = require("@line/bot-sdk");
@@ -16,7 +16,8 @@ const express = require("express");
 const app = express();
 
 // メッセージハンドラ
-const message_handler = require("./file_modules/message_handler")
+// const message_handler = require("./file_modules/message_handler")
+const message_handler = require("./file_modules/dev_message_repeater")
 
 // タイムゾーン設定
 process.env.TZ = "Asia/Tokyo";
@@ -49,5 +50,5 @@ app.post('/webhook', linebot_sdk.middleware(linebot_account), (req, res) => {
 exports.line_end_point = firebase_functions.runWith({
   maxInstances: 1,
   timeoutSeconds: 30,
-  memory: "128MB",
+  memory: "256MB",
 }).https.onRequest(app);

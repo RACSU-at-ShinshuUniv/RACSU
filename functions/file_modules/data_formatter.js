@@ -156,19 +156,19 @@ exports.json_to_flex = ({tasks={}}) => {
 
     if (task.task_limit.toDate().toFormat("YYYYMMDD") == today.toFormat("YYYYMMDD") && task.display){
       keys_today.push(key)
-      console.log("today")
+      // console.log("today")
 
     } else if (task.task_limit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD") && task.display){
       keys_tomorrow.push(key)
-      console.log("tomorrow")
+      // console.log("tomorrow")
 
     } else if (task.task_limit.toDate() < today && task.display){
       keys_past.push(key)
-      console.log("past")
+      // console.log("past")
 
     } else if (task.display) {
       keys_after_tomorrow.push(key)
-      console.log("after")
+      // console.log("after")
 
     }
   })
@@ -363,7 +363,7 @@ exports.json_to_mail_param = ({tasks = {}}) => {
   const today = new Date();
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate()+1);
-  console.log(today.toFormat("YYYYMMDD"));
+  // console.log(today.toFormat("YYYYMMDD"));
 
 
   // -----------------データ整形--------------------
@@ -390,19 +390,19 @@ exports.json_to_mail_param = ({tasks = {}}) => {
 
     if (task.task_limit.toDate().toFormat("YYYYMMDD") == today.toFormat("YYYYMMDD") && task.display){
       keys_today.push(key)
-      console.log("today")
+      // console.log("today")
 
     } else if (task.task_limit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD") && task.display){
       keys_tomorrow.push(key)
-      console.log("tomorrow")
+      // console.log("tomorrow")
 
     } else if (task.task_limit.toDate() < today && task.display){
       keys_past.push(key)
-      console.log("past")
+      // console.log("past")
 
     } else if (task.display) {
       keys_after_tomorrow.push(key)
-      console.log("after")
+      // console.log("after")
 
     }
   })

@@ -13,6 +13,10 @@ class Line_Sender {
     this.client.pushMessage(user_id, contents);
   }
 
+  contents_reply({contents={}}){
+    this.client.replyMessage(this.reply_token, contents);
+  }
+
 
   text({message=""}){
     this.client.replyMessage(this.reply_token, {

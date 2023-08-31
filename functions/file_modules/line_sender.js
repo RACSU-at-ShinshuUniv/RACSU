@@ -88,8 +88,8 @@ class Line_Sender {
     });
   }
 
-  flex_task_list({contents=[], alt_text="", refresh=false}){
-    if (!refresh) {
+  flex_task_list({contents=[], alt_text="", notice_refresh=false}){
+    if (!notice_refresh) {
       this.client.replyMessage(this.reply_token, {
         type: "flex",
         altText: alt_text,

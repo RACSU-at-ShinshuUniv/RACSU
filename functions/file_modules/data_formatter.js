@@ -1,7 +1,6 @@
 require("date-utils")
 const {Timestamp} = require('firebase-admin/firestore');
 const valid_task_patterns = require("../env_variables/valid_task_patterns.json")
-const firestore_read = require("./firestore_read");
 
 const flex_content = {
   box: ({contents=[], layout="horizontal", margin="none", flex=1, padding_all="none", background_color="#ffffff", action="none", action_data=""}) => {
@@ -88,12 +87,8 @@ const get_sorted_keys = ({task_data={}}) => {
   return array.map((val) => val.key);
 }
 
-exports.ical_to_json = async({ical_data={}}) => {
+exports.ical_to_json = async({class_name_dic={}, ical_data={}}) => {
   const ical_keys = Object.keys(ical_data);
-  const class_name_dic = await firestore_read.get_data({
-    collection: "overall",
-    doc: "classes"
-  });
   let task_data = {};
 
   ical_keys.forEach((key) => {

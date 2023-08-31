@@ -129,7 +129,7 @@ exports.json_to_flex = ({tasks={}}) => {
   tomorrow.setDate(tomorrow.getDate()+1);
   let todays_task_count=0, other_task_count=0, task_data_json = [];
 
-  console.log(today.toFormat("YYYYMMDD"));
+  // console.log(today.toFormat("YYYYMMDD"));
 
 
   // -----------------データ整形--------------------

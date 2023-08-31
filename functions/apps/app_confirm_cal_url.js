@@ -20,9 +20,9 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
     ? `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/g/calendar/export_execute.php?userid=${url_param_userid}&authtoken=${url_param_authtoken}&preset_what=all&preset_time=recentupcoming`
     : `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/${user_department}/calendar/export_execute.php?userid=${url_param_userid}&authtoken=${url_param_authtoken}&preset_what=all&preset_time=recentupcoming`;
 
-    console.log(url)
+    console.log(url);
 
-    const ical = require("../file_modules/ical_fetch")
+    const ical = require("../file_modules/ical_fetch");
     if (!(await ical.is_valid_url({url: url}))){
       // 登録済みの学部コードを使って実際にFitchしてみて、正しいデータが取れるか
       // 登録済みの学部と違うURLが送られてきた場合にエラーを出すようにする
@@ -48,9 +48,9 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
 
       if ((account_data.moodle_general_id !== "" && url_param_department == user_department) || (account_data.moodle_specific_id !== "" && url_param_department == "g")){
         // 2つとも正常追加完了
-        return Promise.resolve("complete")
+        return Promise.resolve("complete");
       } else {
-        return Promise.resolve("continue")
+        return Promise.resolve("continue");
       }
     }
   }

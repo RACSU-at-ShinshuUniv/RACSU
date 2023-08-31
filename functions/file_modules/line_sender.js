@@ -32,10 +32,10 @@ class Line_Sender {
     });
   }
 
-  alert_error({error_msg="Error_msg not detected."}){
+  alert_error({error_msg="不明なエラー"}){
     this.client.replyMessage(this.reply_token, {
       type: "text",
-      text: `処理エラーが発生しました。\n${error_msg}`
+      text: `処理エラーが発生しました。\n内容：${error_msg}`
     });
   }
 
@@ -88,8 +88,8 @@ class Line_Sender {
     });
   }
 
-  flex_task_list({contents=[], alt_text="", refresh=false}){
-    if (!refresh) {
+  flex_task_list({contents=[], alt_text="", notice_refresh=false}){
+    if (!notice_refresh) {
       this.client.replyMessage(this.reply_token, {
         type: "flex",
         altText: alt_text,

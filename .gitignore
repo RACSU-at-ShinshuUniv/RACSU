@@ -68,3 +68,11 @@ node_modules/
 # keys
 functions/keys/
 develop/
+images/richmenu/default.xcf
+images/richmenu/color.txt
+images/richmenu/設計.xlsx
+images/richmenu/fonts/Noto_Sans_JP/README.txt
+images/richmenu/materials/photothumb.db
+images/richmenu/prod/photothumb.db
+.gitignore
+images/richmenu/template/photothumb.db

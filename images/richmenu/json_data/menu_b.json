@@ -1,0 +1,86 @@
+{
+    "size": {
+        "width": 1200,
+        "height": 810
+    },
+    "selected": true,
+    "name": "setting",
+    "chatBarText": "メニューの開閉",
+    "areas": [
+        {
+            "bounds": {
+                "x": 120,
+                "y": 150,
+                "width": 1000,
+                "height": 120
+            },
+            "action": {
+                "type": "message",
+                "text": "eAlps連携設定"
+            }
+        },
+        {
+            "bounds": {
+                "x": 120,
+                "y": 270,
+                "width": 1000,
+                "height": 120
+            },
+            "action": {
+                "type": "message",
+                "text": "通知設定"
+            }
+        },
+        {
+            "bounds": {
+                "x": 120,
+                "y": 390,
+                "width": 1000,
+                "height": 120
+            },
+            "action": {
+                "type": "message",
+                "text": "超過課題の表示"
+            }
+        },
+        {
+            "bounds": {
+                "x": 120,
+                "y": 510,
+                "width": 1000,
+                "height": 120
+            },
+            "action": {
+                "type": "message",
+                "text": "RACSUについて・サポート"
+            }
+        },
+        {
+            "bounds": {
+                "x": 400,
+                "y": 665,
+                "width": 400,
+                "height": 145
+            },
+            "action": {
+                "type": "postback",
+                "data": "add_task",
+                "inputOption": "openKeyboard",
+                "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「2023/01/01」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+            }
+        },
+        {
+            "bounds": {
+                "x": 0,
+                "y": 665,
+                "width": 400,
+                "height": 145
+            },
+            "action": {
+                "type": "richmenuswitch",
+                "richMenuAliasId": "richmenu-alias-main",
+                "data": "richmenu-changed-to-main"
+            }
+        }
+    ]
+}

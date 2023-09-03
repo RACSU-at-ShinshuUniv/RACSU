@@ -1,5 +1,6 @@
-module.exports = async(db, {message="", user_id=""}) => {
+module.exports = async(db, {user_id="", message=""}) => {
   const student_id = message.match(/\d\d[LEJSMTAF]\d\d\d\d./i);
+
   if (student_id == null){
     return Promise.reject();
 
@@ -13,7 +14,7 @@ module.exports = async(db, {message="", user_id=""}) => {
     }
 
     // 認証メール送信
-    const mail_sender = require("./mail_sender");
+    const mail_sender = require("../file_modules/mail_sender");
     mail_sender({
       data: {
         method: "auth",
@@ -29,6 +30,6 @@ module.exports = async(db, {message="", user_id=""}) => {
       temporary_data: user_token
     });
 
-    return Promise.resolve();
+    return Promise.resolve(user_address);
   }
 }

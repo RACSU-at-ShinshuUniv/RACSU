@@ -17,11 +17,13 @@ module.exports = async(db, {user_id="", account_data={}}) => {
 
   // icalデータをFirestore保存形式に変換
   const data_formatter = require("../file_modules/data_formatter");
+  const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
   const task_data_general = await data_formatter.ical_to_json({
-    class_name_dic: (await db.collection("overall").doc("classes").get()).data(),
+    class_name_dic: class_name_dic,
     ical_data: ical_data_general
   })
   const task_data_specific = await data_formatter.ical_to_json({
+    class_name_dic: class_name_dic,
     ical_data: ical_data_specific
   })
 

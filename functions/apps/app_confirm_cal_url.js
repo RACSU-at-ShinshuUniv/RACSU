@@ -11,7 +11,7 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
   } else {
     const term = new Date();
     term.setMonth(term.getMonth()-3);
-    const user_department = user_id.match(/[LEJSMTAF]/i);
+    const user_department = account_data.student_id.match(/[LEJSMTAF]/i);
     const url_param_department = url_param[url_param.indexOf(term.getFullYear().toString())+1];
     const url_param_userid = url_param[url_param.indexOf("userid")+1];
     const url_param_authtoken = url_param[url_param.indexOf("authtoken")+1];
@@ -31,26 +31,40 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
     } else {
       // エラーチェック通過
 
-      if (url_param_department == "g"){
-        db.collection("users").doc(user_id).update({
-          moodle_general_id: url_param_userid,
-          moodle_general_token: url_param_authtoken,
-          account_status: "linked"
-        });
-
-      } else {
-        db.collection("users").doc(user_id).update({
-          moodle_specific_id: url_param_userid,
-          moodle_specific_token: url_param_authtoken,
-          account_status: "linked"
-        });
-      }
-
       if ((account_data.moodle_general_id !== "" && url_param_department == user_department) || (account_data.moodle_specific_id !== "" && url_param_department == "g")){
         // 2つとも正常追加完了
+        if (url_param_department == "g"){
+          db.collection("users").doc(user_id).update({
+            moodle_general_id: url_param_userid,
+            moodle_general_token: url_param_authtoken,
+            account_status: "linked"
+          });
+
+        } else {
+          db.collection("users").doc(user_id).update({
+            moodle_specific_id: url_param_userid,
+            moodle_specific_token: url_param_authtoken,
+            account_status: "linked"
+          });
+        }
         return Promise.resolve("complete");
+
+
       } else {
+        if (url_param_department == "g"){
+          db.collection("users").doc(user_id).update({
+            moodle_general_id: url_param_userid,
+            moodle_general_token: url_param_authtoken
+          });
+
+        } else {
+          db.collection("users").doc(user_id).update({
+            moodle_specific_id: url_param_userid,
+            moodle_specific_token: url_param_authtoken
+          });
+        }
         return Promise.resolve("continue");
+
       }
     }
   }

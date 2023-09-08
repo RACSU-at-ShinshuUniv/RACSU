@@ -185,15 +185,22 @@ const ms_handler = async(event_data, line_sender) => {
                   account_data: account_data
 
                 }).then((res) => {
-                  line_sender.flex_task_list({
-                    contents: res.contents,
-                    alt_text: res.alt_text,
-                    notice_refresh: true
-                  });
+                  if (res.result == "ok"){
+                    line_sender.flex_task_list({
+                      contents: res.data.contents,
+                      alt_text: res.data.alt_text,
+                      notice_refresh: true
+                    });
 
-                }).catch(() => {
+                  } else if (res.result == "no task") {
+                    line_sender.text({
+                      message: "新規取得できる課題がありません。"
+                    })
+                  }
+
+                }).catch((e) => {
                   line_sender.text({
-                    message: "新規取得できる課題が1件もありません。"
+                    message: "新規課題取得過程でエラーが発生しました。"
                   })
                 })
 

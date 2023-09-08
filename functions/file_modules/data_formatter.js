@@ -1,6 +1,5 @@
 require("date-utils")
 const {Timestamp} = require('firebase-admin/firestore');
-const valid_task_patterns = require("../env_variables/valid_task_patterns.json")
 
 const flex_content = {
   box: ({contents=[], layout="horizontal", margin="none", flex=1, padding_all="none", background_color="#ffffff", action="none", action_data=""}) => {
@@ -87,19 +86,45 @@ const get_sorted_keys = ({task_data={}}) => {
   return array.map((val) => val.key);
 }
 
-exports.ical_to_json = async({class_name_dic={}, ical_data={}}) => {
+exports.ical_to_json = async(db, {class_name_dic={}, ical_data={}}) => {
   const ical_keys = Object.keys(ical_data);
   let task_data = {};
 
-  ical_keys.forEach((key) => {
+  // シラバスからの取得でawaitを使うので、forEachではなくforを使用
+  // Promise.all使えってESLintに怒られるらしい
+  const valid_task_patterns = require("../env_variables/valid_task_patterns.json");
+  for (key of ical_keys){
     if (key !== "vcalendar"){
-      valid_task_patterns.forEach(task_pattern => {
+      for (task_pattern of valid_task_patterns){
+
+        // カレンダーデータ内のsummaryの文字が、課題形式のパターンに一致しているか判定
+        // summary自体がない場合は除く
         const regexp = new RegExp(task_pattern);
-        const res = (ical_data[key].summary).match(regexp);
+        const res = ("summary" in ical_data[key])
+          ?(ical_data[key].summary).match(regexp)
+          : "null";
+
         if (res !== null){
-          const class_name = (class_name_dic[(ical_data[key].categories)[0]] !== undefined)
-          ? class_name_dic[(ical_data[key].categories)[0]]
-          : "no name";
+          let class_name = "";
+          if ("categories" in ical_data[key]){
+            if (class_name_dic[(ical_data[key].categories)[0]] !== undefined){
+              // すでにコードデータベースに登録済みであれば、そこから取得
+              class_name = class_name_dic[(ical_data[key].categories)[0]]
+
+            } else {
+              // コードデータベースに存在しない場合は、シラバスから取得してデータベースに追記
+              console.log(`fetch to code:${(ical_data[key].categories)[0]}`)
+              const syllabus_fetch = require("../file_modules/syllabus_fetch");
+              class_name = await syllabus_fetch({
+                code: (ical_data[key].categories)[0]
+              })
+              db.collection("overall").doc("classes").update({[(ical_data[key].categories)[0]]: class_name});
+            }
+
+          } else {
+            // そもそもcategoriesが存在しないものは、ユーザーイベントとして登録
+            class_name = "ユーザーイベント"
+          }
 
           task_data[(key.split("@")[0])] = {
             class_name: class_name,
@@ -109,9 +134,9 @@ exports.ical_to_json = async({class_name_dic={}, ical_data={}}) => {
             display: true
           }
         }
-      });
+      }
     }
-  })
+  }
 
   return task_data;
 }
@@ -319,7 +344,7 @@ exports.json_to_flex = ({tasks={}}) => {
           ], margin: "md"})
         );
 
-      }else {
+      } else {
         task_data_json.push(
           flex_content.box({contents: [
             flex_content.text({text: `${limit_day_add_this_loop}(${["日", "月", "火", "水", "木", "金", "土"][tasks[keys_other[i]].task_limit.toDate().getDay()]})`, size: "sm", color: "#555555", margin: "sm"}),

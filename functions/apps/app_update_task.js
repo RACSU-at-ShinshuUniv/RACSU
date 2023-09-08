@@ -7,25 +7,28 @@ module.exports = async(db, {user_id="", account_data={}}) => {
 
 
   // icalデータを取得
-  const ical = require("../file_modules/ical_fetch")
+  const ical = require("../file_modules/ical_fetch");
   const ical_data_general = await ical.get_contents({
     url: url_g
-  })
+  });
   const ical_data_specific = await ical.get_contents({
     url: url_s
-  })
+  });
+
 
   // icalデータをFirestore保存形式に変換
   const data_formatter = require("../file_modules/data_formatter");
   const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
-  const task_data_general = await data_formatter.ical_to_json({
+
+  const task_data_general = await data_formatter.ical_to_json(db, {
     class_name_dic: class_name_dic,
     ical_data: ical_data_general
-  })
-  const task_data_specific = await data_formatter.ical_to_json({
+  });
+  const task_data_specific = await data_formatter.ical_to_json(db, {
     class_name_dic: class_name_dic,
     ical_data: ical_data_specific
-  })
+  });
+
 
   // Firestore保存形式をflexデータに変換
   const flex_data = data_formatter.json_to_flex({
@@ -33,11 +36,11 @@ module.exports = async(db, {user_id="", account_data={}}) => {
   });
 
   if (Object.keys({...task_data_general, ...task_data_specific}).length == 0){
-    return Promise.reject()
+    return Promise.resolve({result: "no task"})
 
   } else {
     // Firestoreに保存
     db.collection("tasks").doc(user_id).update({...task_data_general, ...task_data_specific});
-    return Promise.resolve(flex_data);
+    return Promise.resolve({result: "ok", data: flex_data});
   }
 }

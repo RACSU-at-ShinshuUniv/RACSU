@@ -192,7 +192,7 @@ const ms_handler = async(event_data, line_sender) => {
                       notice_refresh: true
                     });
 
-                  } else if (res.result == "no task") {
+                  } else if (res.result == "no task"){
                     line_sender.text({
                       message: "新規取得できる課題がありません。"
                     })
@@ -202,10 +202,44 @@ const ms_handler = async(event_data, line_sender) => {
                   line_sender.text({
                     message: "新規課題取得過程でエラーが発生しました。"
                   })
+                  return Promise.reject(e);
                 })
 
                 return;
               }
+
+              default: {
+                // コマンド処理
+                if (event_data.message.text.includes("cmd@")){
+                  const app_process_command = require("./apps/app_process_command");
+                  app_process_command(db, {
+                    user_id: event_data.source.userId,
+                    message: event_data.message.text
+
+                  }).then((res) => {
+                    if (res.result == "ok" && res.next == "send_task"){
+                      line_sender.flex_task_list({
+                        contents: res.data.contents,
+                        alt_text: res.data.alt_text
+                      })
+                    }
+
+                  }).catch((e) => {
+                    if (e == "invalid command"){
+                      line_sender.text({
+                        message: "このコマンドは無効です。"
+                      });
+
+                    } else {
+                      return Promise.reject(e);
+                    }
+                  })
+
+                // コマンド送信以外は何も返信しない
+                } else {}
+
+              }
+
             }
 
             return;

@@ -237,7 +237,7 @@ exports.json_to_flex = ({tasks={}}) => {
             flex_content.text({text: limit, color: "#ff4500"}),
             flex_content.text({text: tasks[key].class_name.substr(0, 10), size: "lg", color: "#555555", flex: 1, margin: "md"}),
             flex_content.text({text: tasks[key].task_name.substr(0, 7), size: "sm", color: "#555555"})
-          ], margin: "md", action: "message", action_data: `cmd@finish_${key}`})
+          ], margin: "md", action: "message", action_data: `cmd@finish?key=${key}`})
         );
         todays_task_count++;
 
@@ -248,7 +248,7 @@ exports.json_to_flex = ({tasks={}}) => {
             flex_content.text({text: limit, color: "#ff4500"}),
             flex_content.text({text: tasks[key].class_name.substr(0, 10), size: "lg", color: "#bbbbbb", flex: 1, margin: "md"}),
             flex_content.text({text: tasks[key].task_name.substr(0, 7), size: "sm", color: "#bbbbbb"})
-          ], margin: "md", action: "message", action_data: `cmd@redo_${key}`})
+          ], margin: "md", action: "message", action_data: `cmd@redo?key=${key}`})
         );
       }
     });
@@ -287,18 +287,18 @@ exports.json_to_flex = ({tasks={}}) => {
               flex_content.text({text: limit, color: "#555555", margin: "sm"}),
               flex_content.text({text: tasks[keys_other[i]].class_name.substr(0, 10), color: "#555555", flex: 1, margin: "md"}),
               flex_content.text({text: tasks[keys_other[i]].task_name.substr(0, 7), size: "sm", color: "#555555", margin: "md"})
-            ], action: "message", action_data: `cmd@finish_${keys_other[i]}`})
+            ], action: "message", action_data: `cmd@finish?key=${keys_other[i]}`})
           );
           other_task_count++;
 
         } else {
           contents_temporary.push(
             flex_content.box({contents: [
-              flex_content.text({text: "☑", color: "#555555", margin: "md"}),
+              flex_content.text({text: "☑", color: "#bbbbbb", margin: "md"}),
               flex_content.text({text: limit, color: "#bbbbbb", margin: "sm"}),
               flex_content.text({text: tasks[keys_other[i]].class_name.substr(0, 10), color: "#bbbbbb", flex: 1, margin: "md"}),
               flex_content.text({text: tasks[keys_other[i]].task_name.substr(0, 7), size: "sm", color: "#bbbbbb", margin: "md"})
-            ], action: "message", action_data: `cmd@redo_${keys_other[i]}`})
+            ], action: "message", action_data: `cmd@redo?key=${keys_other[i]}`})
           );
         }
 

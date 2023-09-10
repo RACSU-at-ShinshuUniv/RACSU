@@ -2,7 +2,7 @@ module.exports = async(db, {user_id="", message=""}) => {
   const student_id = message.match(/\d\d[LEJSMTAF]\d\d\d\d./i);
 
   if (student_id == null){
-    return Promise.reject();
+    return Promise.resolve({result: "error"});
 
   } else {
     const user_address = `${student_id.toString().toLowerCase()}@shinshu-u.ac.jp`;
@@ -30,6 +30,6 @@ module.exports = async(db, {user_id="", message=""}) => {
       temporary_data: user_token
     });
 
-    return Promise.resolve(user_address);
+    return Promise.resolve({result:"ok", data: user_address});
   }
 }

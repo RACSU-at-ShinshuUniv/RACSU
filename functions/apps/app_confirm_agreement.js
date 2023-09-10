@@ -3,9 +3,9 @@ module.exports = (db, {user_id="", message=""}) => {
     db.collection("users").doc(user_id).update({
       account_status: "linking",
     });
-    return Promise.resolve();
+    return Promise.resolve({result: "ok"});
 
   } else {
-    return Promise.reject();
+    return Promise.resolve({result: "error"});
   }
 }

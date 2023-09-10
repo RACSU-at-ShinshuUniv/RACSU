@@ -23,6 +23,6 @@ module.exports = async(db, {user_id=""}) => {
       tasks: res
     });
 
-    return Promise.resolve(flex_data);
+    return Promise.resolve({result: "ok", data: flex_data});
   }
 }

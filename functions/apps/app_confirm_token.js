@@ -5,16 +5,16 @@ module.exports = (db, {user_id="", message="", token=""}) => {
       student_id: "",
       temporary_data: ""
     });
-    return Promise.resolve("retry");
+    return Promise.resolve({result: "retry"});
 
   } else if (message == token){
     db.collection("users").doc(user_id).update({
       account_status: "authenticated",
       temporary_data: ""
     });
-    return Promise.resolve("authenticated");
+    return Promise.resolve({result: "ok"});
 
   } else {
-    return Promise.reject();
+    return Promise.resolve({result: "error"});
   }
 }

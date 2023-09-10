@@ -2,11 +2,11 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
   const url_param = message.split(/[/=&?]/);
   if (message.indexOf("https://lms.ealps.shinshu-u.ac.jp/") == -1 || url_param[6] !== "export_execute.php"){
     // URLエクスポート先のスクリプトが含まれるか
-    return Promise.reject("URL形式が不正です。eAlpsのカレンダーエクスポートURLのみ有効です。");
+    return Promise.resolve({result: "error", msg: "URL形式が不正です。eAlpsのカレンダーエクスポートURLのみ有効です。"});
 
   } else if (url_param.length !== 15){
     // URLパラメータ数が正規数含まれるか
-    return Promise.reject("URL形式が不正です。\nURLが最後までコピーされていない可能性があります。\nもう一度最後までコピーし、送信してください。");
+    return Promise.resolve({result: "error", msg: "URL形式が不正です。\nURLが最後までコピーされていない可能性があります。\nもう一度最後までコピーし、送信してください。"});
 
   } else {
     const term = new Date();
@@ -26,7 +26,7 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
     if (!(await ical.is_valid_url({url: url}))){
       // 登録済みの学部コードを使って実際にFitchしてみて、正しいデータが取れるか
       // 登録済みの学部と違うURLが送られてきた場合にエラーを出すようにする
-      return Promise.reject("URLの有効性が確認できません。\n有効なURLを送信してください。");
+      return Promise.resolve({result: "error", msg: "URLの有効性が確認できません。\n有効なURLを送信してください。"});
 
     } else {
       // エラーチェック通過
@@ -47,7 +47,7 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
             account_status: "linked"
           });
         }
-        return Promise.resolve("complete");
+        return Promise.resolve({result: "ok"});
 
 
       } else {
@@ -63,7 +63,7 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
             moodle_specific_token: url_param_authtoken
           });
         }
-        return Promise.resolve("continue");
+        return Promise.resolve({result: "continue"});
 
       }
     }

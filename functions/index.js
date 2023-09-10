@@ -35,9 +35,16 @@ const ms_handler = async(event_data, line_sender) => {
       app_register_user(db, {
         user_id: event_data.source.userId,
         user_name: await line_sender.get_name({id: event_data.source.userId})
+
+      }).then(() => {
+        line_sender.flex_added_friend();
+
+      }).catch((e) => {
+        line_sender.alert_error({
+          error_msg: e
+        });
       });
-      line_sender.flex_added_friend();
-      return;
+      break;
     }
 
     // ブロックアクション
@@ -46,12 +53,12 @@ const ms_handler = async(event_data, line_sender) => {
       app_delete_user(db, {
         user_id: event_data.source.userId
       });
-      return;
+      break;
     }
 
     // ポストバックアクション
     case "postback": {
-      return
+      break
     }
 
     // メッセージアクション
@@ -60,6 +67,7 @@ const ms_handler = async(event_data, line_sender) => {
         line_sender.text({
           message: `${event_data.message.type}タイプのメッセージは\n受け取ることができません<(_ _)>`
         });
+        break;
 
       } else {
         console.time("ユーザーデータ取得所要時間");
@@ -67,26 +75,37 @@ const ms_handler = async(event_data, line_sender) => {
         console.timeEnd("ユーザーデータ取得所要時間");
 
         switch(account_data.account_status){
+
+          // 学籍番号の受信処理と認証メールの送信
           case "wait_student_id": {
             const app_register_id = require("./apps/app_register_id");
             app_register_id(db, {
               user_id: event_data.source.userId,
               message: event_data.message.text
 
-            }).then((address) => {
-              line_sender.flex_auth_guide({
-                address: address
-              });
+            }).then((res) => {
+              if (res.result == "ok"){
+                line_sender.flex_auth_guide({
+                  address: res.data
+                });
 
-            }).catch(() => {
-              line_sender.text({
-                message: "学籍番号を認識できませんでした。\nもう一度送信してください。"
+              } else {
+                line_sender.text({
+                  message: "学籍番号を認識できませんでした。\nもう一度送信してください。"
+                });
+              }
+
+            }).catch((e) => {
+              line_sender.alert_error({
+                error_msg: e
               });
             });
 
-            return;
+            break;
           }
 
+
+          // 認証トークンの確認と利用規約の送信
           case "confirm_token": {
             const app_confirm_token = require("./apps/app_confirm_token");
             app_confirm_token(db, {
@@ -95,41 +114,55 @@ const ms_handler = async(event_data, line_sender) => {
               token: account_data.temporary_data
 
             }).then((res) => {
-              if (res == "retry"){
+              if (res.result == "retry"){
                 line_sender.flex_added_friend();
-              } else if (res == "authenticated"){
+              } else if (res.result == "ok"){
                 line_sender.flex_user_policy();
+              } else {
+                line_sender.text({
+                  message: "認証に失敗しました。\nもう一度メールをご確認の上、アルファベットを含めた認証コードを送信してください。\nメール未受信の場合、「初めからやり直す」と送信してください。"
+                });
               }
 
-            }).catch(() => {
-              line_sender.text({
-                message: "認証に失敗しました。\nもう一度メールをご確認の上、アルファベットを含めた認証コードを送信してください。\nメール未受信の場合、「初めからやり直す」と送信してください。"
+            }).catch((e) => {
+              line_sender.alert_error({
+                error_msg: e
               });
-            })
+            });
 
-            return;
+            break;
           }
 
+
+          // 規約の同意確認と連携ガイドの送信
           case "authenticated": {
             const app_confirm_agreement = require("./apps/app_confirm_agreement");
             app_confirm_agreement(db, {
               user_id: event_data.source.userId,
               message: event_data.message.text
 
-            }).then(() => {
-              line_sender.flex_link_guide({
-                student_id: account_data.student_id
-              })
+            }).then((res) => {
+              if (res.result == "ok"){
+                line_sender.flex_link_guide({
+                  student_id: account_data.student_id
+                })
+              } else {
+                line_sender.text({
+                  message: "利用を開始するには、規約に同意をお願いします。"
+                });
+              }
 
-            }).catch(() => {
-              line_sender.text({
-                message: "利用を開始するには、規約に同意をお願いします。"
+            }).catch((e) => {
+              line_sender.alert_error({
+                error_msg: e
               });
-            })
+            });
 
-            return;
+            break;
           }
 
+
+          // eAlps連携処理
           case "linking": {
             const app_confirm_cal_url = require("./apps/app_confirm_cal_url");
             app_confirm_cal_url(db, {
@@ -138,116 +171,150 @@ const ms_handler = async(event_data, line_sender) => {
               account_data: account_data
 
             }).then((res) => {
-              if (res == "continue"){
+              if (res.result == "continue"){
                 line_sender.text({
                   message: "1つ目のURLを登録しました。\n続いて、もう一つのURLも登録してください。"
                 });
 
-              } else if (res == "complete"){
+              } else if (res.result == "ok"){
                 line_sender.text({
                   message: "初期設定が完了しました！"
+                });
+
+              } else {
+                line_sender.text({
+                  message: res.msg
                 });
               }
 
             }).catch((e) => {
-              line_sender.text({
-                message: e
+              line_sender.alert_error({
+                error_msg: e
               });
-            })
+            });
 
-            return;
+            break;
           }
 
+
+          // 初期設定完了後のメッセージハンドラ
           case "linked": {
-            switch (event_data.message.text){
-              case "登録済みの課題を表示": {
-                const app_get_task_flex = require("./apps/app_get_task_flex");
-                app_get_task_flex(db, {
-                  user_id: event_data.source.userId
+            const message = event_data.message.text;
 
-                }).then((res) => {
+            // 課題リストの送信
+            if (message == "登録済みの課題を表示"){
+              const app_get_task_flex = require("./apps/app_get_task_flex");
+              app_get_task_flex(db, {
+                user_id: event_data.source.userId
+
+              }).then((res) => {
+                if (res.result == "ok"){
                   line_sender.flex_task_list({
-                    contents: res.contents,
-                    alt_text: res.alt_text
+                    contents: res.data.contents,
+                    alt_text: res.data.alt_text
                   })
+                }
 
-                }).catch((e) => {
-                  return Promise.reject(e)
-                })
+              }).catch((e) => {
+                line_sender.alert_error({
+                  error_msg: e
+                });
+              });
 
-                return;
-              }
 
-              case "データを更新する":{
-                const app_update_task = require("./apps/app_update_task");
-                app_update_task(db, {
-                  user_id: event_data.source.userId,
-                  account_data: account_data
+            // 課題の更新
+            } else if (message == "データを更新する"){
+              const app_update_task = require("./apps/app_update_task");
+              app_update_task(db, {
+                user_id: event_data.source.userId,
+                account_data: account_data
 
-                }).then((res) => {
-                  if (res.result == "ok"){
-                    line_sender.flex_task_list({
-                      contents: res.data.contents,
-                      alt_text: res.data.alt_text,
-                      notice_refresh: true
-                    });
+              }).then((res) => {
+                if (res.result == "ok"){
+                  line_sender.flex_task_list({
+                    contents: res.data.contents,
+                    alt_text: res.data.alt_text,
+                    notice_refresh: true,
+                    notice_message: "課題を最新に更新しました。"
+                  });
 
-                  } else if (res.result == "no task"){
-                    line_sender.text({
-                      message: "新規取得できる課題がありません。"
-                    })
-                  }
-
-                }).catch((e) => {
+                } else if (res.result == "no task"){
                   line_sender.text({
-                    message: "新規課題取得過程でエラーが発生しました。"
+                    message: "新規取得できる課題がありません。"
                   })
-                  return Promise.reject(e);
-                })
+                }
 
-                return;
-              }
+              }).catch((e) => {
+                line_sender.alert_error({
+                  error_msg: e
+                });
+              });
 
-              default: {
-                // コマンド処理
-                if (event_data.message.text.includes("cmd@")){
-                  const app_process_command = require("./apps/app_process_command");
-                  app_process_command(db, {
-                    user_id: event_data.source.userId,
-                    message: event_data.message.text
+             // その他のコマンド処理
+            } else if (message.includes("cmd@")){
+              const app_process_command = require("./apps/app_process_command");
+              app_process_command(db, {
+                user_id: event_data.source.userId,
+                message: message
 
-                  }).then((res) => {
-                    if (res.result == "ok" && res.next == "send_task"){
-                      line_sender.flex_task_list({
-                        contents: res.data.contents,
-                        alt_text: res.data.alt_text
-                      })
-                    }
+              }).then((res) => {
+                if (res.result == "ok" && res.res_type == "task_list"){
+                  line_sender.flex_task_list({
+                    contents: res.data.contents,
+                    alt_text: res.data.alt_text
+                  });
 
-                  }).catch((e) => {
-                    if (e == "invalid command"){
-                      line_sender.text({
-                        message: "このコマンドは無効です。"
-                      });
+                } else if (res.result == "ok" && res.res_type == "task_list_added"){
+                  line_sender.flex_task_list({
+                    contents: res.data.contents,
+                    alt_text: res.data.alt_text,
+                    notice_refresh: true,
+                    notice_message: "指定の課題を追加しました。"
+                  });
+                }
 
-                    } else {
-                      return Promise.reject(e);
-                    }
+              }).catch((e) => {
+                line_sender.alert_error({
+                  error_msg: e
+                });
+              });
+
+            } else if (message.includes("【☆課題追加フォーム☆】")){
+              // 課題手動追加処理
+              const app_process_manual_task = require("./apps/app_process_manual_task");
+              app_process_manual_task(db, {
+                user_id: event_data.source.userId,
+                message: message
+
+              }).then((res) => {
+                if (res.result == "ok"){
+                  line_sender.flex_add_task({
+                    content: message,
+                    task_data: res.data
                   })
 
-                // コマンド送信以外は何も返信しない
-                } else {}
+                } else {
+                  line_sender.flex_retry_add_task({
+                    err_msg: res.msg,
+                    content: message
+                  })
+                }
 
-              }
+              }).catch((e) => {
+                line_sender.alert_error({
+                  error_msg: e
+                });
+              });
 
-            }
 
-            return;
+            // コマンド送信以外は何も返信しない
+            } else {}
+            break;
           }
         }
       }
 
-      return;
+      break;
     }
 
     // 未想定のアクション
@@ -255,6 +322,7 @@ const ms_handler = async(event_data, line_sender) => {
       line_sender.text({
         message: "このアクションはサポートされていません。"
       });
+      break;
     }
   }
 

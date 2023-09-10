@@ -35,7 +35,7 @@ module.exports = async(db, {user_id="", message=""}) => {
       });
 
       db.collection("tasks").doc(user_id).update({[`${key}.finish`]: true})
-      return Promise.resolve({result: "ok", next: "send_task", data: flex_data});
+      return Promise.resolve({result: "ok", res_type: "task_list", data: flex_data});
     }
 
 
@@ -65,7 +65,37 @@ module.exports = async(db, {user_id="", message=""}) => {
       });
 
       db.collection("tasks").doc(user_id).update({[`${key}.finish`]: false})
-      return Promise.resolve({result: "ok", next: "send_task", data: flex_data});
+      return Promise.resolve({result: "ok", res_type: "task_list", data: flex_data});
+    }
+
+    case "add": {
+      const {Timestamp} = require('firebase-admin/firestore');
+      try{
+        const msg_task_data = message.match(/cmd@add\?cn=(?<class_name>.+)&tn=(?<task_name>.+)&tl=(?<task_limit>\d{4}\/\d{2}\/\d{2}-\d{2}:\d{2})/).groups;
+        const new_task_data = {
+          class_name: msg_task_data.class_name,
+          task_name: msg_task_data.task_name,
+          task_limit: Timestamp.fromDate(new Date(msg_task_data.task_limit)),
+          finish: false,
+          display: true
+        }
+        let key = "990";
+        for (let i=0; i<4; i++){
+          key += Math.floor(Math.random()*10).toString();
+        }
+        const res = (await db.collection("tasks").doc(user_id).get()).data();
+        res[key] = new_task_data;
+        const data_formatter = require("../file_modules/data_formatter");
+        const flex_data = data_formatter.json_to_flex({
+          tasks: res
+        });
+
+        db.collection("tasks").doc(user_id).set({[key]: new_task_data} ,{merge: true});
+        return Promise.resolve({result: "ok", res_type: "task_list_added", data: flex_data});
+
+      } catch(e) {
+        return Promise.reject(e);
+      }
     }
 
 

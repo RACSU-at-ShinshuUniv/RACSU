@@ -33,6 +33,7 @@ class Line_Sender {
   }
 
   alert_error({error_msg="不明なエラー"}){
+    console.error("Error occurred!: ", error_msg);
     this.client.replyMessage(this.reply_token, {
       type: "text",
       text: `処理エラーが発生しました。\n${error_msg}`
@@ -88,7 +89,7 @@ class Line_Sender {
     });
   }
 
-  flex_task_list({contents=[], alt_text="", notice_refresh=false}){
+  flex_task_list({contents=[], alt_text="", notice_refresh=false, notice_message=""}){
     if (!notice_refresh) {
       this.client.replyMessage(this.reply_token, {
         type: "flex",
@@ -119,9 +120,38 @@ class Line_Sender {
         }
       },{
         type: "text",
-        text: "課題を最新に更新しました。"
+        text: notice_message
       }]);
     }
+  }
+
+  flex_retry_add_task({err_msg="", content=""}){
+    const json_retry_add_task = require("../flex_data/retry_add_task.json");
+    this.client.replyMessage(this.reply_token, [{
+      type: "text",
+      text: err_msg
+    },{
+      type: "flex",
+      altText: "内容を修正して再度送信してください。",
+      contents: JSON.parse(JSON.stringify(json_retry_add_task)
+      .replace("$1", content.replace(/\n/g, "\\n")))
+    }]);
+
+  }
+
+  flex_add_task({content="", task_data={}}){
+    const json_add_task = require("../flex_data/add_task.json");
+    this.client.replyMessage(this.reply_token, {
+      type: "flex",
+      altText: "この内容で課題を追加しますか？",
+      contents: JSON.parse(JSON.stringify(json_add_task)
+      .replace("$1", task_data.class_name)
+      .replace("$2", task_data.task_name)
+      .replace("$3", task_data.task_limit)
+      .replace("$4", `cmd@add?cn=${task_data.class_name}&tn=${task_data.task_name}&tl=${task_data.task_limit.replace(" ", "-")}`)
+      .replace("$5", content.replace(/\n/g, "\\n")))
+    });
+
   }
 }
 

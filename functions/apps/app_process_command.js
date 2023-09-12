@@ -12,7 +12,7 @@ module.exports = async(db, {user_id="", message=""}) => {
         ? message.match(/cmd@finish\?key=(\d+)/)[1]
         : null;
       if (key == null){
-        return Promise.reject("invalid command");
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
       }
 
       // データベースにfinish=trueを書き込んでから送信すると時間がかかるため、
@@ -24,7 +24,7 @@ module.exports = async(db, {user_id="", message=""}) => {
         return Promise.reject(new Error("Data not found"));
       }
       if (!(key in doc_data.data())){
-        return Promise.reject("invalid command");
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
       }
 
       const res = doc_data.data()
@@ -45,7 +45,7 @@ module.exports = async(db, {user_id="", message=""}) => {
         ? message.match(/cmd@redo\?key=(\d+)/)[1]
         : null;
       if (key == null){
-        return Promise.reject("invalid command");
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
       }
 
       const doc_data = await db.collection("tasks").doc(user_id).get();
@@ -54,7 +54,7 @@ module.exports = async(db, {user_id="", message=""}) => {
         return Promise.reject(new Error("Data not found"));
       }
       if (!(key in doc_data.data())){
-        return Promise.reject("invalid command");
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
       }
 
       const res = doc_data.data()
@@ -100,7 +100,7 @@ module.exports = async(db, {user_id="", message=""}) => {
 
 
     default: {
-      return Promise.reject("invalid command")
+      return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。")
     }
   }
 }

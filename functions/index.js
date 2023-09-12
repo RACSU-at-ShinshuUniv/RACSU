@@ -360,6 +360,6 @@ app.post('/webhook', linebot_sdk.middleware(linebot_account), (req, res) => {
 exports.line_end_point = firebase_functions
 .region('asia-northeast1')
 .runWith({
-  maxInstances: 3,
+  maxInstances: 2,
   memory: "1GB",
 }).https.onRequest(app);

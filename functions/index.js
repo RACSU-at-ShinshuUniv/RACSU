@@ -281,8 +281,8 @@ const ms_handler = async(event_data, line_sender) => {
 
             } else if (message.includes("【☆課題追加フォーム☆】")){
               // 課題手動追加処理
-              const app_process_manual_task = require("./apps/app_process_manual_task");
-              app_process_manual_task(db, {
+              const app_add_manual_task = require("./apps/app_add_manual_task");
+              app_add_manual_task(db, {
                 user_id: event_data.source.userId,
                 message: message
 
@@ -306,6 +306,13 @@ const ms_handler = async(event_data, line_sender) => {
                 });
               });
 
+            } else if (message == "test_point"){
+              // console.log(event_data.source.roomId);
+              // line_sender.test_point({
+              //   data: event_data.source.roomId
+              // });
+              break;
+
 
             // コマンド送信以外は何も返信しない
             } else {}
@@ -326,7 +333,6 @@ const ms_handler = async(event_data, line_sender) => {
     }
   }
 
-  console.log("メッセージハンドリング | 処理完了");
   return Promise.resolve("done");
 }
 
@@ -336,7 +342,7 @@ const ms_handler = async(event_data, line_sender) => {
 // エンドポイント公開設定
 // ----------------------------------------------
 app.post('/webhook', linebot_sdk.middleware(linebot_account), (req, res) => {
-  console.log("----------------------------処理開始------------------------------")
+  console.log("<<<<<<<-----------------------処理開始----------------------->>>>>>>")
   const line_sender = new Line_Sender({
     client: linebot_client,
     reply_token: req.body.events[0].replyToken
@@ -354,6 +360,7 @@ app.post('/webhook', linebot_sdk.middleware(linebot_account), (req, res) => {
     res.status(200).json({}).end();
   })
   console.timeEnd("レスポンス処理所要時間");
+  console.log(">>>>>>>-----------------------処理終了-----------------------<<<<<<<");
 });
 
 

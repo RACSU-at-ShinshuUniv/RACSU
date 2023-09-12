@@ -94,7 +94,8 @@ module.exports = async(db, {user_id="", message=""}) => {
         return Promise.resolve({result: "ok", res_type: "task_list_added", data: flex_data});
 
       } catch(e) {
-        return Promise.reject(e);
+        console.error(e);
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
       }
     }
 

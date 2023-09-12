@@ -9,6 +9,10 @@ class Line_Sender {
     return user_name;
   }
 
+  test_point({data=""}){
+    this.client.leaveRoom(data);
+  }
+
   contents_push({user_id="", contents={}}){
     this.client.pushMessage(user_id, contents);
   }
@@ -22,6 +26,12 @@ class Line_Sender {
     this.client.replyMessage(this.reply_token, {
       type: 'text',
       text: `${message}`
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。\nこのエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
     });
   }
 
@@ -29,6 +39,12 @@ class Line_Sender {
     this.client.replyMessage(this.reply_token, {
       type: "text",
       text: "テキストメッセージ以外は\n処理できません<(_ _)>"
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
     });
   }
 
@@ -37,6 +53,12 @@ class Line_Sender {
     this.client.replyMessage(this.reply_token, {
       type: "text",
       text: `処理エラーが発生しました。\n${error_msg}`
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
     });
   }
 
@@ -46,6 +68,12 @@ class Line_Sender {
       type: "flex",
       altText: "友達登録ありがとうございます！",
       contents: json_added_friend
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
     });
   }
 
@@ -56,6 +84,12 @@ class Line_Sender {
       altText: `認証メールを${address}に送信しました。`,
       contents: JSON.parse(JSON.stringify(json_auth_guide)
         .replace("$1", address))
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
     });
   }
 
@@ -68,7 +102,13 @@ class Line_Sender {
       type: "flex",
       altText: "利用規約をご確認ください。",
       contents: json_user_policy
-    }]);
+    }]).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
+    });
   }
 
   flex_link_guide({student_id=""}){
@@ -86,6 +126,12 @@ class Line_Sender {
       contents: JSON.parse(JSON.stringify(json_link_guide)
         .replace("$1", url_1)
         .replace("$2", url_2))
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
     });
   }
 
@@ -103,6 +149,12 @@ class Line_Sender {
             "contents": contents
           }
         }
+      }).catch((err) => {
+        console.error("Error occurred!: ", err);
+        this.client.replyMessage(this.reply_token, {
+          type: "text",
+          text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+        });
       });
 
     } else {
@@ -121,21 +173,31 @@ class Line_Sender {
       },{
         type: "text",
         text: notice_message
-      }]);
+      }]).catch((err) => {
+        console.error("Error occurred!: ", err);
+        this.client.replyMessage(this.reply_token, {
+          type: "text",
+          text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+        });
+      });
     }
   }
 
   flex_retry_add_task({err_msg="", content=""}){
     const json_retry_add_task = require("../flex_data/retry_add_task.json");
-    this.client.replyMessage(this.reply_token, [{
-      type: "text",
-      text: err_msg
-    },{
+    this.client.replyMessage(this.reply_token, {
       type: "flex",
       altText: "内容を修正して再度送信してください。",
       contents: JSON.parse(JSON.stringify(json_retry_add_task)
-      .replace("$1", content.replace(/\n/g, "\\n")))
-    }]);
+      .replace("$1", err_msg)
+      .replace("$2", content.replace(/\n/g, "\\n")))
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
+    });
 
   }
 
@@ -150,6 +212,12 @@ class Line_Sender {
       .replace("$3", task_data.task_limit)
       .replace("$4", `cmd@add?cn=${task_data.class_name}&tn=${task_data.task_name}&tl=${task_data.task_limit.replace(" ", "-")}`)
       .replace("$5", content.replace(/\n/g, "\\n")))
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+      this.client.replyMessage(this.reply_token, {
+        type: "text",
+        text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
+      });
     });
 
   }

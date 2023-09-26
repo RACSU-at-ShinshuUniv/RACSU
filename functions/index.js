@@ -18,15 +18,17 @@ const Line_Sender = require("./file_modules/line_sender");
 
 // ExpressApp作成
 const express = require("express");
+const { async } = require("node-ical");
 const app = express();
 
+// データベースインスタンス作成
+const db = getFirestore();
 
 // ----------------------------------------------
 // メッセージハンドラ
 // ----------------------------------------------
 
 const ms_handler = async(event_data, line_sender) => {
-  const db = getFirestore();
   switch (event_data.type){
 
     // フォローアクション
@@ -379,3 +381,31 @@ exports.line_end_point = firebase_functions
   maxInstances: 2,
   memory: "1GB",
 }).https.onRequest(app);
+
+
+exports.auto_notify = firebase_functions.pubsub
+.schedule('every day 09:00')
+.timeZone('Asia/Tokyo')
+// .runWith({
+//   timeoutSeconds: 500
+// })
+.onRun(async(context) => {
+  const app_auto_notify = require("./apps/app_auto_notify");
+  const data = await db.collection("users").get();
+
+  data.forEach(doc => {
+    const user_id = doc.id;
+    const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
+
+    app_auto_notify(db, {
+      user_id: user_id,
+      user_address: user_address
+    }).then((res) => {
+      console.log(`${user_address} -> ${res.result}, ${res.status}`);
+    }).catch((e) => {
+      console.log(`error at ${user_address}\n${e}`)
+    });
+  });
+
+  return null;
+});

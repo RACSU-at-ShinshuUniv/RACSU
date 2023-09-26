@@ -44,30 +44,21 @@
                 "layout": "vertical",
                 "contents": [
                     {
-                        "type": "box",
-                        "layout": "vertical",
-                        "contents": [
-                            {
-                                "type": "text",
-                                "text": "このアカウントは非公式です。\n信州大学への問い合わせは\n絶対にしないでください。",
-                                "size": "lg",
-                                "align": "center",
-                                "color": "#ffd700",
-                                "weight": "bold",
-                                "wrap": true
-                            }
-                        ],
-                        "backgroundColor": "#000000",
-                        "paddingAll": "sm"
-                    },
-                    {
                         "type": "text",
-                        "text": "はじめに、学生認証を行います",
-                        "size": "xl",
+                        "text": "信州大学 学籍番号の",
+                        "size": "xxl",
                         "align": "center",
                         "color": "#ff3d3d",
                         "weight": "bold",
                         "margin": "md"
+                    },
+                    {
+                        "type": "text",
+                        "text": "認証を行います",
+                        "size": "xxl",
+                        "align": "center",
+                        "color": "#ff3d3d",
+                        "weight": "bold"
                     },
                     {
                         "type": "text",
@@ -78,7 +69,7 @@
                     },
                     {
                         "type": "text",
-                        "text": "送信してください 例）21T2000A",
+                        "text": "送信してください 例）21t2000a",
                         "align": "center"
                     }
                 ],
@@ -93,10 +84,18 @@
                 "contents": [
                     {
                         "type": "text",
-                        "text": "※学籍番号は、サービス運用上のメール送信にのみ使用します。その他目的に使用することはありません。",
+                        "text": "※ このサービスは信大生によって開発・運営されています。信州大学への問い合わせはご遠慮下さい。",
                         "margin": "lg",
                         "wrap": true,
-                        "size": "sm"
+                        "size": "sm",
+                        "weight": "bold"
+                    },
+                    {
+                        "type": "text",
+                        "text": "※ 学籍番号は、サービス運用上のメール送信にのみ使用します。その他目的に使用することはありません。",
+                        "wrap": true,
+                        "size": "sm",
+                        "margin": "sm"
                     }
                 ]
             }

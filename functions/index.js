@@ -224,6 +224,11 @@ const ms_handler = async(event_data, line_sender) => {
 
             // 課題の更新
             } else if (message == "データを更新する"){
+              const rich_menu_id = require("./env_variables/rich_menu_id.json");
+              line_sender.link_rich_menu({
+                user_id: event_data.source.userId,
+                rich_menu_id: rich_menu_id.list_menu_overlay
+              });
               const app_update_task = require("./apps/app_update_task");
               app_update_task(db, {
                 user_id: event_data.source.userId,
@@ -231,6 +236,10 @@ const ms_handler = async(event_data, line_sender) => {
 
               }).then((res) => {
                 if (res.result == "ok"){
+                  line_sender.link_rich_menu({
+                    user_id: event_data.source.userId,
+                    rich_menu_id: rich_menu_id.list_menu
+                  });
                   line_sender.flex_task_list({
                     contents: res.data.contents,
                     alt_text: res.data.alt_text,

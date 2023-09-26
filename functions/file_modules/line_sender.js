@@ -9,8 +9,8 @@ class Line_Sender {
     return user_name;
   }
 
-  test_point({data=""}){
-    this.client.leaveRoom(data);
+  link_rich_menu({user_id="", rich_menu_id=""}){
+    this.client.linkRichMenuToUser(user_id, rich_menu_id);
   }
 
   contents_push({user_id="", contents={}}){

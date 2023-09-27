@@ -2,13 +2,11 @@
 require("firebase-functions/logger/compat");
 process.env.TZ = "Asia/Tokyo";
 
-const {initializeApp, cert} = require("firebase-admin/app");
+const {initializeApp} = require("firebase-admin/app");
 const { getFirestore } = require('firebase-admin/firestore');
 const firebase_functions = require("firebase-functions");
 
-const serviceAccount = require("./keys/ServiceAccount.json");
-initializeApp({credential: cert(serviceAccount)});
-// initializeApp(); // 本番デプロイ時は上を無効化してこっち
+initializeApp();
 
 // LINE_bot_SDKインスタンス作成
 const linebot_sdk = require("@line/bot-sdk");
@@ -18,7 +16,6 @@ const Line_Sender = require("./file_modules/line_sender");
 
 // ExpressApp作成
 const express = require("express");
-const { async } = require("node-ical");
 const app = express();
 
 // データベースインスタンス作成
@@ -317,15 +314,6 @@ const ms_handler = async(event_data, line_sender) => {
                 });
               });
 
-            } else if (message == "test_point"){
-              // console.log(event_data.source.roomId);
-              // line_sender.test_point({
-              //   data: event_data.source.roomId
-              // });
-              break;
-
-
-            // コマンド送信以外は何も返信しない
             } else {}
             break;
           }
@@ -386,9 +374,6 @@ exports.line_end_point = firebase_functions
 exports.auto_notify = firebase_functions.pubsub
 .schedule('every day 09:00')
 .timeZone('Asia/Tokyo')
-// .runWith({
-//   timeoutSeconds: 500
-// })
 .onRun(async(context) => {
   const app_auto_notify = require("./apps/app_auto_notify");
   const data = await db.collection("users").get();

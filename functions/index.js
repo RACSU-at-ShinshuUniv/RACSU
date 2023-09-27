@@ -30,8 +30,8 @@ const ms_handler = async(event_data, line_sender) => {
 
     // フォローアクション
     case "follow": {
-      const app_register_user = require("./apps/app_register_user");
-      app_register_user(db, {
+      const app_add_user = require("./apps/app_add_user");
+      app_add_user(db, {
         user_id: event_data.source.userId,
         user_name: await line_sender.get_name({id: event_data.source.userId})
 
@@ -77,8 +77,8 @@ const ms_handler = async(event_data, line_sender) => {
 
           // 学籍番号の受信処理と認証メールの送信
           case "wait_student_id": {
-            const app_register_id = require("./apps/app_register_id");
-            app_register_id(db, {
+            const app_add_student_id = require("./apps/app_add_student_id");
+            app_add_student_id(db, {
               user_id: event_data.source.userId,
               message: event_data.message.text
 
@@ -260,8 +260,8 @@ const ms_handler = async(event_data, line_sender) => {
 
              // その他のコマンド処理
             } else if (message.includes("cmd@")){
-              const app_process_command = require("./apps/app_process_command");
-              app_process_command(db, {
+              const app_confirm_command = require("./apps/app_confirm_command");
+              app_confirm_command(db, {
                 user_id: event_data.source.userId,
                 message: message
 

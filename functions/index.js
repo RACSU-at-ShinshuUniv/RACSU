@@ -364,33 +364,38 @@ app.post('/webhook', linebot_sdk.middleware(linebot_account), (req, res) => {
 
 
 exports.line_end_point = firebase_functions
-.region('asia-northeast1')
-.runWith({
-  maxInstances: 2,
-  memory: "1GB",
-}).https.onRequest(app);
+  .region('asia-northeast1')
+  .runWith({
+    maxInstances: 3,
+    memory: "1GB",
+  }).https.onRequest(app);
 
 
-exports.auto_notify = firebase_functions.pubsub
-.schedule('every day 09:00')
-.timeZone('Asia/Tokyo')
-.onRun(async(context) => {
-  const app_auto_notify = require("./apps/app_auto_notify");
-  const data = await db.collection("users").get();
+exports.auto_notify = firebase_functions
+  .region('asia-northeast1')
+  .runWith({
+    maxInstances: 2,
+    memory: "1GB",
+  })
+  .pubsub.schedule('every day 09:00')
+  .timeZone('Asia/Tokyo')
+  .onRun(async(context) => {
+    const app_auto_notify = require("./apps/app_auto_notify");
+    const data = await db.collection("users").get();
 
-  data.forEach(doc => {
-    const user_id = doc.id;
-    const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
+    data.forEach(doc => {
+      const user_id = doc.id;
+      const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
 
-    app_auto_notify(db, {
-      user_id: user_id,
-      user_address: user_address
-    }).then((res) => {
-      console.log(`${user_address} -> ${res.result}, ${res.status}`);
-    }).catch((e) => {
-      console.log(`error at ${user_address}\n${e}`)
+      app_auto_notify(db, {
+        user_id: user_id,
+        user_address: user_address
+      }).then((res) => {
+        console.log(`${user_address} -> ${res.result}, ${res.status}`);
+      }).catch((e) => {
+        console.log(`error at ${user_address}\n${e}`)
+      });
     });
-  });
 
-  return null;
-});
+    return null;
+  });

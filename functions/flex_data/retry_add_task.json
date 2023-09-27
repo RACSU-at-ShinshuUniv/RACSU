@@ -1,0 +1,50 @@
+{
+    "type": "bubble",
+    "size": "kilo",
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "$1\nもう一度正しく入力して送信してください。",
+                        "wrap": true
+                    }
+                ],
+                "paddingStart": "sm",
+                "paddingEnd": "sm",
+                "paddingBottom": "sm"
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "内容の訂正はこちらをタップ",
+                        "align": "center",
+                        "gravity": "center",
+                        "color": "#ffffff",
+                        "wrap": true
+                    }
+                ],
+                "backgroundColor": "#1b5aad",
+                "paddingAll": "sm",
+                "cornerRadius": "md",
+                "borderColor": "#85b4f2",
+                "borderWidth": "normal"
+            }
+        ],
+        "action": {
+            "type": "postback",
+            "data": "retry_add_task",
+            "inputOption": "openKeyboard",
+            "fillInText": "$2"
+        },
+        "paddingAll": "md"
+    }
+}

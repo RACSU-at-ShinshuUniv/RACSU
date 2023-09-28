@@ -16,6 +16,6 @@ module.exports = (db, {user_id="", user_name=""}) => {
     user_name: `${user_name}`
   });
   db.collection("tasks").doc(user_id).set({});
-  db.collection("overall").doc("names").set({[user_name]: user_id});
+  db.collection("overall").doc("names").set({[user_name]: user_id}, {merge: true});
   return Promise.resolve("done");
 }

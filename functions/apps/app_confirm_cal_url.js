@@ -2,7 +2,11 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
   const url_param = message.split(/[/=&?]/);
   if (message.indexOf("https://lms.ealps.shinshu-u.ac.jp/") == -1 || url_param[6] !== "export_execute.php"){
     // URLエクスポート先のスクリプトが含まれるか
-    return Promise.resolve({result: "error", msg: "URL形式が不正です。eAlpsのカレンダーエクスポートURLのみ有効です。"});
+    if (message.indexOf("https://") == -1){
+      return Promise.resolve({result: "error", msg: "URLの登録完了まで機能の利用・メッセージの送信が行えません。\n上の画像メニューを見ながら、登録を完了させてください。"});
+    } else {
+      return Promise.resolve({result: "error", msg: "URL形式が不正です。eAlpsのカレンダーエクスポートURLのみ有効です。"});
+    }
 
   } else if (url_param.length !== 15){
     // URLパラメータ数が正規数含まれるか

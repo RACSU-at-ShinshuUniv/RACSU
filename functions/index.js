@@ -90,7 +90,7 @@ const ms_handler = async(event_data, line_sender) => {
 
               } else {
                 line_sender.text({
-                  message: "学籍番号を認識できませんでした。\nもう一度送信してください。"
+                  message: "はじめに学籍番号を送信してください。"
                 });
               }
 
@@ -201,7 +201,7 @@ const ms_handler = async(event_data, line_sender) => {
             const message = event_data.message.text;
 
             // 課題リストの送信
-            if (message == "登録済みの課題を表示"){
+            if (message == "登録済みの課題を表示" || message == "このまま送信して、今日の課題の詳細を表示＞＞＞"){
               const app_get_task_flex = require("./apps/app_get_task_flex");
               app_get_task_flex(db, {
                 user_id: event_data.source.userId
@@ -314,6 +314,10 @@ const ms_handler = async(event_data, line_sender) => {
                 });
               });
 
+            } else if (message == "eAlps連携設定" || message == "通知設定" || message == "超過課題の表示" || message == "RACSUについて・サポート"){
+              line_sender.text({
+                message: "設定項目はまだ未実装です…"
+              })
             } else {}
             break;
           }
@@ -377,25 +381,26 @@ exports.auto_notify = firebase_functions
     maxInstances: 2,
     memory: "1GB",
   })
-  .pubsub.schedule('every day 09:00')
+  .pubsub.schedule('every 1 minutes')
   .timeZone('Asia/Tokyo')
   .onRun(async(context) => {
-    const app_auto_notify = require("./apps/app_auto_notify");
-    const data = await db.collection("users").get();
+    // const app_auto_notify = require("./apps/app_auto_notify");
+    // const data = await db.collection("users").get();
 
-    data.forEach(doc => {
-      const user_id = doc.id;
-      const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
+    // data.forEach(doc => {
+    //   const user_id = doc.id;
+    //   const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
 
-      app_auto_notify(db, {
-        user_id: user_id,
-        user_address: user_address
-      }).then((res) => {
-        console.log(`${user_address} -> ${res.result}, ${res.status}`);
-      }).catch((e) => {
-        console.log(`error at ${user_address}\n${e}`)
-      });
-    });
+    //   app_auto_notify(db, {
+    //     user_id: user_id,
+    //     user_address: user_address
+    //   }).then((res) => {
+    //     console.log(`${user_address} -> ${res.result}, ${res.status}`);
+    //   }).catch((e) => {
+    //     console.log(`error at ${user_address}\n${e}`)
+    //   });
+    // });
 
+    console.log("auto run 1 minutes")
     return null;
   });

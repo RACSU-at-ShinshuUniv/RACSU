@@ -380,27 +380,28 @@ exports.auto_notify = firebase_functions
   .runWith({
     maxInstances: 2,
     memory: "1GB",
+    timeoutSeconds: 300
   })
-  .pubsub.schedule('every 1 minutes')
+  .pubsub.schedule('every day 15:46')
   .timeZone('Asia/Tokyo')
   .onRun(async(context) => {
-    // const app_auto_notify = require("./apps/app_auto_notify");
-    // const data = await db.collection("users").get();
+    const app_auto_notify = require("./apps/app_auto_notify");
+    const data = await db.collection("users").get();
 
-    // data.forEach(doc => {
-    //   const user_id = doc.id;
-    //   const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
+    data.forEach(doc => {
+      const user_id = doc.id;
+      const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
 
-    //   app_auto_notify(db, {
-    //     user_id: user_id,
-    //     user_address: user_address
-    //   }).then((res) => {
-    //     console.log(`${user_address} -> ${res.result}, ${res.status}`);
-    //   }).catch((e) => {
-    //     console.log(`error at ${user_address}\n${e}`)
-    //   });
-    // });
+      app_auto_notify(db, {
+        user_id: user_id,
+        user_address: user_address
+      }).then((res) => {
+        console.log(`${user_address} -> ${res.result}, ${res.status}`);
+      }).catch((e) => {
+        console.log(`error at ${user_address}\n${e}`)
+      });
+    });
 
-    console.log("auto run 1 minutes")
+    // console.log("auto run 1 minutes")
     return null;
   });

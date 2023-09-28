@@ -9,7 +9,7 @@ module.exports = async(db, {user_id="", message=""}) => {
 
     // 認証トークン作成
     let user_token = "a";
-    for (let i=0; i<5; i++){
+    for (let i=0; i<3; i++){
       user_token += Math.floor(Math.random()*10).toString();
     }
 

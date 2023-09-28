@@ -1,4 +1,7 @@
 module.exports = async(db, {user_id="", user_address=""}) => {
+  if (user_address == "@shinshu-u.ac.jp"){
+    return Promise.resolve({result: "ok", status: "address not detected"})
+  }
   const account_data = (await db.collection("users").doc(user_id).get()).data();
 
   // ユーザーデータからical取得先URLに変換
@@ -34,6 +37,7 @@ module.exports = async(db, {user_id="", user_address=""}) => {
   // すでにデータベースに登録済みの課題について、登録されているdisplayとfinishの値をもってくる
   const tasks_reg = (await db.collection("tasks").doc(user_id).get()).data();
   const new_task_data = {...task_data_general, ...task_data_specific};
+
   Object.keys(new_task_data).forEach((key) => {
     if (key in tasks_reg){
       new_task_data[key].finish = tasks_reg[key].finish;

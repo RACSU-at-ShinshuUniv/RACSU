@@ -113,12 +113,16 @@ exports.ical_to_json = async(db, {class_name_dic={}, ical_data={}}) => {
 
             } else {
               // コードデータベースに存在しない場合は、シラバスから取得してデータベースに追記
-              console.log(`fetch to code:${(ical_data[key].categories)[0]}`)
               const syllabus_fetch = require("../file_modules/syllabus_fetch");
+              const class_code = (ical_data[key].categories)[0]
               class_name = await syllabus_fetch({
-                code: (ical_data[key].categories)[0]
+                code: class_code
               })
-              db.collection("overall").doc("classes").update({[(ical_data[key].categories)[0]]: class_name});
+              // console.log(class_code)
+
+              db.collection("overall").doc("classes").set({[class_code]: class_name}, {merge: true}).then(() => {
+                console.log(`fetch to code:${class_code} => ${class_name}`)
+              });
             }
 
           } else {

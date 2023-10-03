@@ -382,7 +382,7 @@ exports.auto_notify = firebase_functions
     memory: "1GB",
     timeoutSeconds: 300
   })
-  .pubsub.schedule('every day 15:46')
+  .pubsub.schedule('every day 9:00')
   .timeZone('Asia/Tokyo')
   .onRun(async(context) => {
     const app_auto_notify = require("./apps/app_auto_notify");

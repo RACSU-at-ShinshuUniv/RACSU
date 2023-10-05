@@ -70,15 +70,15 @@ module.exports = async(db, {user_id="", user_address=""}) => {
     return Promise.resolve({result: "ok", status: "today's task not found"});
 
   } else {
-    const mail_sender = require("../file_modules/mail_sender");
-    mail_sender({
-      data: {
-        method: "notify",
-        address: user_address,
-        tasks_today: json_mail_param.tasks_today,
-        others: json_mail_param.others
-      }
-    })
+    // const mail_sender = require("../file_modules/mail_sender");
+    // mail_sender({
+    //   data: {
+    //     method: "notify",
+    //     address: user_address,
+    //     tasks_today: json_mail_param.tasks_today,
+    //     others: json_mail_param.others
+    //   }
+    // })
     return Promise.resolve({result: "ok", status: "send notification"})
   }
 }

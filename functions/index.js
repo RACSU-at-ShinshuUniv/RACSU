@@ -51,7 +51,6 @@ app.post("/webhook", (req, res) => {
   console.log(">>>>>>>-----------------------処理終了-----------------------<<<<<<<");
 });
 
-
 exports.line_end_point = functions
 .region('asia-northeast1')
 .runWith({
@@ -61,16 +60,14 @@ exports.line_end_point = functions
 .https
 .onRequest(app);
 
-
-exports.auto_notify = functions
+exports.auto_notify = firebase_functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 2,
   memory: "1GB",
   timeoutSeconds: 300
 })
-.pubsub
-.schedule('every day 9:00')
+.pubsub.schedule('every day 9:00')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const app_auto_notify = require("./apps/app_auto_notify");

@@ -55,12 +55,13 @@ exports.line_end_point = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 3,
-  memory: "1GB"
+  memory: "1GB",
+  secrets: ["R_LIST_MENU", "R_LIST_MENU_OVERLAY"]
 })
 .https
 .onRequest(app);
 
-exports.auto_notify = firebase_functions
+exports.auto_notify = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 2,

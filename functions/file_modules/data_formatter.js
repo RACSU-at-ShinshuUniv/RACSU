@@ -92,7 +92,7 @@ exports.ical_to_json = async(db, {class_name_dic={}, ical_data={}}) => {
 
   // シラバスからの取得でawaitを使うので、forEachではなくforを使用
   // Promise.all使えってESLintに怒られるらしい
-  const valid_task_patterns = require("../env_variables/valid_task_patterns.json");
+  const valid_task_patterns = require("../env/valid_task_patterns.json");
   for (key of ical_keys){
     if (key !== "vcalendar"){
       for (task_pattern of valid_task_patterns){

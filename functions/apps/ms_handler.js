@@ -196,10 +196,9 @@ module.exports = async(db, event_data, line_sender) => {
 
             // 課題の更新
             } else if (message == "データを更新する"){
-              const rich_menu_id = require("../env/rich_menu_id.json");
               line_sender.link_rich_menu({
                 user_id: event_data.source.userId,
-                rich_menu_id: rich_menu_id.list_menu_overlay
+                rich_menu_id: process.env.R_LIST_MENU_OVERLAY
               });
               const app_update_task = require("./app_update_task");
               app_update_task(db, {
@@ -210,7 +209,7 @@ module.exports = async(db, event_data, line_sender) => {
                 if (res.result == "ok"){
                   line_sender.link_rich_menu({
                     user_id: event_data.source.userId,
-                    rich_menu_id: rich_menu_id.list_menu
+                    rich_menu_id: process.env.R_LIST_MENU
                   });
                   line_sender.flex_task_list({
                     contents: res.data.contents,

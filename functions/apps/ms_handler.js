@@ -196,7 +196,7 @@ module.exports = async(db, event_data, line_sender) => {
 
             // 課題の更新
             } else if (message == "データを更新する"){
-              const rich_menu_id = require("./env_variables/rich_menu_id.json");
+              const rich_menu_id = require("../env/rich_menu_id.json");
               line_sender.link_rich_menu({
                 user_id: event_data.source.userId,
                 rich_menu_id: rich_menu_id.list_menu_overlay

@@ -10,7 +10,7 @@ initializeApp();
 
 const linebot_sdk = require("@line/bot-sdk");
 const Line_Sender = require("./file_modules/line_sender");
-const linebot_account = require("./keys/LineAccount.json");
+const linebot_account = require("./data/keys/LineAccount.json");
 const linebot_client = new linebot_sdk.Client(linebot_account);
 
 
@@ -20,8 +20,6 @@ const app = express();
 
 // データベースインスタンス作成
 const db = getFirestore();
-
-const nodemailer = require('nodemailer');
 
 // ----------------------------------------------
 // エンドポイント公開設定
@@ -52,50 +50,12 @@ app.post("/webhook", (req, res) => {
   console.log(">>>>>>>-----------------------処理終了-----------------------<<<<<<<");
 });
 
-app.get("/send_mail/:message", async(req, res) => {
-  console.log(req.params.message)
-
-  const to = "21t2168a@shinshu-u.ac.jp"
-
-  const subject = 'メールのタイトルです。';
-  const message = req.params.message;
-  const from = "racsu.shinshu.univ@gmail.com";
-  const pass = process.env.MAIL_PASS;
-
-  try {
-    // SMTPトランスポータの作成
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: from,
-        pass: pass
-      }
-    });
-
-    // メールオプションの設定
-    const mailOptions = {
-      from: from,
-      to: to,
-      subject: subject,
-      text: message
-    };
-
-    // メール送信
-    const info = await transporter.sendMail(mailOptions);
-    console.log('メールが送信されました:', info.response);
-  } catch (error) {
-    console.error('メールの送信中にエラーが発生しました:', error);
-  };
-
-  res.status(200).send();
-})
-
 exports.line_end_point = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 3,
   memory: "1GB",
-  secrets: ["R_LIST_MENU", "R_LIST_MENU_OVERLAY", "MAIL_PASS"]
+  secrets: ["R_LIST_MENU", "R_LIST_MENU_OVERLAY"]
 })
 .https
 .onRequest(app);
@@ -105,9 +65,10 @@ exports.auto_notify = functions
 .runWith({
   maxInstances: 2,
   memory: "1GB",
-  timeoutSeconds: 300
+  timeoutSeconds: 300,
+  secrets: ["MAIL_PASS"]
 })
-.pubsub.schedule('every day 9:00')
+.pubsub.schedule('every day 19:41')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const app_auto_notify = require("./apps/app_auto_notify");

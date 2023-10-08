@@ -63,7 +63,7 @@ class Line_Sender {
   }
 
   flex_added_friend(){
-    const json_added_friend = require("../flex_data/added_friend.json");
+    const json_added_friend = require("../data/flex_msg/added_friend.json");
     this.client.replyMessage(this.reply_token, {
       type: "flex",
       altText: "友達登録ありがとうございます！",
@@ -78,7 +78,7 @@ class Line_Sender {
   }
 
   flex_auth_guide({address=""}){
-    const json_auth_guide = require("../flex_data/auth_guide.json");
+    const json_auth_guide = require("../data/flex_msg/auth_guide.json");
     this.client.replyMessage(this.reply_token, {
       type: "flex",
       altText: `認証メールを${address}に送信しました。`,
@@ -94,7 +94,7 @@ class Line_Sender {
   }
 
   flex_user_policy(){
-    const json_user_policy = require("../flex_data/user_policy.json")
+    const json_user_policy = require("../data/flex_msg/user_policy.json")
     this.client.replyMessage(this.reply_token, [{
       type: "text",
       text: "認証が完了しました。"
@@ -112,7 +112,7 @@ class Line_Sender {
   }
 
   flex_link_guide({student_id=""}){
-    const json_link_guide = require("../flex_data/link_guide.json")
+    const json_link_guide = require("../data/flex_msg/link_guide.json")
     const user_department = student_id.match(/[LEJSMTAF]/i);
     const term = new Date();
     term.setMonth(term.getMonth()-3);
@@ -184,7 +184,7 @@ class Line_Sender {
   }
 
   flex_retry_add_task({err_msg="", content=""}){
-    const json_retry_add_task = require("../flex_data/retry_add_task.json");
+    const json_retry_add_task = require("../data/flex_msg/retry_add_task.json");
     this.client.replyMessage(this.reply_token, {
       type: "flex",
       altText: "内容を修正して再度送信してください。",
@@ -202,7 +202,7 @@ class Line_Sender {
   }
 
   flex_add_task({content="", task_data={}}){
-    const json_add_task = require("../flex_data/add_task.json");
+    const json_add_task = require("../data/flex_msg/add_task.json");
     this.client.replyMessage(this.reply_token, {
       type: "flex",
       altText: "この内容で課題を追加しますか？",

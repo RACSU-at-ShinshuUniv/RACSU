@@ -67,4 +67,5 @@ node_modules/
 
 # keys
 functions/keys/
+functions/data/keys/
 functions/develop/

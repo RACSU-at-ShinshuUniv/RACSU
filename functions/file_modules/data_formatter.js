@@ -79,6 +79,61 @@ const flex_content = {
   }
 }
 
+const html_content = {
+  title: ({color="#ffa500", text=""}) => {
+    const content =
+    `<tr>
+        <td></td>
+        <td colspan="4">
+            <p style="margin:0;font-size:18px;font-weight:bold;color:${color};">${text}</p>
+        </td>
+        <td></td>
+    </tr>`;
+    return content;
+  },
+
+  separator: () => {
+    const content =
+    `<tr>
+        <td colspan="6" height="3"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="4" height="1" bgcolor="#eeeeee"></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="6" height="3"></td>
+    </tr>`
+    return content;
+  },
+
+  task: ({class_name="", task_name="", task_limit_time=""}) => {
+    const content =
+    `<tr>
+        <td></td>
+        <td>
+            <p style="margin:0;font-size:14px;color:#ff4500;">${task_limit_time}</p>
+        </td>
+        <td style="color:#1c1c1c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0;">
+            ${class_name}
+        </td>
+        <td></td>
+        <td align="right" style="color:#1c1c1c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0;">
+            ${task_name}
+        </td>
+    </tr>
+    <tr><td colspan="6" height="6"></td></tr>
+    <tr>
+        <td></td>
+        <td colspan="4" height="1" bgcolor="#eeeeee"></td>
+        <td></td>
+    </tr>
+    <tr><td colspan="6" height="5"></td></tr>`;
+    return content;
+  }
+}
+
 const get_sorted_keys = ({task_data={}}) => {
   const array = Object.keys(task_data).map((k)=>({ key: k, value: task_data[k] }));
   // console.log(array.map((val) => val.key))
@@ -92,7 +147,7 @@ exports.ical_to_json = async(db, {class_name_dic={}, ical_data={}}) => {
 
   // シラバスからの取得でawaitを使うので、forEachではなくforを使用
   // Promise.all使えってESLintに怒られるらしい
-  const valid_task_patterns = require("../env/valid_task_patterns.json");
+  const valid_task_patterns = require("../data/env/valid_task_patterns.json");
   for (key of ical_keys){
     if (key !== "vcalendar"){
       for (task_pattern of valid_task_patterns){
@@ -413,46 +468,99 @@ exports.json_to_mail_param = ({tasks = {}}) => {
 
 
     if (task.task_limit.toDate().toFormat("YYYYMMDD") == today.toFormat("YYYYMMDD") && task.display){
-      keys_today.push(key)
+      keys_today.push(key);
       // console.log("today")
 
     } else if (task.task_limit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD") && task.display){
-      keys_tomorrow.push(key)
+      keys_tomorrow.push(key);
       // console.log("tomorrow")
 
     } else if (task.task_limit.toDate() < today && task.display){
-      keys_past.push(key)
+      keys_past.push(key);
       // console.log("past")
 
     } else if (task.display) {
-      keys_after_tomorrow.push(key)
+      keys_after_tomorrow.push(key);
       // console.log("after")
 
     }
   })
 
-  const keys_other = [...keys_tomorrow, ...keys_past, ...keys_after_tomorrow];
+  let header_text = ""
+  let contents_today = "";
+  if (keys_today.length !== 0){
+    header_text += `本日${keys_today.length}件`
+    contents_today += html_content.title({
+      color: "#ffa500",
+      text: `本日（${today.toFormat("MM/DD")}）提出 ${keys_today.length}件`
+    });
+    contents_today += html_content.separator();
+    keys_today.forEach((key) => {
+      const limit = (() => {
+        if (tasks[key].task_limit.toDate().toFormat("HH24:MI:SS") == "23:59:55"){
+          return "24:00";
+        } else {
+          return tasks[key].task_limit.toDate().toFormat("HH24:MI");
+        }
+      })();
+      contents_today += html_content.task({
+        class_name: tasks[key].class_name,
+        task_name: tasks[key].task_name,
+        task_limit_time: limit
+      });
+    });
+  }
 
-  let tasks_today = {};
-  keys_today.forEach((key) => {
-    const limit = (() => {
-      if (tasks[key].task_limit.toDate().toFormat("HH24:MI:SS") == "23:59:55"){
-        return "24:00"
-      } else {
-        return tasks[key].task_limit.toDate().toFormat("HH24:MI")
-      }
-    })();
-    tasks_today[key] = {
-      task_name: tasks[key].task_name,
-      task_limit_time: limit,
-      class_name: tasks[key].class_name
-    }
-  });
+  if (keys_today.length !== 0 && keys_tomorrow.length !== 0){
+    header_text += " ";
+  }
+
+  let contents_tomorrow = "";
+  if (keys_tomorrow.length !== 0){
+    header_text += `あす${keys_today.length}件`
+    contents_tomorrow += html_content.title({
+      color: "#444ae3",
+      text: `あす提出 ${keys_tomorrow.length}件`
+    });
+    contents_tomorrow += html_content.separator();
+    keys_tomorrow.forEach((key) => {
+      const limit = (() => {
+        if (tasks[key].task_limit.toDate().toFormat("HH24:MI:SS") == "23:59:55"){
+          return "24:00";
+        } else {
+          return tasks[key].task_limit.toDate().toFormat("HH24:MI");
+        }
+      })();
+      contents_tomorrow += html_content.task({
+        class_name: tasks[key].class_name,
+        task_name: tasks[key].task_name,
+        task_limit_time: limit
+      });
+    });
+  }
+
+  header_text += "の";
+
+  let footer_text = ""
+  const counts_other = [...keys_past, ...keys_after_tomorrow].length;
+  if (counts_other !== 0){
+    footer_text = `その他の未完了課題も${counts_other}件あります。<br>`
+  }
 
   const res = {
-    tasks_today: tasks_today,
-    others: keys_other.length
-  }
+    contents_today: contents_today,
+    contents_tomorrow: contents_tomorrow,
+    header_text: header_text,
+    footer_text: footer_text,
+    today: today.toFormat("MM/DD"),
+    title: `【送信テスト】${header_text}提出課題があります！`,
+    do_notify: (() => {
+      if (header_text == "の"){
+        return false
+      } else {
+        return true
+      }})()
+  };
 
   return res;
 }

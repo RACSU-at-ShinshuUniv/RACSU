@@ -10,7 +10,7 @@ initializeApp();
 
 const linebot_sdk = require("@line/bot-sdk");
 const Line_Sender = require("./file_modules/line_sender");
-const linebot_account = require("./keys/LineAccount.json");
+const linebot_account = require("./data/keys/LineAccount.json");
 const linebot_client = new linebot_sdk.Client(linebot_account);
 
 
@@ -20,7 +20,6 @@ const app = express();
 
 // データベースインスタンス作成
 const db = getFirestore();
-
 
 // ----------------------------------------------
 // エンドポイント公開設定
@@ -66,9 +65,10 @@ exports.auto_notify = functions
 .runWith({
   maxInstances: 2,
   memory: "1GB",
-  timeoutSeconds: 300
+  timeoutSeconds: 300,
+  secrets: ["MAIL_PASS"]
 })
-.pubsub.schedule('every day 9:00')
+.pubsub.schedule('every day 19:41')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const app_auto_notify = require("./apps/app_auto_notify");

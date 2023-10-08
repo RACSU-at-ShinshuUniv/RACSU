@@ -1,6 +1,6 @@
-module.exports = async(db, {user_id="", user_address=""}) => {
+module.exports = async(db, {user_id="", user_address="@shinshu-u.ac.jp"}) => {
   if (user_address == "@shinshu-u.ac.jp"){
-    return Promise.resolve({result: "ok", status: "address not detected"})
+    return Promise.resolve({result: "error", status: "address not detected"})
   }
   const account_data = (await db.collection("users").doc(user_id).get()).data();
 
@@ -42,43 +42,45 @@ module.exports = async(db, {user_id="", user_address=""}) => {
     if (key in tasks_reg){
       new_task_data[key].finish = tasks_reg[key].finish;
       new_task_data[key].display = tasks_reg[key].display;
-    }
+    };
   });
 
   // データベースにのみ存在する課題（手動追加課題）をマージする
   Object.keys(tasks_reg).forEach((key) => {
     if (!(key in new_task_data)){
       new_task_data[key] = tasks_reg[key];
-    }
-  })
+    };
+  });
 
   // 過去の課題かつ完了フラグが立っているもののdisplayをfalseに設定
   Object.keys(new_task_data).forEach((key) => {
     if ((new_task_data[key].task_limit.toDate() < new Date()) && new_task_data[key].finish){
       new_task_data[key].display = false;
-    }
-  })
+    };
+  });
 
   // データベース更新
   db.collection("tasks").doc(user_id).set(new_task_data ,{merge: true});
 
-  const json_mail_param = data_formatter.json_to_mail_param({
+  const mail_param = data_formatter.json_to_mail_param({
     tasks: new_task_data
-  })
+  });
 
-  if (Object.keys(json_mail_param.tasks_today).length == 0){
-    return Promise.resolve({result: "ok", status: "today's task not found"});
+  if (mail_param.do_notify){
+    const mail_sender = require("../file_modules/mail_sender");
+    try{
+      await mail_sender({
+        method: "notify",
+        address: user_address,
+        data: mail_param
+      })
+      return Promise.resolve({result: "sended", status: "send notification"});
+    }catch(e){
+      return Promise.reject(e);
+    }
 
   } else {
-    // const mail_sender = require("../file_modules/mail_sender");
-    // mail_sender({
-    //   data: {
-    //     method: "notify",
-    //     address: user_address,
-    //     tasks_today: json_mail_param.tasks_today,
-    //     others: json_mail_param.others
-    //   }
-    // })
-    return Promise.resolve({result: "ok", status: "send notification"})
+    return Promise.resolve({result: "pass", status: "today or tomorrow task not detected"});
   }
+
 }

@@ -50,12 +50,33 @@ app.post("/webhook", (req, res) => {
   console.log(">>>>>>>-----------------------処理終了-----------------------<<<<<<<");
 });
 
+app.get("/send_test_mail", async(req, res) => {
+  const app_auto_notify = require("./apps/app_auto_notify");
+  const data = await db.collection("users").get();
+
+  data.forEach(doc => {
+    const user_id = doc.id;
+    const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
+
+    app_auto_notify(db, {
+      user_id: user_id,
+      user_address: user_address
+    }).then((res) => {
+      console.log(`${user_address} -> ${res.result}, ${res.status}`);
+    }).catch((e) => {
+      console.log(`error at ${user_address}\n${e}`)
+    });
+  });
+
+  res.status(200).send("ok");
+})
+
 exports.line_end_point = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 3,
   memory: "1GB",
-  secrets: ["R_LIST_MENU", "R_LIST_MENU_OVERLAY"]
+  secrets: ["R_LIST_MENU", "R_LIST_MENU_OVERLAY", "MAIL_PASS"]
 })
 .https
 .onRequest(app);
@@ -68,7 +89,7 @@ exports.auto_notify = functions
   timeoutSeconds: 300,
   secrets: ["MAIL_PASS"]
 })
-.pubsub.schedule('every day 19:41')
+.pubsub.schedule('every day 9:00')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const app_auto_notify = require("./apps/app_auto_notify");

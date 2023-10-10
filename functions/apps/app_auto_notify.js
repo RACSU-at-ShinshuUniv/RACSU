@@ -62,25 +62,29 @@ module.exports = async(db, {user_id="", user_address="@shinshu-u.ac.jp"}) => {
   // データベース更新
   db.collection("tasks").doc(user_id).set(new_task_data ,{merge: true});
 
-  const mail_param = data_formatter.json_to_mail_param({
-    tasks: new_task_data
-  });
 
-  if (mail_param.do_notify){
-    const mail_sender = require("../file_modules/mail_sender");
-    try{
-      await mail_sender({
-        method: "notify",
-        address: user_address,
-        data: mail_param
-      })
-      return Promise.resolve({result: "sended", status: "send notification"});
-    }catch(e){
-      return Promise.reject(e);
-    }
+  // メール送信は不安定なため無効化
 
-  } else {
-    return Promise.resolve({result: "pass", status: "today or tomorrow task not detected"});
-  }
+  // const mail_param = data_formatter.json_to_mail_param({
+  //   tasks: new_task_data
+  // });
 
+  // if (mail_param.do_notify){
+  //   const mail_sender = require("../file_modules/mail_sender");
+  //   try{
+  //     await mail_sender({
+  //       method: "notify",
+  //       address: user_address,
+  //       data: mail_param
+  //     })
+  //     return Promise.resolve({result: "sended", status: "send notification"});
+  //   }catch(e){
+  //     return Promise.reject(e);
+  //   }
+
+  // } else {
+  //   return Promise.resolve({result: "pass", status: "today or tomorrow task not detected"});
+  // }
+
+  return Promise.resolve({result: "pass", status: "Email transmission has been disabled."});
 }

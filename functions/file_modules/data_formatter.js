@@ -467,19 +467,19 @@ exports.json_to_mail_param = ({tasks = {}}) => {
     }
 
 
-    if (task.task_limit.toDate().toFormat("YYYYMMDD") == today.toFormat("YYYYMMDD") && task.display){
+    if (task.task_limit.toDate().toFormat("YYYYMMDD") == today.toFormat("YYYYMMDD") && task.display && !task.finish){
       keys_today.push(key);
       // console.log("today")
 
-    } else if (task.task_limit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD") && task.display){
+    } else if (task.task_limit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD") && task.display && !task.finish){
       keys_tomorrow.push(key);
       // console.log("tomorrow")
 
-    } else if (task.task_limit.toDate() < today && task.display){
+    } else if (task.task_limit.toDate() < today && task.display && !task.finish){
       keys_past.push(key);
       // console.log("past")
 
-    } else if (task.display) {
+    } else if (task.display && !task.finish) {
       keys_after_tomorrow.push(key);
       // console.log("after")
 
@@ -517,7 +517,7 @@ exports.json_to_mail_param = ({tasks = {}}) => {
 
   let contents_tomorrow = "";
   if (keys_tomorrow.length !== 0){
-    header_text += `あす${keys_today.length}件`
+    header_text += `あす${keys_tomorrow.length}件`
     contents_tomorrow += html_content.title({
       color: "#444ae3",
       text: `あす提出 ${keys_tomorrow.length}件`

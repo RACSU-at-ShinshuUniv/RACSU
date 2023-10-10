@@ -51,5 +51,20 @@ module.exports = async({method="", address="@shinshu-u.ac.jp", data={}}) => {
     }catch(e){
       return Promise.reject(e)
     }
+
+  } else if (method == "test"){
+    const content = "返信不要<br>これは、メール通知の送信テストです。"
+    const mailOptions = {
+      from: "RACSU 課題通知<racsu.shinshu.univ@gmail.com>",
+      to: address,
+      subject: "【テスト送信】課題通知",
+      html: content
+    };
+    try{
+      await transporter.sendMail(mailOptions)
+      return Promise.resolve({result: "ok", status: "sended"})
+    }catch(e){
+      return Promise.reject(e)
+    }
   }
 }

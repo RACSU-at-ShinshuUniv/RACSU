@@ -175,8 +175,8 @@ module.exports = async(db, event_data, line_sender) => {
 
             // 課題リストの送信
             if (message == "登録済みの課題を表示" || message == "このまま送信して、今日の課題の詳細を表示＞＞＞"){
-              const app_get_task_flex = require("./app_get_task_flex");
-              app_get_task_flex(db, {
+              const app_load_task = require("./app_load_task");
+              app_load_task(db, {
                 user_id: event_data.source.userId
 
               }).then((res) => {

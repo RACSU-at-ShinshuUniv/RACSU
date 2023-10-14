@@ -141,43 +141,59 @@ const get_sorted_keys = ({task_data={}}) => {
   return array.map((val) => val.key);
 }
 
-exports.ical_to_json = async(db, {class_name_dic={}, ical_data={}}) => {
+exports.ical_to_json = async({ical_data={}, class_name_dic={}, dev_msg=""}) => {
   const ical_keys = Object.keys(ical_data);
   let task_data = {};
 
-  // シラバスからの取得でawaitを使うので、forEachではなくforを使用
-  // Promise.all使えってESLintに怒られるらしい
+  // 課題としての認識パターンインポート
   const valid_task_patterns = require("../data/env/valid_task_patterns.json");
-  for (key of ical_keys){
+
+  for (const key of ical_keys){
+
+    // vcalendarという項目が必ず1つずつ入ってくるので、それは除く
     if (key !== "vcalendar"){
-      for (task_pattern of valid_task_patterns){
+      for (const task_pattern of valid_task_patterns){
+
+        // 課題の認識パターンから正規表現オブジェクト作成
+        const regexp = new RegExp(task_pattern);
 
         // カレンダーデータ内のsummaryの文字が、課題形式のパターンに一致しているか判定
-        // summary自体がない場合は除く
-        const regexp = new RegExp(task_pattern);
+        // summary自体がない場合・一致文字がない場合はnull
         const res = ("summary" in ical_data[key])
-          ?(ical_data[key].summary).match(regexp)
-          : "null";
+        ?(ical_data[key].summary).match(regexp)
+        : null;
 
-        if (res !== null){
+        if (res == null){
+          // 一致パターンが見つからなかった場合は次のパターンへ
+          continue;
+
+        } else {
+          // 授業コードから授業名への変換
           let class_name = "";
+
+          // 自分で追加した予定の場合はcategoriesがないので除く
           if ("categories" in ical_data[key]){
             if (class_name_dic[(ical_data[key].categories)[0]] !== undefined){
-              // すでにコードデータベースに登録済みであれば、そこから取得
+              // class_name_dicに授業コードが登録済みであれば、そこから取得
               class_name = class_name_dic[(ical_data[key].categories)[0]]
 
             } else {
-              // コードデータベースに存在しない場合は、シラバスから取得してデータベースに追記
+              // データベースに存在しない場合は、シラバスから取得してclass_name_dicに追記
               const syllabus_fetch = require("../file_modules/syllabus_fetch");
-              const class_code = (ical_data[key].categories)[0]
-              class_name = await syllabus_fetch({
-                code: class_code
-              })
-              // console.log(class_code)
+              const class_code = (ical_data[key].categories)[0];
+              console.log(`fetch ${class_code}`);
+              try{
+                class_name = await syllabus_fetch({
+                  code: class_code
+                })
+                class_name_dic[class_code] = class_name;
+                console.log(`res: ${class_code} -> ${class_name}`);
 
-              db.collection("overall").doc("classes").set({[class_code]: class_name}, {merge: true}).then(() => {
-                console.log(`fetch to code:${class_code} => ${class_name}`)
-              });
+              } catch(e) {
+                class_name = "授業検索エラー";
+                class_name_dic[class_code] = class_name;
+                console.log(`res: ${class_code} -> シラバスに接続できませんでした。(userID: ${dev_msg})`)
+              }
             }
 
           } else {
@@ -185,17 +201,30 @@ exports.ical_to_json = async(db, {class_name_dic={}, ical_data={}}) => {
             class_name = "ユーザーイベント"
           }
 
-          task_data[(key.split("@")[0])] = {
-            class_name: class_name,
-            task_name: res.groups.title,
-            task_limit: Timestamp.fromDate(ical_data[key].end),
-            finish: false,
-            display: true
+          try{
+            task_data[(key.split("@")[0])] = {
+              class_name: class_name,
+              task_name: res.groups.title,
+              task_limit: Timestamp.fromDate(ical_data[key].end),
+              finish: false,
+              display: true
+            }
+
+          } catch(e) {
+            console.log(`task_dataパースエラー ${e} ID:${dev_msg} key:${key} ical_data[key]:${JSON.stringify(ical_data[key])}`);
+            continue;
           }
         }
       }
     }
   }
+
+  // シラバスへの接続でエラーが発生した場合は、一時的なものの可能性が高いのでclass_name_dicから削除しておく
+  Object.keys(class_name_dic).forEach((key) => {
+    if (class_name_dic[key] == "授業検索エラー"){
+      delete class_name_dic[key];
+    }
+  })
 
   return task_data;
 }

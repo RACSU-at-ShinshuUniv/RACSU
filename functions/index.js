@@ -50,16 +50,20 @@ app.post("/webhook", (req, res) => {
   console.log(">>>>>>>-----------------------処理終了-----------------------<<<<<<<");
 });
 
-app.get("/dev", (req, res) => {
-  const app_auto_notify = require("./apps/app_auto_notify");
-  app_auto_notify(db)
-  .then((r) => {
-    console.log("finish", r)
-  }).catch((e) => {
-    console.log(e);
-  });
-
-  res.status(200).send("ok");
+app.get("/admin/:id/all_task_update", async(req, res) => {
+  const admin_ids = (await db.collection("overall").doc("admin").get()).data().id;
+  if (admin_ids.includes(req.params.id)){
+    const app_auto_notify = require("./apps/app_auto_notify");
+    app_auto_notify(db)
+    .then((r) => {
+      console.log("finish", r)
+    }).catch((e) => {
+      console.log(e);
+    });
+    res.status(200).send("start app_auto_notify");
+  } else {
+    res.status(200).send(`Error: invalid id of ${req.params.id}`);
+  }
 })
 
 

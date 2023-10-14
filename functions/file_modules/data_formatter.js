@@ -190,7 +190,7 @@ exports.ical_to_json = async({ical_data={}, class_name_dic={}, dev_msg=""}) => {
                 console.log(`res: ${class_code} -> ${class_name}`);
 
               } catch(e) {
-                class_name = "授業検索エラー";
+                class_name = "シラバスエラー";
                 class_name_dic[class_code] = class_name;
                 console.log(`res: ${class_code} -> シラバスに接続できませんでした。(userID: ${dev_msg})`)
               }
@@ -221,7 +221,7 @@ exports.ical_to_json = async({ical_data={}, class_name_dic={}, dev_msg=""}) => {
 
   // シラバスへの接続でエラーが発生した場合は、一時的なものの可能性が高いのでclass_name_dicから削除しておく
   Object.keys(class_name_dic).forEach((key) => {
-    if (class_name_dic[key] == "授業検索エラー"){
+    if (class_name_dic[key] == "シラバスエラー"){
       delete class_name_dic[key];
     }
   })

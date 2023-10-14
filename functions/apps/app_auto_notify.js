@@ -16,6 +16,7 @@ module.exports = async(db) => {
 
   // 一度の非同期処理の最大ノード数をMAX_ASYNC_NODESに制限しながら更新を行う
   // promisesのリストに、再帰処理で連続させた非同期処理をMAX_ASYNC_NODESの数追加してPromise.allする
+  console.log(`課題更新処理開始（総タスク数：${user_ids.length}件 最大並列ノード数：${process.env.MAX_ASYNC_NODES}`);
   let index_global = 0, promises = [];
   for (let i = 0; i < process.env.MAX_ASYNC_NODES; i++) {
     let p = new Promise((resolve) => {

@@ -50,11 +50,23 @@ app.post("/webhook", (req, res) => {
   console.log(">>>>>>>-----------------------処理終了-----------------------<<<<<<<");
 });
 
+app.get("/dev", (req, res) => {
+  const app_auto_notify = require("./apps/app_auto_notify");
+  app_auto_notify(db)
+  .then((r) => {
+    console.log("finish", r)
+  }).catch((e) => {
+    console.log(e);
+  });
+
+  res.status(200).send("ok");
+})
+
 
 exports.line_end_point = functions
 .region('asia-northeast1')
 .runWith({
-  maxInstances: 3,
+  maxInstances: 10,
   memory: "1GB",
   secrets: ["R_LIST_MENU", "R_LIST_MENU_OVERLAY", "MAIL_PASS"]
 })
@@ -64,7 +76,7 @@ exports.line_end_point = functions
 exports.auto_notify = functions
 .region('asia-northeast1')
 .runWith({
-  maxInstances: 2,
+  maxInstances: 10,
   memory: "1GB",
   timeoutSeconds: 300,
   secrets: ["MAIL_PASS"]
@@ -73,20 +85,11 @@ exports.auto_notify = functions
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const app_auto_notify = require("./apps/app_auto_notify");
-  const data = await db.collection("users").get();
-
-  data.forEach(doc => {
-    const user_id = doc.id;
-    const user_address = `${doc.data().student_id}@shinshu-u.ac.jp`
-
-    app_auto_notify(db, {
-      user_id: user_id,
-      user_address: user_address
-    }).then((res) => {
-      console.log(`${user_address} -> ${res.result}, ${res.status}`);
-    }).catch((e) => {
-      console.log(`error at ${user_address}\n${e}`)
-    });
+  app_auto_notify(db)
+  .then((res) => {
+    console.log("finish", res)
+  }).catch((e) => {
+    console.log(e);
   });
 
   return null;

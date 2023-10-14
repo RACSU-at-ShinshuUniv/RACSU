@@ -175,8 +175,8 @@ module.exports = async(db, event_data, line_sender) => {
 
             // 課題リストの送信
             if (message == "登録済みの課題を表示" || message == "このまま送信して、今日の課題の詳細を表示＞＞＞"){
-              const app_get_task_flex = require("./app_get_task_flex");
-              app_get_task_flex(db, {
+              const app_load_task = require("./app_load_task");
+              app_load_task(db, {
                 user_id: event_data.source.userId
 
               }).then((res) => {
@@ -200,10 +200,15 @@ module.exports = async(db, event_data, line_sender) => {
                 user_id: event_data.source.userId,
                 rich_menu_id: process.env.R_LIST_MENU_OVERLAY
               });
+
+              const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
+              const prev_length = Object.keys(class_name_dic).length;
+
               const app_update_task = require("./app_update_task");
               app_update_task(db, {
                 user_id: event_data.source.userId,
-                account_data: account_data
+                account_data: account_data,
+                class_name_dic: class_name_dic
 
               }).then((res) => {
                 if (res.result == "ok"){
@@ -217,6 +222,12 @@ module.exports = async(db, event_data, line_sender) => {
                     notice_refresh: true,
                     notice_message: "課題を最新に更新しました。"
                   });
+
+                  if (prev_length !== Object.keys(class_name_dic).length){
+                    db.collection("overall").doc("classes").set(class_name_dic).then(() => {
+                      console.log("update class_name_dic");
+                    });
+                  }
 
                 } else if (res.result == "no task"){
                   line_sender.text({

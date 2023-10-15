@@ -73,6 +73,6 @@ module.exports = async(db, {user_id="", account_data={}, class_name_dic={}, need
     }
 
   } else {
-    return Promise.resolve({result: "updated"})
+    return Promise.resolve({result: "updated", data: new_task_data});
   }
 }

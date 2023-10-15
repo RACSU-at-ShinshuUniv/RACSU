@@ -17,6 +17,7 @@ const linebot_client = new linebot_sdk.Client(linebot_account);
 // ExpressApp作成
 const express = require("express");
 const app = express();
+const admin_app = express();
 
 // データベースインスタンス作成
 const db = getFirestore();
@@ -50,17 +51,22 @@ app.post("/webhook", (req, res) => {
   console.log(">>>>>>>-----------------------処理終了-----------------------<<<<<<<");
 });
 
-app.get("/admin/:id/all_task_update", async(req, res) => {
+admin_app.get("/:id/task_update_and_send/:method", async(req, res) => {
   const admin_ids = (await db.collection("overall").doc("admin").get()).data().id;
   if (admin_ids.includes(req.params.id)){
-    const app_auto_notify = require("./apps/app_auto_notify");
-    app_auto_notify(db)
-    .then((r) => {
-      console.log("finish", r)
-    }).catch((e) => {
-      console.log(e);
-    });
-    res.status(200).send("start app_auto_notify");
+    if (req.params.method == "all"){
+      const app_auto_notify = require("./apps/app_auto_notify");
+      app_auto_notify(db)
+      .then((r) => {
+        console.log("finish", r)
+      }).catch((e) => {
+        console.log(e);
+      });
+      res.status(200).send("start app_auto_notify");
+
+    } else {
+      res.status(200).send(`Error: invalid method of ${req.params.method}`);
+    }
   } else {
     res.status(200).send(`Error: invalid id of ${req.params.id}`);
   }
@@ -76,6 +82,16 @@ exports.line_end_point = functions
 })
 .https
 .onRequest(app);
+
+exports.admin = functions
+.region('asia-northeast1')
+.runWith({
+  maxInstances: 10,
+  memory: "",
+  secrets: ["MAIL_PASS"]
+})
+.https
+.onRequest(admin_app);
 
 exports.auto_notify = functions
 .region('asia-northeast1')

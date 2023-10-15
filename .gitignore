@@ -62,10 +62,10 @@ node_modules/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
-
 # keys
 functions/keys/
 functions/data/keys/
 functions/develop/
+
+# others
+.VSCodeCounter/

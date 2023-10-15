@@ -1,86 +1,78 @@
-module.exports = async(db, {user_id="", user_address="@shinshu-u.ac.jp"}) => {
-  if (user_address == "@shinshu-u.ac.jp"){
-    return Promise.resolve({result: "error", status: "address not detected"})
-  }
-  const account_data = (await db.collection("users").doc(user_id).get()).data();
-
-  // ユーザーデータからical取得先URLに変換
-  const term = new Date();
-  term.setMonth(term.getMonth()-3);
-  const url_g = `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/g/calendar/export_execute.php?userid=${account_data.moodle_general_id}&authtoken=${account_data.moodle_general_token}&preset_what=all&preset_time=recentupcoming`;
-  const url_s = `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/${account_data.student_id.match(/[LEJSMTAF]/i)}/calendar/export_execute.php?userid=${account_data.moodle_specific_id}&authtoken=${account_data.moodle_specific_token}&preset_what=all&preset_time=recentupcoming`;
-
-
-  // icalデータを取得
-  const ical = require("../file_modules/ical_fetch");
-  const ical_data_general = await ical.get_contents({
-    url: url_g
-  });
-  const ical_data_specific = await ical.get_contents({
-    url: url_s
-  });
-
-
-  // icalデータをFirestore保存形式に変換
-  const data_formatter = require("../file_modules/data_formatter");
+module.exports = async(db) => {
+  const app_update_task = require("./app_update_task")
+  const mail_sender = require("../file_modules/mail_sender");
+  const { json_to_mail_param } = require("../file_modules/data_formatter");
   const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
-  const task_data_general = await data_formatter.ical_to_json(db, {
-    class_name_dic: class_name_dic,
-    ical_data: ical_data_general
-  });
-  const task_data_specific = await data_formatter.ical_to_json(db, {
-    class_name_dic: class_name_dic,
-    ical_data: ical_data_specific
-  });
+  const prev_length = Object.keys(class_name_dic).length;
+  let user_data = {};
 
-  // icalからjsonに変換したデータと、すでにデータベースに登録済みの課題データをマージする
-  // すでにデータベースに登録済みの課題について、登録されているdisplayとfinishの値をもってくる
-  const tasks_reg = (await db.collection("tasks").doc(user_id).get()).data();
-  const new_task_data = {...task_data_general, ...task_data_specific};
-
-  Object.keys(new_task_data).forEach((key) => {
-    if (key in tasks_reg){
-      new_task_data[key].finish = tasks_reg[key].finish;
-      new_task_data[key].display = tasks_reg[key].display;
-    };
-  });
-
-  // データベースにのみ存在する課題（手動追加課題）をマージする
-  Object.keys(tasks_reg).forEach((key) => {
-    if (!(key in new_task_data)){
-      new_task_data[key] = tasks_reg[key];
-    };
-  });
-
-  // 過去の課題かつ完了フラグが立っているもののdisplayをfalseに設定
-  Object.keys(new_task_data).forEach((key) => {
-    if ((new_task_data[key].task_limit.toDate() < new Date()) && new_task_data[key].finish){
-      new_task_data[key].display = false;
-    };
-  });
-
-  // データベース更新
-  db.collection("tasks").doc(user_id).set(new_task_data ,{merge: true});
-
-  const mail_param = data_formatter.json_to_mail_param({
-    tasks: new_task_data
-  });
-
-  if (mail_param.do_notify){
-    const mail_sender = require("../file_modules/mail_sender");
-    try{
-      await mail_sender({
-        method: "notify",
-        address: user_address,
-        data: mail_param
-      })
-      return Promise.resolve({result: "sended", status: "send notification"});
-    }catch(e){
-      return Promise.reject(e);
+  // 全ユーザーデータ取得
+  (await db.collection("users").get()).forEach(doc => {
+    const data = doc.data();
+    if (data.account_status == "linked"){
+      user_data[doc.id] = data;
     }
+  });
+  const user_ids = Object.keys(user_data);
 
-  } else {
-    return Promise.resolve({result: "pass", status: "today or tomorrow task not detected"});
+
+  // 一度の非同期処理の最大ノード数をMAX_ASYNC_NODESに制限しながら更新を行う
+  // promisesのリストに、再帰処理で連続させた非同期処理をMAX_ASYNC_NODESの数追加してPromise.allする
+  console.log(`課題更新処理開始（総タスク数：${user_ids.length}件 最大並列ノード数：${process.env.MAX_ASYNC_NODES}）`);
+  let index_global = 0, promises = [];
+  for (let i = 0; i < process.env.MAX_ASYNC_NODES; i++) {
+    let p = new Promise((resolve) => {
+
+      (async function loop(index) {
+        if (index < user_ids.length) {
+            console.log(`${index}番タスク -> スロット${i}で実行開始 (userID:${user_ids[index]})`);
+            try{
+              const res = await app_update_task(db, {
+                user_id: user_ids[index],
+                account_data: user_data[user_ids[index]],
+                class_name_dic: class_name_dic,
+                need_flex_data: false
+              })
+
+              const mail_param = json_to_mail_param({
+                tasks: res.data
+              });
+
+              if (mail_param.do_notify){
+                await mail_sender({
+                  method: "notify",
+                  address: `${user_data[user_ids[index]].student_id}@shinshu-u.ac.jp`,
+                  data: mail_param
+                })
+                console.log(`${index}番タスク終了 メール送信：送信（${mail_param.title}）`)
+
+              } else {
+                console.log(`${index}番タスク終了 メール送信：なし`)
+              }
+
+            } catch(e) {
+              console.log(`${index}番タスクエラー発生`, e);
+            }
+
+            loop(index_global++);
+            return;
+        }
+        resolve();
+      })(index_global++);
+    });
+
+    promises.push(p);
+  };
+
+  // すべてのユーザーの更新完了まで待機
+  await Promise.all(promises);
+
+  // 全ユーザーの課題更新終了後、class_name_dicに変更があればデータベースを更新
+  if (prev_length !== Object.keys(class_name_dic).length){
+    db.collection("overall").doc("classes").set(class_name_dic).then(() => {
+      console.log("update class_name_dic");
+    });
   }
 
+  return Promise.resolve({result: "ok", status: "all task finished"});
 }

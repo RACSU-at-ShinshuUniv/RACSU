@@ -192,7 +192,7 @@ exports.ical_to_json = async({ical_data={}, class_name_dic={}, dev_msg=""}) => {
               } catch(e) {
                 class_name = "シラバスエラー";
                 class_name_dic[class_code] = class_name;
-                console.log(`res: ${class_code} -> シラバスに接続できませんでした。(userID: ${dev_msg})`)
+                console.log(`res: ${class_code} -> シラバスに接続できませんでした。(userID: ${dev_msg})`, e)
               }
             }
 
@@ -582,7 +582,7 @@ exports.json_to_mail_param = ({tasks = {}}) => {
     header_text: header_text,
     footer_text: footer_text,
     today: today.toFormat("MM/DD"),
-    title: `【送信テスト】${header_text}提出課題があります！`,
+    title: `${header_text}提出課題があります！`,
     do_notify: (() => {
       if (header_text == "の"){
         return false

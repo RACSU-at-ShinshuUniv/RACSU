@@ -9,6 +9,7 @@ module.exports = async({method="", address="@shinshu-u.ac.jp", data={}}) => {
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
+    secure: true,
     auth: {
       user: "racsu.shinshu.univ@gmail.com",
       pass: process.env.MAIL_PASS

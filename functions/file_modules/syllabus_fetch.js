@@ -9,8 +9,9 @@ module.exports = async({code=""}) => {
 
   try{
     const res = await axios.get(url, { timeout : 1000 });
-    const name_a = res.replace(/\n|\r\n|\t| /g, "").match(/授業名<\/td><tdcolspan="7">(?<name>.*?)<\/td>/);
-    const name_b = res.replace(/\n|\r\n|\t| /g, "").match(/科目名<\/td><tdcolspan="1">(?<name>.*?)<\/td>/);
+
+    const name_a = res.data.replace(/\n|\r\n|\t| /g, "").match(/授業名<\/td><tdcolspan="7">(?<name>.*?)<\/td>/);
+    const name_b = res.data.replace(/\n|\r\n|\t| /g, "").match(/科目名<\/td><tdcolspan="1">(?<name>.*?)<\/td>/);
 
     const name = (() => {
       if (name_a !== null && name_a.groups.name !== undefined){

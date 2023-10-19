@@ -8,7 +8,10 @@ module.exports = async({code=""}) => {
   const url = `https://campus-3.shinshu-u.ac.jp/syllabusj/Display?NENDO=${term.getFullYear()}&BUKYOKU=${department}&CODE=${code}`;
 
   try{
-    const res = await axios.get(url, { timeout : 1000 });
+    console.time(`fetch time(${code})`);
+    // const res = await axios.get(url, { timeout : 5000 });
+    const res = await axios.get(url);
+    console.timeEnd(`fetch time(${code})`);
 
     const name_a = res.data.replace(/\n|\r\n|\t| /g, "").match(/授業名<\/td><tdcolspan="7">(?<name>.*?)<\/td>/);
     const name_b = res.data.replace(/\n|\r\n|\t| /g, "").match(/科目名<\/td><tdcolspan="1">(?<name>.*?)<\/td>/);

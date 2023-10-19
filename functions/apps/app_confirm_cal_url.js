@@ -26,8 +26,8 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
 
     console.log(url);
 
-    const ical = require("../file_modules/ical_fetch");
-    if (!(await ical.is_valid_url({url: url}))){
+    const { is_valid_url } = require("../file_modules/ical_fetch");
+    if (!(await is_valid_url({url: url}))){
       // 登録済みの学部コードを使って実際にFitchしてみて、正しいデータが取れるか
       // 登録済みの学部と違うURLが送られてきた場合にエラーを出すようにする
       return Promise.resolve({result: "error", msg: "URLの有効性が確認できません。\n有効なURLを送信してください。"});

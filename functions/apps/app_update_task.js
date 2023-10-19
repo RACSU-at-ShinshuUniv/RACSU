@@ -8,11 +8,11 @@ module.exports = async(db, {user_id="", account_data={}, class_name_dic={}, need
   const url_s = `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/${account_data.student_id.match(/[LEJSMTAF]/i)}/calendar/export_execute.php?userid=${account_data.moodle_specific_id}&authtoken=${account_data.moodle_specific_token}&preset_what=all&preset_time=recentupcoming`;
 
   // icalデータを取得
-  const ical = require("../file_modules/ical_fetch");
-  const ical_data_general = await ical.get_contents({
+  const { get_contents } = require("../file_modules/ical_fetch");
+  const ical_data_general = await get_contents({
     url: url_g
   });
-  const ical_data_specific = await ical.get_contents({
+  const ical_data_specific = await get_contents({
     url: url_s
   });
 

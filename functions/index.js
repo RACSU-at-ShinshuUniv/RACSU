@@ -94,7 +94,6 @@ admin_app.get("/:id/task_notify/:method", async(req, res) => {
 });
 
 
-
 exports.line_end_point = functions
 .region('asia-northeast1')
 .runWith({
@@ -109,7 +108,7 @@ exports.admin = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 10,
-  memory: "",
+  memory: "1GB",
   secrets: ["MAIL_PASS"]
 })
 .https

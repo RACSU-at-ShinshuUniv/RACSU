@@ -83,15 +83,26 @@ module.exports = async(db, {user_id="", message=""}) => {
         for (let i=0; i<4; i++){
           key += Math.floor(Math.random()*10).toString();
         }
-        const res = (await db.collection("tasks").doc(user_id).get()).data();
-        res[key] = new_task_data;
-        const data_formatter = require("../file_modules/data_formatter");
-        const flex_data = data_formatter.json_to_flex({
-          tasks: res
-        });
 
-        db.collection("tasks").doc(user_id).set({[key]: new_task_data} ,{merge: true});
-        return Promise.resolve({result: "ok", res_type: "task_list_added", data: flex_data});
+        try{
+          const flex_data = await db.runTransaction(async(t) => {
+            const reg_tasks = (await db.collection("tasks").doc(user_id).get()).data();
+            reg_tasks[key] = new_task_data;
+            t.set(db.collection("tasks").doc(user_id), reg_tasks);
+
+            const data_formatter = require("../file_modules/data_formatter");
+            const flex_data = data_formatter.json_to_flex({
+              tasks: reg_tasks
+            });
+            return flex_data;
+          });
+
+          return Promise.resolve({result: "ok", res_type: "task_list_added", data: flex_data});
+
+        } catch(e) {
+          console.log("課題手動追加でエラー発生", e);
+          return Promise.reject("課題情報のデータベース保存に失敗しました。\nこの問題が複数回発生する場合は、メッセージによりお知らせください。");
+        }
 
       } catch(e) {
         console.error(e);

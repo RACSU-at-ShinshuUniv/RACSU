@@ -1,0 +1,49 @@
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+header {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+}
+
+header a {
+  display: flex;
+  align-items: center;
+}
+
+header a img {
+  width: 70px;
+  height: 70px;
+}
+
+header p {
+  width: 100%;
+}
+
+header .navi {
+  display: flex;
+  margin: none;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+header .navi li {
+  list-style: none;
+}
+
+header .navi li + li {
+  list-style: none;
+  margin-left: 100px;
+}
+
+body {
+  background: #1b5aad;
+}

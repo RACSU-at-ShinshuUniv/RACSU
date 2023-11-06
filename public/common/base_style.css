@@ -1,0 +1,14 @@
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #1b5aad;
+}
+
+.sp {
+  display: none;
+}
+
+@media screen and (max-width: 990px) {
+  .pc {
+    display: none !important;
+  }
+}

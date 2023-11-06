@@ -65,10 +65,9 @@ header {
   text-decoration: none;
 }
 
-.nav_pc ul li a:hover {
+.nav_pc ul li a:hover, .selected {
   border-bottom: 2px solid #1b5aad;
 }
-
 
 @media screen and (max-width: 990px) {
   header {

@@ -1,4 +1,4 @@
-.header_pc {
+header {
   position: fixed;
   z-index: 10;
   top: 0;
@@ -11,38 +11,38 @@
   align-items: center;
 }
 
-#logo_link_pc {
+#logo_link {
   display: flex;
   align-items: center;
   text-decoration: none;
 }
 
-#logo_img_pc {
-  width: 60px;
-  height: 60px;
+#logo_img {
+  width: 55px;
+  height: 55px;
   margin-left: 20px;
   margin-right: 20px;
 }
 
-#logo_title_pc {
+#logo_title {
   display: flex;
   white-space: nowrap;
   align-items: flex-end;
 }
 
-#logo_title_pc h1 {
+#logo_title h1 {
   margin: 0;
   font-weight: normal;
   color: #1b5aad;
 }
 
-#logo_title_pc p {
+#logo_title p {
   margin-bottom: 5px;
   margin-left: 6px;
   color: #1b5aad;
 }
 
-#nav_pc {
+.nav_pc {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -50,70 +50,45 @@
   margin-right: 20px;
 }
 
-#nav_pc ul{
+.nav_pc ul{
   display: flex;
 }
 
-#nav_pc ul li {
+.nav_pc ul li {
   list-style: none;
   margin-right: 40px;
 }
 
-#nav_pc ul li a {
+.nav_pc ul li a {
   width: 100%;
   color: #1b5aad;
   text-decoration: none;
 }
 
-#nav_pc ul li a:hover {
+.nav_pc ul li a:hover {
   border-bottom: 2px solid #1b5aad;
 }
 
 
 @media screen and (max-width: 990px) {
-  .header_sp {
-    position: fixed;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    width: 100%;
+  header {
     height: 60px;
-    background: #ffffff;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
   }
 
-  #logo_link_sp {
-    display: flex;
-    align-items: center;
-  }
-
-  #logo_img_sp {
+  #logo_img {
     width: 45px;
     height: 45px;
     margin-left: 10px;
     margin-right: 10px;
   }
 
-  #logo_title_sp {
-    display: flex;
-    white-space: nowrap;
-    align-items: flex-end;
-  }
-
-  #logo_title_sp h1 {
-    margin: 0;
-    font-weight: normal;
+  #logo_title h1 {
     font-size: 25px;
-    color: #1b5aad;
   }
 
-  #logo_title_sp p {
+  #logo_title p {
     margin-bottom: 4px;
-    margin-left: 6px;
     font-size: 14px;
-    color: #1b5aad;
   }
 
   .nav_sp_open {
@@ -177,7 +152,7 @@
     transform: translateX(100%);
   }
 
-  .nav_sp .nav_sp_close {
+  .nav_sp_close {
     position: relative;
     display: block;
     width: 30px;
@@ -187,13 +162,13 @@
     margin-top: 14px;
   }
 
-  .nav_sp span {
+  .nav_sp_close span {
     content: '';
     position: absolute;
     display: block;
   }
 
-  .nav_sp .nav_sp_close::before {
+  .nav_sp_close::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -205,7 +180,7 @@
     transform: rotate(45deg);
   }
 
-  .nav_sp .nav_sp_close::after {
+  .nav_sp_close::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -241,8 +216,6 @@
     flex-direction: column;
     align-items: center;
   }
-
-
 
 
   .fade {

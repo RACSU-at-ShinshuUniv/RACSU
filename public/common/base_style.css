@@ -3,7 +3,7 @@
 
 body {
   font-family: 'Noto Sans JP', sans-serif;
-  background: #1b5aad;
+  background: #ffffff;
   padding: 0;
   margin: 0;
   width: 100%;
@@ -17,12 +17,16 @@ body {
 
 main {
   display: block;
-  margin-top: 100px;
+  margin-top: 70px;
   width: 100%;
 }
 
 @media screen and (max-width: 990px) {
   .pc {
     display: none !important;
+  }
+
+  main {
+    margin-top: 60px;
   }
 }

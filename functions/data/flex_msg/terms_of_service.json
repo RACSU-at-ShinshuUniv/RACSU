@@ -32,109 +32,77 @@
                 "contents": [
                     {
                         "type": "text",
-                        "text": "「課題自動取得」利用上の注意",
-                        "size": "xl",
+                        "text": "※注意事項※",
+                        "size": "xxl",
                         "align": "center",
                         "color": "#ff3d3d",
                         "weight": "bold"
                     },
                     {
-                        "type": "text",
-                        "text": "① このサービスで取得できない課題の種類がありますのでご注意ください。",
-                        "wrap": true,
-                        "margin": "md",
-                        "weight": "bold"
-                    },
-                    {
                         "type": "box",
-                        "layout": "vertical",
+                        "layout": "horizontal",
                         "contents": [
                             {
                                 "type": "text",
-                                "text": "取得できない課題例：",
-                                "wrap": true,
-                                "margin": "sm",
-                                "size": "sm"
-                            },
-                            {
-                                "type": "text",
-                                "text": "・eAlps上で提出期限が設定されていないもの",
-                                "wrap": true,
-                                "margin": "sm",
-                                "size": "sm",
-                                "color": "#ff3d3d",
+                                "text": "①",
+                                "flex": 0,
+                                "size": "lg",
                                 "weight": "bold"
                             },
                             {
                                 "type": "text",
-                                "text": "・eAlps以外（Google Classroom, Google Form等）で提出するもの",
+                                "text": "自動取得できない課題(*1)は\n一覧に表示されません",
                                 "wrap": true,
-                                "margin": "sm",
-                                "size": "sm",
                                 "weight": "bold",
-                                "color": "#ff3d3d"
+                                "size": "lg",
+                                "margin": "sm"
+                            }
+                        ],
+                        "margin": "md"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "②",
+                                "flex": 0,
+                                "size": "lg",
+                                "weight": "bold"
                             },
                             {
                                 "type": "text",
-                                "text": "・その他、独自の提出方法を採用しているもの",
+                                "text": "本サービスは課題の提出に対して、一切の責任を負いません",
                                 "wrap": true,
-                                "margin": "sm",
-                                "size": "sm"
+                                "weight": "bold",
+                                "size": "lg",
+                                "margin": "sm"
                             }
                         ],
-                        "borderWidth": "normal",
-                        "borderColor": "#666666",
-                        "cornerRadius": "md",
-                        "paddingAll": "xs",
-                        "paddingStart": "lg",
-                        "margin": "sm"
+                        "margin": "md"
                     },
                     {
-                        "type": "text",
-                        "text": "② このサービス上に、すべての課題が表示されていることは保証できません。",
-                        "wrap": true,
-                        "margin": "md",
-                        "weight": "bold"
-                    },
-                    {
-                        "type": "text",
-                        "text": "必ずeAlpsを確認し、上記「取得できない課題例」に含まれる課題が出ていないか確認してください。",
-                        "wrap": true,
-                        "margin": "sm",
-                        "size": "sm",
-                        "align": "center"
-                    },
-                    {
-                        "type": "text",
-                        "text": "③ 本サービスは、課題提出の遅延・未提出などに対して、一切の責任を負いません。",
-                        "wrap": true,
-                        "margin": "md",
-                        "weight": "bold"
-                    },
-                    {
-                        "type": "text",
-                        "text": "あくまで補助的なサービスとしてお使いください。",
-                        "wrap": true,
-                        "margin": "sm",
-                        "size": "sm",
-                        "align": "center"
-                    },
-                    {
-                        "type": "text",
-                        "text": "④ 本サービスを利用する上で、以下の情報がサーバーに保存されます。",
-                        "wrap": true,
-                        "margin": "md",
-                        "weight": "bold"
-                    },
-                    {
-                        "type": "text",
-                        "text": "これらの情報は、サービス運用の目的のみで使用し、他の目的では使用しません。",
-                        "wrap": true,
-                        "margin": "sm",
-                        "size": "sm",
-                        "weight": "bold",
-                        "color": "#ff3d3d",
-                        "offsetStart": "md"
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "③",
+                                "flex": 0,
+                                "size": "lg",
+                                "weight": "bold"
+                            },
+                            {
+                                "type": "text",
+                                "text": "サービス運営上、以下の情報が\nサーバーに保存されます。",
+                                "wrap": true,
+                                "weight": "bold",
+                                "size": "lg",
+                                "margin": "sm"
+                            }
+                        ],
+                        "margin": "md"
                     },
                     {
                         "type": "box",
@@ -160,6 +128,16 @@
                                 "wrap": true,
                                 "margin": "sm",
                                 "size": "sm"
+                            },
+                            {
+                                "type": "text",
+                                "text": "これらの情報は、サービス運用上の目的のみで使用されます。",
+                                "wrap": true,
+                                "margin": "sm",
+                                "size": "sm",
+                                "weight": "bold",
+                                "color": "#ff3d3d",
+                                "offsetStart": "md"
                             }
                         ],
                         "borderWidth": "normal",
@@ -167,13 +145,58 @@
                         "cornerRadius": "md",
                         "paddingAll": "xs",
                         "paddingStart": "lg",
-                        "margin": "sm"
+                        "margin": "sm",
+                        "paddingEnd": "xxl"
                     }
                 ],
                 "paddingAll": "lg",
                 "borderColor": "#1b5aad",
                 "borderWidth": "medium",
                 "cornerRadius": "md"
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": "(*1) 取得できない課題例：",
+                        "wrap": true,
+                        "margin": "sm",
+                        "size": "sm"
+                    },
+                    {
+                        "type": "text",
+                        "text": "・eAlps上で提出期限が設定されていないもの",
+                        "wrap": true,
+                        "margin": "sm",
+                        "size": "sm",
+                        "color": "#ff3d3d",
+                        "weight": "bold"
+                    },
+                    {
+                        "type": "text",
+                        "text": "・eAlps以外（Google Classroom, Google Form等）で提出するもの",
+                        "wrap": true,
+                        "margin": "sm",
+                        "size": "sm",
+                        "weight": "bold",
+                        "color": "#ff3d3d"
+                    },
+                    {
+                        "type": "text",
+                        "text": "・その他、独自の提出方法を採用しているもの",
+                        "wrap": true,
+                        "margin": "sm",
+                        "size": "sm"
+                    }
+                ],
+                "borderWidth": "normal",
+                "borderColor": "#666666",
+                "cornerRadius": "md",
+                "paddingAll": "xs",
+                "paddingStart": "lg",
+                "margin": "sm"
             }
         ],
         "paddingAll": "xl",
@@ -189,7 +212,7 @@
                 "wrap": true,
                 "size": "xs",
                 "align": "center",
-                "margin": "md"
+                "margin": "lg"
             },
             {
                 "type": "text",

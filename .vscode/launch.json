@@ -1,0 +1,14 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Open ins_test.html",
+      "file": "c:\\Users\\wy072\\Dropbox\\00. RACSU関連\\【Dev】RACSU Firebase版\\public\\home\\ins_test.html"
+    }
+  ]
+}

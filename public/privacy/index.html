@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="../common/favicons/favicon.ico">
+  <link rel="apple-touch-icon" href="../common/favicons/apple-touch-icon-180x180.png" sizes="180x180">
   <link rel="stylesheet" href="../common/base_style.css" type="text/css">
   <link rel="stylesheet" href="../common/header.css" type="text/css">
   <link rel="stylesheet" href="../common/footer.css" type="text/css">
@@ -12,65 +14,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
   <title>RACSU 信大課題リマインダー プライバシーポリシー</title>
-
   <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
     crossorigin="anonymous"></script>
+  <script src="../common/function.js"></script>
 </head>
 
 <body>
-  <!-- ヘッダー -->
-  <header>
-    <script>
-      $(function () {
-        $(".nav_sp_open, .nav_sp_close").on("click", function () {
-          console.log("clicked")
-          $(".nav_sp").toggleClass("fade show");
-          $(".nav_sp_open").toggleClass("hide");
-        });
-      });
-    </script>
-    <a id="logo_link" href="../home">
-      <img id="logo_img" src="../common/image/logo_prod.png" alt="RACSU 信大課題リマインダー">
-      <dev id="logo_title">
-        <h1>RACSU</h1>
-        <p>信大課題リマインダー</p>
-      </dev>
-    </a>
-    <nav class="pc nav_pc">
-      <ul>
-        <li><a href="../home">トップ</a></li>
-        <li><a href="../useage">使い方</a></li>
-        <li><a href="../fqa">FQA</a></li>
-        <li><a class="selected" href="../privacy">プライバシーポリシー</a></li>
-      </ul>
-      <a href="https://lin.ee/6po1L92">
-        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
-      </a>
-    </nav>
-    <div class="sp nav_sp_open">
-      <span></span>
-    </div>
-    <nav class="sp nav_sp">
-      <div class="sp nav_sp_close">
-        <span></span>
-      </div>
-      <ul>
-        <li><a href="">トップ</a></li>
-        <li><a href="../useage/">使い方</a></li>
-        <li><a href="../fqa">FQA</a></li>
-        <li><a href="../privacy">プライバシーポリシー</a></li>
-      </ul>
-      <div id="line_add">
-        <a href="https://lin.ee/6po1L92">
-          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="44" border="0">
-        </a>
-      </div>
-    </nav>
-  </header>
+  <header id="header"></header>
 
-
-
-  <!-- メインコンテンツ -->
   <main>
     <div class="index">
       <p>プライバシーポリシー（個人情報保護方針）</p>
@@ -93,27 +44,7 @@
     </div>
   </main>
 
-
-
-  <!-- フッダー -->
-  <footer>
-    <div id="footer_logo">
-      <img id="footer_logo_img" src="../common/image/logo_prod_wt.png" alt="RACSU 信大課題リマインダー">
-      <dev id="footer_logo_title">
-        <h1>RACSU</h1>
-        <p>信大課題リマインダー</p>
-      </dev>
-    </div>
-    <dev id="footer_link">
-      <ul>
-        <li><a href="">トップ</a></li>
-        <li><a href="../useage/">使い方</a></li>
-        <li><a href="../fqa">FQA</a></li>
-        <li><a href="../privacy">プライバシーポリシー</a></li>
-      </ul>
-      <p>お問い合わせ：racsu.shinshu-univ[at]gmail.com</p>
-    </dev>
-  </footer>
+  <footer id="footer"></footer>
 </body>
 
 </html>

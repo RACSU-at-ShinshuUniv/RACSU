@@ -29,18 +29,17 @@ header {
   display: flex;
   white-space: nowrap;
   align-items: flex-end;
+  color: #1b5aad;
 }
 
 #logo_title h1 {
   margin: 0;
   font-weight: normal;
-  color: #1b5aad;
 }
 
 #logo_title p {
   margin-bottom: 5px;
   margin-left: 6px;
-  color: #1b5aad;
 }
 
 .nav_pc {
@@ -61,7 +60,7 @@ header {
 }
 
 .nav_pc ul li a {
-  width: 100%;
+  width: 100vw;
   color: #1b5aad;
   text-decoration: none;
 }
@@ -144,7 +143,6 @@ header {
     width: 100%;
     height: 100vh;
     display: block;
-    width: 100%;
     background: rgba(0, 0, 0, 0.8);
     transition: all .2s ease-in-out;
     opacity: 1;
@@ -211,7 +209,7 @@ header {
     text-decoration: none;
   }
 
-  .nav_sp #line_add {
+  .nav_sp #nav_sp_line_add {
     display: flex;
     flex-direction: column;
     align-items: center;

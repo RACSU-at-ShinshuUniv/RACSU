@@ -1,0 +1,173 @@
+#intro {
+  background-color: #1b5aad;
+  height: 600px;
+}
+
+#s_name {
+  display: flex;
+  color: #ffffff;
+  width: fit-content;
+  border-bottom: 1px solid #ffffff;
+}
+
+#s_name h1 {
+  margin: 0;
+  font-weight: normal;
+  font-size: 40px;
+}
+
+#s_name p {
+  margin-top: auto;
+  margin-bottom: 5px;
+  margin-left: 6px;
+  font-size: 24px;
+}
+
+#catch {
+  color: #ffffff;
+}
+
+#catch h1 {
+  font-size: 22px;
+  margin-top: 30px;
+}
+
+#recognize {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+  padding-top: 8px;
+  padding-bottom: 20px;
+  width: 650px;
+  margin-top: 40px;
+  text-align: start;
+}
+
+#recognize h2 {
+  font-size: 20px;
+  margin: 0;
+  margin-bottom: 10px;
+  border-bottom: 3px solid #1b5aad;
+  width: fit-content;
+}
+
+#release {
+  color: #ffffff;
+  text-align: end;
+  font-size: 14px;
+  margin: 0;
+  margin-top: 5px;
+}
+
+#intro .content_right img {
+  width: 280px;
+}
+
+#detail {
+  height: 500px;
+}
+
+#detail .paragraph {
+  max-width: 800px;
+}
+
+#detail .paragraph p {
+  margin-left: 20px;
+}
+
+#detail .content_right {
+  background-color: #cac8c8;
+  padding: 20px;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+#detail .content_right img {
+  width: 280px;
+}
+
+#member {
+  background-color: #c9e0ff;
+  color: #464646;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 3px solid #1b5aad;
+  padding: 10px;
+  max-width: 600px;
+}
+
+#member h2 {
+  margin: 0;
+}
+
+
+@media screen and (max-width: 990px) {
+  #intro{
+    height: 100%;
+    text-align: center;
+  }
+
+  #catch {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90vw;
+    padding-top: 5vh;
+  }
+
+  #recognize {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70vw;
+  }
+
+  #release {
+    margin-right: 12vw;
+  }
+
+  #intro .content_right img {
+    margin: 0;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 80vw;
+    max-width: 300px;
+  }
+
+  #intro .content_right #line_add a img {
+    width: 150px;
+    margin-bottom: 30px;
+  }
+
+  #detail {
+    height: 100%;
+  }
+
+  #detail .paragraph h3, #detail .paragraph p {
+    margin-left: 10px;
+  }
+
+  #detail .content_right {
+    margin-bottom: 30px;
+  }
+
+  #detail .content_right img {
+    width: 60vw;
+    max-width: 280px;
+  }
+
+  #member {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  #recognize h2 {
+    font-size: 18px;
+  }
+
+  #recognize p {
+    font-size: 14px;
+  }
+}

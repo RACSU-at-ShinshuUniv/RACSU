@@ -9,85 +9,79 @@
   <link rel="stylesheet" href="../common/base_style.css" type="text/css">
   <link rel="stylesheet" href="../common/header.css" type="text/css">
   <link rel="stylesheet" href="../common/footer.css" type="text/css">
+  <link rel="stylesheet" href="./style.css" type="text/css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
   <title>RACSU 信大課題リマインダー ホーム</title>
   <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
     crossorigin="anonymous"></script>
+  <script src="../common/function.js"></script>
 </head>
 
 <body>
-  <header>
-    <script>
-      $(function () {
-        $(".nav_sp_open, .nav_sp_close").on("click", function () {
-          console.log("clicked")
-          $(".nav_sp").toggleClass("fade show");
-          $(".nav_sp_open").toggleClass("hide");
-        });
-      });
-    </script>
-    <a id="logo_link" href="../home">
-      <img id="logo_img" src="../common/image/logo_prod.png" alt="RACSU 信大課題リマインダー">
-      <dev id="logo_title">
-        <h1>RACSU</h1>
-        <p>信大課題リマインダー</p>
-      </dev>
-    </a>
-    <nav class="pc nav_pc">
-      <ul>
-        <li><a class="selected" href="../home">トップ</a></li>
-        <li><a href="../useage">使い方</a></li>
-        <li><a href="../fqa">FQA</a></li>
-        <li><a href="../privacy">プライバシーポリシー</a></li>
-      </ul>
-      <a href="https://lin.ee/6po1L92">
-        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0">
-      </a>
-    </nav>
-    <div class="sp nav_sp_open">
-      <span></span>
-    </div>
-    <nav class="sp nav_sp">
-      <div class="sp nav_sp_close">
-        <span></span>
-      </div>
-      <ul>
-        <li><a href="">トップ</a></li>
-        <li><a href="../useage/">使い方</a></li>
-        <li><a href="../fqa">FQA</a></li>
-        <li><a href="../privacy">プライバシーポリシー</a></li>
-      </ul>
-      <div id="line_add">
-        <a href="https://lin.ee/6po1L92">
-          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="44" border="0">
-        </a>
-      </div>
-    </nav>
-  </header>
+  <header id="header"></header>
 
   <main>
+    <div class="contents" id="intro">
+      <div class="content_left">
+        <div class="pc" id="s_name">
+          <h1>RACSU</h1>
+          <p>信大課題リマインダー</p>
+        </div>
+        <div id="catch">
+          <h1>気づかない間に、<span class="sp_fold"></span>提出期限を過ぎていた…</h1>
+          <p>そんなことになる前に、<span class="sp_fold"></span>RACSUを使ってみませんか？</p>
+          <p>RACSUは、eAlpsと連携して提出期限がある課題を自動取得・通知します。</p>
+          <p>さらに、LINEのトーク上で課題の完了登録・eAlps以外の課題も追加可能。</p>
+        </div>
+        <div id="recognize">
+          <h2>信州大学e-Learningセンター <span class="sp_fold"></span>eALPluS認定事案</h2>
+          <p>RACSU 信大課題リマインダーは、<span class="sp_fold"></span>信州大学e-LearningセンターのeALPluS認定事案を受け、オープンソース（Apache-2.0 License）で開発中です。</p>
+          <p>eALPluSについては<a href="">こちら</a>をご覧ください。</p>
+          <p>Githubリポジトリは<a href="https://github.com/RACSU-at-ShinshuUniv/RACSU">こちら</a>。</p>
+        </div>
+        <p id="release">eALPluS認定日：2023/11/12 <span class="sp_fold"></span>リリース日：2023/11/09 <span class="sp_fold"></span>最終更新日：2023/11/09</p>
+      </div>
+      <div class="content_right">
+        <img src="../common/image/use_image.png" alt="RACSU使用例">
+        <div class="sp" id="line_add">
+          <a href="https://lin.ee/6po1L92">
+            <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" border="0">
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contents" id="detail">
+      <div class="content_left paragraph">
+        <h2>RACSUとは？</h2>
+        <h3>"RACSU 信大課題リマインダー" は、<span class="sp_fold"></span>信州大学e-Learningシステム "eAlps" 上で課された課題を自動で取得・通知するサービスです。</h3>
+        <p>気づかないうちにeAlps上に現れ、<span class="sp_fold"></span>気づかないうちに期限が過ぎている…</p>
+        <p>そんな課題を経験をしたことはありませんか？</p>
+        <span class="fold"></span>
+        <p>RACSUは、当日と翌日の提出課題を毎朝メールでお知らせします。</p>
+        <p>さらに、LINEトーク上では課題の完了登録・一覧への課題の手動追加も可能。</p>
+      </div>
+      <div class="content_right">
+        <img src="../common/image/flow.png" alt="RACSUのしくみ">
+      </div>
+    </div>
+
+    <div id="member">
+      <h2>RACSUの運営を<span class="sp_fold"></span>手伝ってくれる方募集中！</h2>
+      <p>RACSUは、信州大学在学中の学生によって運営されています。</p>
+      <p>運営・保守を手伝ってくれる方を募集中です！</p>
+      <p>詳しくはLINEまたはメールでお問い合わせください。</p>
+      <ul>
+        <li><p>開発代表：渡邊友翔（電気情報システム工学科 21T）</p></li>
+        <li><p>HP作成補佐：木田岬（電気情報システム工学科 21T）</p></li>
+        <li><p>アイコン作成：</p></li>
+      </ul>
+    </div>
   </main>
 
-  <footer>
-    <div id="footer_logo">
-      <img id="footer_logo_img" src="../common/image/logo_prod_wt.png" alt="RACSU 信大課題リマインダー">
-      <dev id="footer_logo_title">
-        <h1>RACSU</h1>
-        <p>信大課題リマインダー</p>
-      </dev>
-    </div>
-    <dev id="footer_link">
-      <ul>
-        <li><a href="">トップ</a></li>
-        <li><a href="../useage/">使い方</a></li>
-        <li><a href="../fqa">FQA</a></li>
-        <li><a href="../privacy">プライバシーポリシー</a></li>
-      </ul>
-      <p>お問い合わせ：racsu.shinshu-univ[at]gmail.com</p>
-    </dev>
-  </footer>
+  <footer id="footer"></footer>
 </body>
 
 </html>

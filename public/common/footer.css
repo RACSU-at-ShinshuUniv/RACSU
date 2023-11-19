@@ -25,18 +25,17 @@ footer {
   display: flex;
   white-space: nowrap;
   align-items: flex-end;
+  color: #ffffff;
 }
 
 #footer_logo_title h1 {
   margin: 0;
   font-weight: normal;
-  color: #ffffff;
 }
 
 #footer_logo_title p {
   margin-bottom: 5px;
   margin-left: 6px;
-  color: #ffffff;
 }
 
 #footer_link {

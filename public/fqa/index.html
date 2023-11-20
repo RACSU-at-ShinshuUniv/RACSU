@@ -3,6 +3,11 @@
 
 <head>
   <meta charset="utf-8">
+  <title>RACSU 信大課題リマインダー FQA</title>
+  <meta name="description" content="「RACSU 信大課題リマインダー」は、信大e-LearningシステムeAlpsと連携して課題の自動通知を行います。LINE公式アカウントを友だち追加するだけで、すぐに無料で始められます！RACSUは、信大e-Learningセンターより認証を受けているため、安心してご利用いただけます。">
+
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="../common/favicons/favicon.ico">
   <link rel="apple-touch-icon" href="../common/favicons/apple-touch-icon-180x180.png" sizes="180x180">
@@ -13,7 +18,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
-  <title>RACSU 信大課題リマインダー FQA</title>
+
+  <!-- OGP -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="RACSU 信大課題リマインダー FQA">
+  <meta property="og:description" content="「RACSU 信大課題リマインダー」は、信大e-LearningシステムeAlpsと連携して課題の自動通知を行います。LINE公式アカウントを友だち追加するだけで、すぐに無料で始められます！RACSUは、信大e-Learningセンターより認証を受けているため、安心してご利用いただけます。">
+  <meta property="og:url" content="https://racsu-develop.web.app/home" />
+  <meta property="og:site_name" content="RACSU 信大課題リマインダー" />
+  <meta property="og:image" content="https://racsu-develop.web.app/common/image/sc.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@RACSU_shindai" />
+
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
     crossorigin="anonymous"></script>
   <script src="../common/function.js"></script>
@@ -23,40 +41,61 @@
   <header id="header"></header>
 
   <main>
-    <div class="index">
-      <p>RACSUの利用・運営について</p>
+    <div class="paragraph">
+      <h2>RACSUの利用・運営について</h2>
 
-      <div class="topic">
-        <div class="question">
-          <p>Q. RACSUは無料で使えますか</p>
-        </div>
-        <div class="answer">
-          <p>広告表示等なしで、全ての機能を無料でお使いいただけます。</p>
-          <p>今後、有料サービスに変更する予定もありません。</p>
-        </div>
-      </div>
+      <h3>Q. RACSUは無料で使えますか</h3>
+      <p>広告表示等なしで、全ての機能を無料でお使いいただけます。</p>
+      <p>今後、有料サービスに変更する予定もありません。</p>
 
-      <div class="topic">
-        <div class="question">
-          <p>Q. どうやって利用を始めればいいですか</p>
-        </div>
-        <div class="answer">
-          <p><a href="">こちら</a>のリンクまたはトップページのLINE友だち追加ボタンより、RACSUアカウントを友だち追加してご利用ください。</p>
-        </div>
-      </div>
+      <h3>Q. どうやって利用を始めればいいですか</h3>
+      <p><a href="https://lin.ee/6po1L92">こちら</a>のリンクまたはトップページのLINE友だち追加ボタンより、RACSUアカウントを友だち追加してご利用ください。</p>
 
-    </div>
+      <h3>Q. 使い方がわかりません</h3>
+      <p><a href="../useage/">こちら</a>より詳しい使い方をご確認ください。</p>
 
-    <div class="index">
-      <p>RACSUの機能について</p>
-      <div class="topic">
-        <div class="question">
-          <p>Q. RACSUの課題は自動でeAlpsと同期されますか</p>
-        </div>
-        <div class="answer">
-          <p>毎朝8時30分に、すべてのユーザーの課題を更新しています。</p>
-        </div>
-      </div>
+      <h3>Q. 誰が運営しているのですか</h3>
+      <p>RACSUは、信州大学に在学中の学生によって運営されています。</p>
+
+      <h3>Q. 運営に関わりたいです！</h3>
+      <p>一緒に運営をしてくれる方を随時募集中です！ぜひ一度お問い合わせください。</p>
+
+      <h3>Q. 運営に問い合わせたいです</h3>
+      <p>LINEアカウントの下部メニュー＞設定＞RACSUについて・サポートより管理者にお問い合わせください。</p>
+      <p>または、racsu.shinshu-univ[at]gmail.comへメールでお問い合わせください。</p>
+
+
+      <h2>RACSUの機能について</h2>
+
+      <h3>Q. RACSUの課題は自動でeAlpsと同期されますか</h3>
+      <p>毎朝8時30分に、すべてのユーザーの課題を更新しています。</p>
+
+      <h3>Q. RACSUに表示されない課題があります</h3>
+      <p>eAlps上で提出締切が設定されていないものや、eAlps以外の提出方法の課題は自動取得できません。</p>
+      <p>LINEアカウントの下部メニュー＞タスクの追加より、手動で追加してください。</p>
+      <p>提出期限が設定されているのにも関わらず表示されない場合は、LINEアカウントの下部メニュー＞設定＞RACSUについて・サポートより管理者にお問い合わせください。</p>
+
+      <h3>Q. 提出済みの課題は表示しないでほしいです</h3>
+      <p>RACSUから、自動で課題の提出状況を取得することができません。LINEアカウント上で課題の完了登録をしてください。</p>
+
+      <h3>Q. 「データを更新する」と「登録済みの課題を表示」ボタンは、どちらを使えばいいですが</h3>
+      <p>基本的には「登録済みの課題を表示」ボタンをお使いください。</p>
+      <p>日中に新たに課題が公開され、すぐにRACSU上に表示したいときには「登録済みの課題を表示」ボタンをお使いください。</p>
+
+      <h3>Q. 「データを更新する」と「登録済みの課題を表示」ボタンの違いはなんですか</h3>
+      <p>「登録済みの課題を表示」ボタンは、現在登録されている課題の一覧を表示します。課題は毎朝8時30分に自動更新されています。</p>
+      <p>「データを更新する」ボタンは、eAlpsにアクセスして最新の課題情報を取得します。eAlpsからの情報を処理するため、30秒ほど時間がかかります。</p>
+
+      <h3>Q. 通知メールが届かない日があります</h3>
+      <p>課題の通知メールは、課題提出日の当日と前日に届きます。LINE上で完了登録された課題は通知されません。</p>
+
+      <h3>Q. 「処理エラーが発生しました」との表示が出ます</h3>
+      <p>内部でエラーが発生しています。何度も同じエラーが出る場合は、LINEアカウントの下部メニュー＞設定＞RACSUについて・サポートより管理者にお問い合わせください。</p>
+
+      <h3>Q. こんな新しい機能がほしい！・バグを見つけた</h3>
+      <p>ご意見・ご要望は大歓迎です。ぜひお待ちしております。</p>
+      <p>LINEアカウントの下部メニュー＞設定＞RACSUについて・サポートより管理者にお問い合わせください。</p>
+
     </div>
   </main>
 

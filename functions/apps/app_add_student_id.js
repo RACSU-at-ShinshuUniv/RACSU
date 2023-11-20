@@ -16,11 +16,11 @@ module.exports = async(db, {user_id="", message=""}) => {
     // 認証メール送信
     const mail_sender = require("../file_modules/mail_sender");
     mail_sender({
-      data: {
         method: "auth",
         address: user_address,
-        token: user_token
-      }
+        data: {
+          token: user_token
+        }
     });
 
     // 認証データ書き込み

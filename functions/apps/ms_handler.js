@@ -150,7 +150,7 @@ module.exports = async(db, event_data, line_sender) => {
 
               } else if (res.result == "ok"){
                 line_sender.text({
-                  message: "初期設定が完了しました！"
+                  message: "初期設定が完了しました！\n下部メニューの右上「データを更新する」より課題を取得してみてください！"
                 });
 
               } else {

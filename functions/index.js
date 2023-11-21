@@ -99,6 +99,11 @@ app.get("/test_point", async(req, res) => {
   console.log("Test point OK.")
   // -------------------------------
 
+  const autoapp_update = require("./apps/autoapp_update");
+  autoapp_update(db, await get_all_data({ get_class_name_dic : true }))
+  .catch((e) => {
+    console.log("自動更新でエラー発生", e);
+  });
 
   // -------------------------------
   res.status(200).json({}).end();

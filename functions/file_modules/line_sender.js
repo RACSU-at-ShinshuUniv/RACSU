@@ -146,7 +146,8 @@ class Line_Sender {
           "body": {
             "type": "box",
             "layout": "vertical",
-            "contents": contents
+            "contents": contents,
+            "paddingAll": "xl"
           }
         }
       }).catch((err) => {

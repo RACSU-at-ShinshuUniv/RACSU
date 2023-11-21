@@ -31,14 +31,18 @@ module.exports = async({all_user_data, all_reg_tasks, all_user_id}) => {
           address = `${all_user_data[user_id].student_id}@shinshu-u.ac.jp`
         }
 
-        await mail_sender({
-          method: "notify",
-          address: address,
-          data: mail_param
-        })
+        if (process.env.GCLOUD_PROJECT == "racsu-shindai"){
+          await mail_sender({
+            method: "notify",
+            address: address,
+            data: mail_param
+          })
+          console.log(`${user_id} メール送信（to: ${address} title: ${mail_param.title}）`);
+          send_count++;
 
-        console.log(`${user_id} メール送信（to: ${address} title: ${mail_param.title}）`);
-        send_count++;
+        } else if (process.env.GCLOUD_PROJECT == "racsu-develop"){
+          console.log(`${user_id} 開発環境のため、メール送信はスキップされました。（to: ${address} title: ${mail_param.title}）`);
+        }
 
       } catch(e) {
         console.log(`${user_id} メール送信エラー`, e);

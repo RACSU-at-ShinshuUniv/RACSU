@@ -196,9 +196,20 @@ module.exports = async(db, event_data, line_sender) => {
 
             // 課題の更新
             } else if (message == "データを更新する"){
+              let env_rich_menu;
+              if (process.env.K_REVISION == 1){
+                env_rich_menu = require("../data/rich_menu/local.json");
+
+              } else if (process.env.GCLOUD_PROJECT == "racsu-develop"){
+                env_rich_menu = require("../data/rich_menu/dev.json");
+
+              } else if (process.env.GCLOUD_PROJECT == "racsu-shindai"){
+                env_rich_menu = require("../data/rich_menu/prod.json");
+              }
+
               line_sender.link_rich_menu({
                 user_id: event_data.source.userId,
-                rich_menu_id: process.env.R_LIST_MENU_OVERLAY
+                rich_menu_id: env_rich_menu.list_menu_overlay
               });
 
               const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
@@ -214,7 +225,7 @@ module.exports = async(db, event_data, line_sender) => {
                 if (res.result == "ok"){
                   line_sender.link_rich_menu({
                     user_id: event_data.source.userId,
-                    rich_menu_id: process.env.R_LIST_MENU
+                    rich_menu_id: env_rich_menu.list_menu
                   });
                   line_sender.flex_task_list({
                     contents: res.data.contents,

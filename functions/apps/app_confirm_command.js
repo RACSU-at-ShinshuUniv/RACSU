@@ -69,7 +69,7 @@ module.exports = async(db, {user_id="", message=""}) => {
     }
 
     case "add": {
-      const {Timestamp} = require('firebase-admin/firestore');
+      const { Timestamp } = require('firebase-admin/firestore');
       try{
         const msg_task_data = message.match(/cmd@add\?cn=(?<class_name>.+)&tn=(?<task_name>.+)&tl=(?<task_limit>\d{4}\/\d{2}\/\d{2}-\d{2}:\d{2})/).groups;
         const new_task_data = {
@@ -106,6 +106,60 @@ module.exports = async(db, {user_id="", message=""}) => {
 
       } catch(e) {
         console.error(e);
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
+      }
+    }
+
+    case "delete": {
+      const target = (message.match(/cmd@delete\?target=(.+)/) !== null)
+        ? message.match(/cmd@delete\?target=(.+)/)[1]
+        : null;
+      if (target == null){
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
+      }
+
+
+      if (target == "past") {
+        const today = new Date();
+        const flex_data = await db.runTransaction(async(t) => {
+          const reg_tasks = (await db.collection("tasks").doc(user_id).get()).data();
+
+          Object.keys(reg_tasks).forEach((key) => {
+            // 過去の課題のdisplayをfalseに設定
+            if ((reg_tasks[key].task_limit.toDate() < today)){
+              reg_tasks[key].display = false;
+            }
+          });
+          t.set(db.collection("tasks").doc(user_id), reg_tasks);
+          const data_formatter = require("../file_modules/data_formatter");
+          const flex_data = data_formatter.json_to_flex({
+            tasks: reg_tasks
+          });
+          return flex_data;
+        });
+        return Promise.resolve({result: "ok", res_type: "task_list", data: flex_data});
+
+      } else if (target == "finish") {
+        const today = new Date();
+        const flex_data = await db.runTransaction(async(t) => {
+          const reg_tasks = (await db.collection("tasks").doc(user_id).get()).data();
+
+          Object.keys(reg_tasks).forEach((key) => {
+            // 完了済みの課題のdisplayをfalseに設定
+            if (reg_tasks[key].finish){
+              reg_tasks[key].display = false;
+            }
+          });
+          t.set(db.collection("tasks").doc(user_id), reg_tasks);
+          const data_formatter = require("../file_modules/data_formatter");
+          const flex_data = data_formatter.json_to_flex({
+            tasks: reg_tasks
+          });
+          return flex_data;
+        });
+        return Promise.resolve({result: "ok", res_type: "task_list", data: flex_data});
+
+      } else {
         return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
       }
     }

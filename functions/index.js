@@ -99,12 +99,6 @@ app.get("/test_point", async(req, res) => {
   console.log("Test point OK.")
   // -------------------------------
 
-  const autoapp_update = require("./apps/autoapp_update");
-  autoapp_update(db, await get_all_data({ get_class_name_dic : true }))
-  .catch((e) => {
-    console.log("自動更新でエラー発生", e);
-  });
-
   // -------------------------------
   res.status(200).json({}).end();
   return null;
@@ -135,7 +129,6 @@ exports.trigger_update = functions
   memory: "1GB"
 })
 .pubsub.schedule('every day 8:30')
-// .pubsub.schedule('every day 16:16')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const autoapp_update = require("./apps/autoapp_update");
@@ -159,7 +152,6 @@ exports.trigger_notify = functions
   timeoutSeconds: 540
 })
 .pubsub.schedule('every day 9:00')
-// .pubsub.schedule('every day 16:25')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const autoapp_notify = require("./apps/autoapp_notify");

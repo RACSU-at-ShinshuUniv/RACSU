@@ -337,7 +337,7 @@ exports.json_to_flex = ({tasks={}}) => {
         );
         todays_task_count++;
 
-      } else if (overflow){
+      } else if (!overflow){
         task_data_json.push(
           flex_content.box({contents: [
             flex_content.text({text: "☑", color: "#bbbbbb"}),

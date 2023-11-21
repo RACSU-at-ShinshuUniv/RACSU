@@ -8,9 +8,19 @@ const functions = require("firebase-functions");
 
 initializeApp();
 
+let linebot_account;
+if (process.env.K_REVISION == 1){
+  console.log("ローカル環境で起動中…");
+  console.log("ローカルデバック用LINEアカウント情報を読み込みます。");
+  console.log("webhook接続先は「[ngrokURL]/racsu-develop/asia-northeast1/node_functions/webhook」です。")
+  linebot_account = require("./data/keys/LineAccount_local.json");
+
+} else{
+  linebot_account = require("./data/keys/LineAccount.json");
+}
+// const linebot_account = require("./data/keys/LineAccount.json");
 const linebot_sdk = require("@line/bot-sdk");
 const Line_Sender = require("./file_modules/line_sender");
-const linebot_account = require("./data/keys/LineAccount.json");
 const linebot_client = new linebot_sdk.Client(linebot_account);
 
 
@@ -20,6 +30,7 @@ const app = express();
 
 // データベースインスタンス作成
 const db = getFirestore();
+
 
 // ----------------------------------------------
 // 連携済み全ユーザーデータ取得関数
@@ -54,7 +65,12 @@ app.post("/webhook", (req, res) => {
   try{
     console.log(`webhook処理開始 from: [${req.body.events[0].source.userId}] msg: [${(req.body.events[0].message.text).replace(/\n/g, "")}]`);
   } catch(e) {
-    console.log(`webhook処理開始 from: [${req.body.events[0].source.userId}] type: [${req.body.events[0].type}]`);
+    if (req.body.events[0] !== undefined){
+      console.log(`webhook処理開始 from: [${req.body.events[0].source.userId}] type: [${req.body.events[0].type}]`);
+    } else {
+      res.status(200).json({}).end();
+      return null;
+    }
   }
   console.time("レスポンス処理所要時間");
 
@@ -76,18 +92,29 @@ app.post("/webhook", (req, res) => {
   })
 
   console.timeEnd("レスポンス処理所要時間");
+  return null;
 });
+
+app.get("/test_point", async(req, res) => {
+  console.log("Test point OK.")
+  // -------------------------------
+
+
+  // -------------------------------
+  res.status(200).json({}).end();
+  return null;
+})
 
 
 // ----------------------------------------------
 // エンドポイント公開設定
 // ----------------------------------------------
-exports.line_end_point = functions
+exports.node_functions = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 10,
   memory: "2GB",
-  secrets: ["R_LIST_MENU", "R_LIST_MENU_OVERLAY", "MAIL_PASS"]
+  secrets: ["MAIL_PASS"]
 })
 .https
 .onRequest(app);

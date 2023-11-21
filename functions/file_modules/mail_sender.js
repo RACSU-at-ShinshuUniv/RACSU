@@ -7,6 +7,14 @@ module.exports = async({method="", address="@shinshu-u.ac.jp", data={}}) => {
     return Promise.reject({result: "error"});
   }
 
+  let address_use;
+  if (!(process.env.GCLOUD_PROJECT == "racsu-shindai")){
+    console.log(`開発環境のため、メール送信先を上書きします。（${address} -> racsu.shinshu.univ@gmail.com）`)
+    address_use = "racsu.shinshu.univ@gmail.com"
+  } else {
+    address_use = address;
+  }
+
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     secure: true,
@@ -20,7 +28,7 @@ module.exports = async({method="", address="@shinshu-u.ac.jp", data={}}) => {
     const content = fs.readFileSync(path.resolve(__dirname, "../data/mail/auth.html")).toString();
     const mailOptions = {
       from: "RACSU 信州大学メール認証<racsu.shinshu.univ@gmail.com>",
-      to: address,
+      to: address_use,
       subject: "認証コードのお知らせ",
       html: content.replace("$1", data.token)
     };
@@ -42,7 +50,7 @@ module.exports = async({method="", address="@shinshu-u.ac.jp", data={}}) => {
 
     const mailOptions = {
       from: "RACSU 課題通知<racsu.shinshu.univ@gmail.com>",
-      to: address,
+      to: address_use,
       subject: data.title,
       html: contents
     };
@@ -57,7 +65,7 @@ module.exports = async({method="", address="@shinshu-u.ac.jp", data={}}) => {
     const content = "返信不要<br>これは、メール通知の送信テストです。"
     const mailOptions = {
       from: "RACSU 課題通知<racsu.shinshu.univ@gmail.com>",
-      to: address,
+      to: address_use,
       subject: "【テスト送信】課題通知",
       html: content
     };

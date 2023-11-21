@@ -201,10 +201,10 @@ module.exports = async(db, event_data, line_sender) => {
                 env_rich_menu = require("../data/rich_menu/local.json");
 
               } else if (process.env.GCLOUD_PROJECT == "racsu-develop"){
-                env_rich_menu = require("./data/rich_menu/dev.json");
+                env_rich_menu = require("../data/rich_menu/dev.json");
 
               } else if (process.env.GCLOUD_PROJECT == "racsu-shindai"){
-                env_rich_menu = require("./data/rich_menu/prod.json");
+                env_rich_menu = require("../data/rich_menu/prod.json");
               }
 
               line_sender.link_rich_menu({

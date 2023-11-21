@@ -19,13 +19,23 @@ const add_batch = async(db, batch, {user_id="", account_data={}, class_name_dic=
   // すでにデータベースに登録済みの課題は、登録されているdisplayとfinishの値をもってくる
   // 過去の課題かつ完了フラグが立っているもののdisplayをfalseに設定
   Object.keys(new_task_data).forEach((key) => {
+    // すでにデータベースに登録済みの課題は、登録されているdisplayとfinishの値をもってくる
     if (key in reg_tasks){
       new_task_data[key].finish = reg_tasks[key].finish;
       new_task_data[key].display = reg_tasks[key].display;
     }
+
+    // 過去の課題かつ完了フラグが立っているもののdisplayをfalseに設定
     if ((new_task_data[key].task_limit.toDate() < today) && new_task_data[key].finish){
       new_task_data[key].display = false;
     }
+
+    // 期限より3日以上過ぎた課題は非表示にする
+    if (((new_task_data[key].task_limit.toDate() - today) / 86400000) < -3){
+      new_task_data[key].display = false;
+    }
+
+    new_task_data[key].display = true;
   });
 
   console.log(`バッチ処理追加 (userID:${user_id})`)

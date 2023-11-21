@@ -2,7 +2,7 @@ require("date-utils")
 const {Timestamp} = require('firebase-admin/firestore');
 
 const flex_content = {
-  box: ({contents=[], layout="horizontal", margin="none", flex=1, padding_all="none", background_color="#ffffff", action="none", action_data=""}) => {
+  box: ({contents=[], layout="horizontal", margin="none", flex=1, padding_all="none", cornerRadius="none", background_color="#ffffff", action="none", action_data=""}) => {
     if (action == "message"){
       const res = {
         "type": "box",
@@ -15,7 +15,8 @@ const flex_content = {
         },
         "flex": flex,
         "backgroundColor": background_color,
-        "paddingAll": padding_all
+        "paddingAll": padding_all,
+        "cornerRadius": cornerRadius
       };
       return res;
 
@@ -31,7 +32,8 @@ const flex_content = {
         },
         "flex": flex,
         "backgroundColor": background_color,
-        "paddingAll": padding_all
+        "paddingAll": padding_all,
+        "cornerRadius": cornerRadius
       };
       return res;
 
@@ -43,7 +45,8 @@ const flex_content = {
         "contents": contents,
         "flex": flex,
         "backgroundColor": background_color,
-        "paddingAll": padding_all
+        "paddingAll": padding_all,
+        "cornerRadius": cornerRadius
       };
       return res;
     }
@@ -235,7 +238,7 @@ exports.json_to_flex = ({tasks={}}) => {
   const today = new Date();
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate()+1);
-  let todays_task_count=0, other_task_count=0, task_data_json = [];
+  let contents_count=0, todays_task_count=0, other_task_count=0, task_data_json=[], overflow=false;
 
   // console.log(today.toFormat("YYYYMMDD"));
 
@@ -318,7 +321,12 @@ exports.json_to_flex = ({tasks={}}) => {
         }
       })();
 
-      if (!tasks[key].finish){
+      // 累計25個以上の課題があった場合、それ以上はスキップ
+      if (contents_count > 25) {
+        overflow = true;
+      }
+
+      if (!tasks[key].finish && !overflow){
         task_data_json.push(
           flex_content.box({contents: [
             flex_content.text({text: "☐", color: "#555555"}),
@@ -329,7 +337,7 @@ exports.json_to_flex = ({tasks={}}) => {
         );
         todays_task_count++;
 
-      } else {
+      } else if (overflow){
         task_data_json.push(
           flex_content.box({contents: [
             flex_content.text({text: "☑", color: "#bbbbbb"}),
@@ -339,6 +347,8 @@ exports.json_to_flex = ({tasks={}}) => {
           ], margin: "md", action: "message", action_data: `cmd@redo?key=${key}`})
         );
       }
+
+      contents_count++;
     });
   }
 
@@ -389,6 +399,7 @@ exports.json_to_flex = ({tasks={}}) => {
             ], action: "message", action_data: `cmd@redo?key=${keys_other[i]}`})
           );
         }
+        contents_count++;
 
         // 最後まで読み込んだ場合break
         if (i+1 == keys_other.length){
@@ -401,8 +412,13 @@ exports.json_to_flex = ({tasks={}}) => {
         };
       }
 
+      // 累計25個以上の課題があった場合、それ以上はスキップ
+      if (contents_count > 25) {
+        overflow = true;
+      }
+
       // 同日課題をまとめて追加
-      if (tasks[keys_other[i]].task_limit.toDate() < today){
+      if (tasks[keys_other[i]].task_limit.toDate() < today && !overflow){
         task_data_json.push(
           flex_content.box({contents: [
             flex_content.box({contents: [
@@ -417,7 +433,7 @@ exports.json_to_flex = ({tasks={}}) => {
           ], margin: "md"})
         );
 
-      } else if (tasks[keys_other[i]].task_limit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD")){
+      } else if (tasks[keys_other[i]].task_limit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD") && !overflow){
         task_data_json.push(
           flex_content.box({contents: [
             flex_content.box({contents: [
@@ -432,7 +448,7 @@ exports.json_to_flex = ({tasks={}}) => {
           ], margin: "md"})
         );
 
-      } else {
+      } else if (!overflow){
         task_data_json.push(
           flex_content.box({contents: [
             flex_content.text({text: `${limit_day_add_this_loop}(${["日", "月", "火", "水", "木", "金", "土"][tasks[keys_other[i]].task_limit.toDate().getDay()]})`, size: "sm", color: "#555555", margin: "sm"}),
@@ -442,7 +458,9 @@ exports.json_to_flex = ({tasks={}}) => {
       }
 
       // セパレーター追加
-      task_data_json.push(flex_content.separator({margin: "lg"}));
+      if (!overflow){
+        task_data_json.push(flex_content.separator({margin: "lg"}));
+      }
 
       // 最後まで読み込んだ場合break
       if (i+1 == keys_other.length){
@@ -451,6 +469,19 @@ exports.json_to_flex = ({tasks={}}) => {
     };
   }
 
+  // ボタン追加
+  task_data_json.push(
+    flex_content.box({contents: [
+      flex_content.box({contents: [
+        flex_content.text({text: "完了済みを削除", size: "sm", color: "#ffffff"})
+      ], cornerRadius: "md", flex: 0, background_color: "#1f90ff", padding_all: "md", action: "message", action_data: "cmd@delete?target=finish"}),
+      flex_content.box({contents: [
+        flex_content.text({text: "超過を削除", size: "sm", color: "#ffffff"})
+      ], cornerRadius: "md", flex: 0, background_color: "#941f57", padding_all: "md", margin: "md", action: "message", action_data: "cmd@delete?target=past"})
+    ], margin: "sm", layout: "horizontal"})
+  )
+
+
   // フッター追加
   task_data_json.push(
     flex_content.box({contents: [
@@ -458,10 +489,26 @@ exports.json_to_flex = ({tasks={}}) => {
     ], margin: "md"})
   );
 
+  if (overflow) {
+    task_data_json.push(
+      flex_content.box({contents: [
+        flex_content.text({text: "※最大量超過により最後まで表示できていません。", size: "xs", color: "#ff0000"})
+      ]})
+    );
+  }
+
   const result = {
     "contents": task_data_json,
     "alt_text": `本日提出${todays_task_count}件 今後提出${other_task_count}件`
   }
+
+  // コンテンツデバック用
+  // const fs = require("fs");
+  // fs.writeFile('out.json', JSON.stringify(task_data_json), (err, data) => {
+  //   if(err) console.log(err);
+  //   else console.log('write end');
+  // });
+
   return result;
 }
 

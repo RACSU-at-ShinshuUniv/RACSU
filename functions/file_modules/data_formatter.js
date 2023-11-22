@@ -321,8 +321,8 @@ exports.json_to_flex = ({tasks={}}) => {
         }
       })();
 
-      // 累計25個以上の課題があった場合、それ以上はスキップ
-      if (contents_count > 25) {
+      // 累計15個以上の課題があった場合、それ以上はスキップ
+      if (contents_count > 15) {
         overflow = true;
       }
 
@@ -412,8 +412,8 @@ exports.json_to_flex = ({tasks={}}) => {
         };
       }
 
-      // 累計25個以上の課題があった場合、それ以上はスキップ
-      if (contents_count > 25) {
+      // 累計15個以上の課題があった場合、それ以上はスキップ
+      if (contents_count > 15) {
         overflow = true;
       }
 
@@ -503,11 +503,11 @@ exports.json_to_flex = ({tasks={}}) => {
   }
 
   // コンテンツデバック用
-  // const fs = require("fs");
-  // fs.writeFile('out.json', JSON.stringify(task_data_json), (err, data) => {
-  //   if(err) console.log(err);
-  //   else console.log('write end');
-  // });
+  const fs = require("fs");
+  fs.writeFile('out.json', JSON.stringify(task_data_json), (err, data) => {
+    if(err) console.log(err);
+    else console.log('write end');
+  });
 
   return result;
 }

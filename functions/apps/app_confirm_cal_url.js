@@ -43,6 +43,9 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
             moodle_general_token: url_param_authtoken,
             account_status: "linked"
           });
+          account_data.moodle_general_id = url_param_userid;
+          account_data.moodle_general_token = url_param_authtoken;
+          account_data.account_status = "linked";
 
         } else {
           db.collection("users").doc(user_id).update({
@@ -50,10 +53,21 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
             moodle_specific_token: url_param_authtoken,
             account_status: "linked"
           });
+          account_data.moodle_specific_id = url_param_userid;
+          account_data.moodle_specific_token = url_param_authtoken;
+          account_data.account_status = "linked";
         }
+
+        // バックグラウンドで課題を更新
+        const app_update_task = require("./app_update_task");
+        app_update_task(db, {
+          user_id: user_id,
+          account_data: account_data
+        });
         return Promise.resolve({result: "ok"});
 
 
+      // どちらか一方のURLのみ登録
       } else {
         if (url_param_department == "g"){
           db.collection("users").doc(user_id).update({
@@ -68,7 +82,6 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
           });
         }
         return Promise.resolve({result: "continue"});
-
       }
     }
   }

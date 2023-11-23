@@ -1,3 +1,17 @@
+const get_env_rich_menu_id = () => {
+  let env_rich_menu;
+  if (process.env.K_REVISION == 1){
+    env_rich_menu = require("../data/rich_menu/local.json");
+
+  } else if (process.env.GCLOUD_PROJECT == "racsu-develop"){
+    env_rich_menu = require("../data/rich_menu/dev.json");
+
+  } else if (process.env.GCLOUD_PROJECT == "racsu-shindai"){
+    env_rich_menu = require("../data/rich_menu/prod.json");
+  }
+  return env_rich_menu;
+}
+
 module.exports = async(db, event_data, line_sender) => {
   switch (event_data.type){
 
@@ -30,7 +44,35 @@ module.exports = async(db, event_data, line_sender) => {
 
     // ポストバックアクション
     case "postback": {
-      break
+      switch (event_data.postback.data){
+        case "finish_tutorial": {
+          const app_load_task = require("./app_load_task");
+          app_load_task(db, {
+            user_id: event_data.source.userId
+
+          }).then((res) => {
+            if (res.result == "ok"){
+              line_sender.flex_task_list({
+                contents: res.data.contents,
+                alt_text: res.data.alt_text,
+                notice_refresh: true,
+                notice_message: "課題はこのような形で送信されます。\n課題をタップすることで、完了登録ができます。\n\n※何も課題がない場合は表示されません。"
+              })
+            }
+
+          }).catch((e) => {
+            line_sender.alert_error({
+              error_msg: e
+            });
+          });
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
+      break;
     }
 
     // メッセージアクション
@@ -149,8 +191,16 @@ module.exports = async(db, event_data, line_sender) => {
                 });
 
               } else if (res.result == "ok"){
-                line_sender.text({
-                  message: "初期設定が完了しました！\n下部メニューの右上「データを更新する」より課題を取得してみてください！"
+                const contents = require("../data/flex_msg/start_tutorial.json")
+                line_sender.flex({
+                  contents: contents,
+                  alt_text: "初期設定が完了しました！"
+                });
+
+                const env_rich_menu = get_env_rich_menu_id();
+                line_sender.link_rich_menu({
+                  user_id: event_data.source.userId,
+                  rich_menu_id: env_rich_menu.tuto_1
                 });
 
               } else {
@@ -196,30 +246,17 @@ module.exports = async(db, event_data, line_sender) => {
 
             // 課題の更新
             } else if (message == "データを更新する"){
-              let env_rich_menu;
-              if (process.env.K_REVISION == 1){
-                env_rich_menu = require("../data/rich_menu/local.json");
-
-              } else if (process.env.GCLOUD_PROJECT == "racsu-develop"){
-                env_rich_menu = require("../data/rich_menu/dev.json");
-
-              } else if (process.env.GCLOUD_PROJECT == "racsu-shindai"){
-                env_rich_menu = require("../data/rich_menu/prod.json");
-              }
+              const env_rich_menu = get_env_rich_menu_id();
 
               line_sender.link_rich_menu({
                 user_id: event_data.source.userId,
                 rich_menu_id: env_rich_menu.list_menu_overlay
               });
 
-              const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
-              const prev_length = Object.keys(class_name_dic).length;
-
               const app_update_task = require("./app_update_task");
               app_update_task(db, {
                 user_id: event_data.source.userId,
-                account_data: account_data,
-                class_name_dic: class_name_dic
+                account_data: account_data
 
               }).then((res) => {
                 if (res.result == "ok"){
@@ -233,12 +270,6 @@ module.exports = async(db, event_data, line_sender) => {
                     notice_refresh: true,
                     notice_message: "課題を最新に更新しました。"
                   });
-
-                  if (prev_length !== Object.keys(class_name_dic).length){
-                    db.collection("overall").doc("classes").set(class_name_dic).then(() => {
-                      console.log("update class_name_dic");
-                    });
-                  }
 
                 } else if (res.result == "no task"){
                   line_sender.text({
@@ -308,7 +339,7 @@ module.exports = async(db, event_data, line_sender) => {
                 });
               });
 
-            } else if (message == "eAlps連携設定" || message == "通知設定" || message == "超過課題の表示" || message == "RACSUについて・サポート"){
+            } else if (message == "eAlps連携設定" || message == "通知設定" || message == "超過課題の表示" || message == "ご意見・ご要望"){
               line_sender.text({
                 message: "設定項目はまだ未実装です…"
               })

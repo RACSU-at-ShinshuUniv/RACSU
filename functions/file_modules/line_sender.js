@@ -62,6 +62,16 @@ class Line_Sender {
     });
   }
 
+  flex({contents={}, alt_text=""}){
+    this.client.replyMessage(this.reply_token, {
+      type: "flex",
+      altText: alt_text,
+      contents: contents
+    }).catch((err) => {
+      console.error("Error occurred!: ", err);
+    });
+  }
+
   flex_added_friend(){
     const json_added_friend = require("../data/flex_msg/added_friend.json");
     this.client.replyMessage(this.reply_token, {

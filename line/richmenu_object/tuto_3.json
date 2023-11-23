@@ -16,7 +16,7 @@
       },
       "action": {
         "type": "richmenuswitch",
-        "data": "switch_list_menu",
+        "data": "finish_tutorial",
         "richMenuAliasId": "list_menu"
       }
     }

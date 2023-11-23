@@ -35,7 +35,7 @@ const db = getFirestore();
 // ----------------------------------------------
 // 連携済み全ユーザーデータ取得関数
 // ----------------------------------------------
-const get_all_data = async({get_class_name_dic=false}) => {
+const get_all_data = async() => {
   const all_user_data = {}, all_reg_tasks = {};
   (await db.collection("users").get()).forEach(doc => {
     const data = doc.data();
@@ -49,12 +49,7 @@ const get_all_data = async({get_class_name_dic=false}) => {
     }
   });
   const all_user_id = Object.keys(all_user_data);
-  if (get_class_name_dic){
-    const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
-    return {all_user_data: all_user_data, all_reg_tasks:all_reg_tasks, all_user_id:all_user_id, class_name_dic:class_name_dic};
-  } else {
-    return {all_user_data: all_user_data, all_reg_tasks:all_reg_tasks, all_user_id:all_user_id};
-  }
+  return {all_user_data: all_user_data, all_reg_tasks: all_reg_tasks, all_user_id: all_user_id};
 }
 
 // ----------------------------------------------
@@ -132,7 +127,7 @@ exports.trigger_update = functions
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const autoapp_update = require("./apps/autoapp_update");
-  autoapp_update(db, await get_all_data({ get_class_name_dic : true }))
+  autoapp_update(db, await get_all_data())
   .catch((e) => {
     console.log("自動更新でエラー発生", e);
   });
@@ -155,7 +150,7 @@ exports.trigger_notify = functions
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const autoapp_notify = require("./apps/autoapp_notify");
-  autoapp_notify(await get_all_data({ get_class_name_dic : false }))
+  autoapp_notify(await get_all_data())
   .catch((e) => {
     console.log("自動通知でエラー発生", e);
   });

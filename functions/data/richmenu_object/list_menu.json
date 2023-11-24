@@ -1,0 +1,62 @@
+{
+    "size": {
+      "width": 1200,
+      "height": 484
+    },
+    "selected": true,
+    "name": "リストメニュー",
+    "chatBarText": "メニューの開閉",
+    "areas": [
+      {
+        "bounds": {
+          "x": 124,
+          "y": 107,
+          "width": 954,
+          "height": 188
+        },
+        "action": {
+          "type": "message",
+          "text": "登録済みの課題を表示"
+        }
+      },
+      {
+        "bounds": {
+          "x": 6,
+          "y": 13,
+          "width": 336,
+          "height": 71
+        },
+        "action": {
+          "type": "message",
+          "text": "データを更新する"
+        }
+      },
+      {
+        "bounds": {
+          "x": 836,
+          "y": 345,
+          "width": 233,
+          "height": 139
+        },
+        "action": {
+          "type": "richmenuswitch",
+          "data": "switch_setting_menu",
+          "richMenuAliasId": "setting_menu"
+        }
+      },
+      {
+        "bounds": {
+          "x": 463,
+          "y": 342,
+          "width": 276,
+          "height": 142
+        },
+        "action": {
+          "type": "postback",
+          "data": "add_task",
+          "inputOption": "openKeyboard",
+          "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「2023/01/01」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+        }
+      }
+    ]
+  }

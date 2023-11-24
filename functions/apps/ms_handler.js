@@ -1,13 +1,13 @@
 const get_env_rich_menu_id = () => {
   let env_rich_menu;
   if (process.env.K_REVISION == 1){
-    env_rich_menu = require("../data/rich_menu/local.json");
+    env_rich_menu = require("../data/richmenu_id/local.json");
 
   } else if (process.env.GCLOUD_PROJECT == "racsu-develop"){
-    env_rich_menu = require("../data/rich_menu/dev.json");
+    env_rich_menu = require("../data/richmenu_id/dev.json");
 
   } else if (process.env.GCLOUD_PROJECT == "racsu-shindai"){
-    env_rich_menu = require("../data/rich_menu/prod.json");
+    env_rich_menu = require("../data/richmenu_id/prod.json");
   }
   return env_rich_menu;
 }

@@ -1,5 +1,7 @@
-module.exports = async(db, {user_id="", account_data={}, class_name_dic={}}) => {
+module.exports = async(db, {user_id="", account_data={}}) => {
   const today = new Date();
+  const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
+  const prev_length = Object.keys(class_name_dic).length;
 
   // 取得した課題データとすでにデータベースに登録済みの課題データのすり合わせをする
   const get_latest_task = require("../file_modules/get_latest_task");
@@ -44,6 +46,12 @@ module.exports = async(db, {user_id="", account_data={}, class_name_dic={}}) => 
     const flex_data = json_to_flex({
       tasks: new_task_data
     });
+
+    if (prev_length !== Object.keys(class_name_dic).length){
+      db.collection("overall").doc("classes").set(class_name_dic).then(() => {
+        console.log("update class_name_dic");
+      });
+    }
 
     if (Object.keys(new_task_data).length == 0){
       return Promise.resolve({result: "no task"})

@@ -1,0 +1,24 @@
+{
+    "size": {
+      "width": 1200,
+      "height": 484
+    },
+    "selected": true,
+    "name": "リストメニューオーバーレイ",
+    "chatBarText": "メニューの開閉",
+    "areas": [
+      {
+        "bounds": {
+          "x": 917,
+          "y": 68,
+          "width": 122,
+          "height": 103
+        },
+        "action": {
+          "type": "richmenuswitch",
+          "data": "switch_list_menu",
+          "richMenuAliasId": "list_menu"
+        }
+      }
+    ]
+  }

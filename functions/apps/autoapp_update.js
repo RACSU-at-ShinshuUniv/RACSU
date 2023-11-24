@@ -34,8 +34,6 @@ const add_batch = async(db, batch, {user_id="", account_data={}, class_name_dic=
     if (((new_task_data[key].task_limit.toDate() - today) / 86400000) < -3){
       new_task_data[key].display = false;
     }
-
-    new_task_data[key].display = true;
   });
 
   console.log(`バッチ処理追加 (userID:${user_id})`)
@@ -43,8 +41,9 @@ const add_batch = async(db, batch, {user_id="", account_data={}, class_name_dic=
 }
 
 
-module.exports = async(db, {all_user_data, all_reg_tasks, all_user_id, class_name_dic}) => {
-  const batch = db.batch()
+module.exports = async(db, {all_user_data, all_reg_tasks, all_user_id}) => {
+  const batch = db.batch();
+  const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
   const prev_length = Object.keys(class_name_dic).length;
 
   const is_dev_mode = JSON.parse(process.env.DEBUG_FLAG);

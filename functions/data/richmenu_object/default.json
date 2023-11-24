@@ -1,0 +1,36 @@
+{
+  "size": {
+    "width": 1200,
+    "height": 484
+  },
+  "selected": true,
+  "name": "デフォルト",
+  "chatBarText": "メニューの開閉",
+  "areas": [
+    {
+      "bounds": {
+        "x": 317,
+        "y": 259,
+        "width": 564,
+        "height": 141
+      },
+      "action": {
+        "type": "postback",
+        "data": "open_keyboard",
+        "inputOption": "openKeyboard"
+      }
+    },
+    {
+      "bounds": {
+        "x": 398,
+        "y": 193,
+        "width": 375,
+        "height": 60
+      },
+      "action": {
+        "type": "uri",
+        "uri": "https://racsu-shindai.web.app/home/"
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+    "size": {
+      "width": 1200,
+      "height": 810
+    },
+    "selected": true,
+    "name": "設定メニュー",
+    "chatBarText": "メニューの開閉",
+    "areas": [
+      {
+        "bounds": {
+          "x": 137,
+          "y": 135,
+          "width": 998,
+          "height": 92
+        },
+        "action": {
+          "type": "message",
+          "text": "eAlps連携設定"
+        }
+      },
+      {
+        "bounds": {
+          "x": 135,
+          "y": 231,
+          "width": 996,
+          "height": 94
+        },
+        "action": {
+          "type": "message",
+          "text": "通知設定"
+        }
+      },
+      {
+        "bounds": {
+          "x": 135,
+          "y": 326,
+          "width": 1016,
+          "height": 98
+        },
+        "action": {
+          "type": "uri",
+          "uri": "https://racsu-shindai.web.app/home/"
+        }
+      },
+      {
+        "bounds": {
+          "x": 144,
+          "y": 422,
+          "width": 1009,
+          "height": 101
+        },
+        "action": {
+          "type": "message",
+          "text": "ご意見・ご要望"
+        }
+      },
+      {
+        "bounds": {
+          "x": 400,
+          "y": 665,
+          "width": 400,
+          "height": 145
+        },
+        "action": {
+          "type": "postback",
+          "data": "add_task",
+          "inputOption": "openKeyboard",
+          "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「2023/01/01」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+        }
+      },
+      {
+        "bounds": {
+          "x": 0,
+          "y": 665,
+          "width": 400,
+          "height": 145
+        },
+        "action": {
+          "type": "richmenuswitch",
+          "richMenuAliasId": "list_menu",
+          "data": "switch_list_menu"
+        }
+      }
+    ]
+  }

@@ -1,0 +1,42 @@
+{
+  "type": "bubble",
+  "size": "mega",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "eAlpsとの接続が完了しました！",
+        "align": "center",
+        "margin": "md"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "利用を開始する！",
+            "align": "center",
+            "gravity": "center",
+            "color": "#ffffff",
+            "wrap": true
+          }
+        ],
+        "backgroundColor": "#06C755",
+        "paddingAll": "lg",
+        "cornerRadius": "md",
+        "borderColor": "#93f5bb",
+        "borderWidth": "normal",
+        "margin": "md",
+        "action": {
+          "type": "postback",
+          "data": "start_tutoral",
+          "inputOption": "openRichMenu"
+        }
+      }
+    ],
+    "paddingAll": "md"
+  }
+}

@@ -1,5 +1,9 @@
 {
-  "list_menu": "richmenu-b01f5bcfbcee7306eab441d015c2010e",
-  "list_menu_overlay": "richmenu-13bc6848423ccd322ccd1cf037a786e7",
-  "setting_menu": "richmenu-4af21ce09e4081ffe7955d0ca8857f04"
+  "list_menu": "richmenu-8aa1f9e86e486c64b4598a80b3086024",
+  "list_menu_overlay": "richmenu-e452b29e3333a889d4ec52e79b44891a",
+  "setting_menu": "",
+  "default": "",
+  "tuto_1": "richmenu-a000d9245db05698a8a15c29733ddeaf",
+  "tuto_2": "",
+  "tuto_3": ""
 }

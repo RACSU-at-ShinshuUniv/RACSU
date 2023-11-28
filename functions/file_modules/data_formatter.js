@@ -503,11 +503,11 @@ exports.json_to_flex = ({tasks={}}) => {
   }
 
   // コンテンツデバック用
-  const fs = require("fs");
-  fs.writeFile('out.json', JSON.stringify(task_data_json), (err, data) => {
-    if(err) console.log(err);
-    else console.log('write end');
-  });
+  // const fs = require("fs");
+  // fs.writeFile('out.json', JSON.stringify(task_data_json), (err, data) => {
+  //   if(err) console.log(err);
+  //   else console.log('write end');
+  // });
 
   return result;
 }

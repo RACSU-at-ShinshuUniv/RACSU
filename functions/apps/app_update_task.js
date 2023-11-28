@@ -1,5 +1,7 @@
-module.exports = async(db, {user_id="", account_data={}, class_name_dic={}}) => {
+module.exports = async(db, {user_id="", account_data={}}) => {
   const today = new Date();
+  const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
+  const prev_length = Object.keys(class_name_dic).length;
 
   // 取得した課題データとすでにデータベースに登録済みの課題データのすり合わせをする
   const get_latest_task = require("../file_modules/get_latest_task");
@@ -21,13 +23,15 @@ module.exports = async(db, {user_id="", account_data={}, class_name_dic={}}) => 
         }
       })
 
-      // すでにデータベースに登録済みの課題は、登録されているdisplayとfinishの値をもってくる
-      // 過去の課題かつ完了フラグが立っているもののdisplayをfalseに設定
+
       Object.keys(new_task_data).forEach((key) => {
+        // すでにデータベースに登録済みの課題は、登録されているdisplayとfinishの値をもってくる
         if (key in reg_tasks){
           new_task_data[key].finish = reg_tasks[key].finish;
           new_task_data[key].display = reg_tasks[key].display;
         }
+
+        // 過去の課題かつ完了フラグが立っているもののdisplayをfalseに設定
         if ((new_task_data[key].task_limit.toDate() < today) && new_task_data[key].finish){
           new_task_data[key].display = false;
         }
@@ -42,6 +46,12 @@ module.exports = async(db, {user_id="", account_data={}, class_name_dic={}}) => 
     const flex_data = json_to_flex({
       tasks: new_task_data
     });
+
+    if (prev_length !== Object.keys(class_name_dic).length){
+      db.collection("overall").doc("classes").set(class_name_dic).then(() => {
+        console.log("update class_name_dic");
+      });
+    }
 
     if (Object.keys(new_task_data).length == 0){
       return Promise.resolve({result: "no task"})

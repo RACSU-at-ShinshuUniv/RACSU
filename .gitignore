@@ -70,3 +70,4 @@ functions/develop/
 # others
 .VSCodeCounter/
 functions/out.json
+photothumb.db

@@ -1,0 +1,1123 @@
+{
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "追加する授業時間を選択：",
+            "size": "xl",
+            "weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "※ 本日を基準に、翌週・翌々週の選択授業の開始時間に締め切りをセットします。",
+            "size": "sm",
+            "wrap": true,
+            "margin": "md",
+            "color": "#ff0000"
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "filler"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "text",
+                "text": "月",
+                "margin": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "text",
+                "text": "火",
+                "margin": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "text",
+                "text": "水",
+                "margin": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "text",
+                "text": "木",
+                "margin": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "text",
+                "text": "金",
+                "margin": "md"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "color": "#000000"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "1限",
+                "gravity": "center",
+                "offsetStart": "sm"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「1限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "color": "#000000"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "2限",
+                "gravity": "center",
+                "offsetStart": "sm"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「2限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "color": "#000000"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "3限",
+                "gravity": "center",
+                "offsetStart": "sm"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「3限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "color": "#000000"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "4限",
+                "gravity": "center",
+                "offsetStart": "sm"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「4限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              }
+            ]
+          },
+          {
+            "type": "separator",
+            "color": "#000000"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "text",
+                "text": "5限",
+                "gravity": "center",
+                "offsetStart": "sm"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              },
+              {
+                "type": "separator",
+                "color": "#000000"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "翌週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「5限開始時」\n\n「」の中を書き換えて送信してください。"
+                    }
+                  }
+                ],
+                "margin": "md",
+                "paddingTop": "md",
+                "paddingBottom": "md"
+              }
+            ]
+          }
+        ],
+        "borderColor": "#000000",
+        "borderWidth": "light",
+        "margin": "md"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "text",
+            "text": "上記以外の時間に設定する場合は",
+            "flex": 0
+          },
+          {
+            "type": "text",
+            "text": "こちら",
+            "color": "#1a0dab",
+            "decoration": "underline",
+            "action": {
+              "type": "postback",
+              "data": "set_limit",
+              "inputOption": "openKeyboard",
+              "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「2023/01/01」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+            }
+          }
+        ],
+        "margin": "md"
+      }
+    ],
+    "paddingAll": "md"
+  }
+}

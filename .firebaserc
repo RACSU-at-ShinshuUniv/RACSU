@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "racsu-develop",
+    "default": "racsu-shindai",
     "production": "racsu-shindai"
   },
   "targets": {},

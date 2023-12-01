@@ -27,11 +27,8 @@ class Line_Sender {
       type: 'text',
       text: `${message}`
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
-      this.client.replyMessage(this.reply_token, {
-        type: "text",
-        text: `メッセージ送信処理でエラーが発生しました。\nこのエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
   }
 
@@ -40,25 +37,19 @@ class Line_Sender {
       type: "text",
       text: "テキストメッセージ以外は\n処理できません<(_ _)>"
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
-      // this.client.replyMessage(this.reply_token, {
-      //   type: "text",
-      //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      // });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
   }
 
   alert_error({error_msg="不明なエラー"}){
-    console.error("Error occurred!: ", error_msg);
+    console.error("メッセージ送信エラー", error_msg);
     this.client.replyMessage(this.reply_token, {
       type: "text",
       text: `処理エラーが発生しました。\n${error_msg}`
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
-      // this.client.replyMessage(this.reply_token, {
-      //   type: "text",
-      //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      // });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
   }
 
@@ -68,7 +59,8 @@ class Line_Sender {
       altText: alt_text,
       contents: contents
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
   }
 
@@ -79,11 +71,8 @@ class Line_Sender {
       altText: "友達登録ありがとうございます！",
       contents: json_added_friend
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
-      // this.client.replyMessage(this.reply_token, {
-      //   type: "text",
-      //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      // });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
   }
 
@@ -95,11 +84,8 @@ class Line_Sender {
       contents: JSON.parse(JSON.stringify(json_auth_guide)
         .replace("$1", address))
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
-      // this.client.replyMessage(this.reply_token, {
-      //   type: "text",
-      //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      // });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
   }
 
@@ -113,11 +99,8 @@ class Line_Sender {
       altText: "利用規約をご確認ください。",
       contents: json_user_policy
     }]).catch((err) => {
-      console.error("Error occurred!: ", err);
-      // this.client.replyMessage(this.reply_token, {
-      //   type: "text",
-      //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      // });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
   }
 
@@ -137,11 +120,8 @@ class Line_Sender {
         .replace("$1", url_1)
         .replace("$2", url_2))
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
-      // this.client.replyMessage(this.reply_token, {
-      //   type: "text",
-      //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      // });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
   }
 
@@ -161,7 +141,8 @@ class Line_Sender {
           }
         }
       }).catch((err) => {
-        console.error("Error occurred!: ", err);
+        console.error("メッセージ送信エラー", err);
+        console.error(err.originalError.response.data);
         // this.client.replyMessage(this.reply_token, {
         //   type: "text",
         //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
@@ -185,7 +166,8 @@ class Line_Sender {
         type: "text",
         text: notice_message
       }]).catch((err) => {
-        console.error("Error occurred!: ", err);
+        console.error("メッセージ送信エラー", err);
+        console.error(err.originalError.response.data);
         // this.client.replyMessage(this.reply_token, {
         //   type: "text",
         //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
@@ -203,11 +185,8 @@ class Line_Sender {
       .replace("$1", err_msg)
       .replace("$2", content.replace(/\n/g, "\\n")))
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
-      // this.client.replyMessage(this.reply_token, {
-      //   type: "text",
-      //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      // });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
 
   }
@@ -224,11 +203,8 @@ class Line_Sender {
       .replace("$4", `cmd@add?cn=${task_data.class_name}&tn=${task_data.task_name}&tl=${task_data.task_limit.replace(" ", "-")}`)
       .replace("$5", content.replace(/\n/g, "\\n")))
     }).catch((err) => {
-      console.error("Error occurred!: ", err);
-      // this.client.replyMessage(this.reply_token, {
-      //   type: "text",
-      //   text: `メッセージ送信処理でエラーが発生しました。このエラーが複数回発生する場合は、右下の設定＞サポートより管理者にお問い合わせください。\n${err}`
-      // });
+      console.error("メッセージ送信エラー", err);
+      console.error(err.originalError.response.data);
     });
 
   }

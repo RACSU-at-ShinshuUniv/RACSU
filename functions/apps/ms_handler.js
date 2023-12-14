@@ -320,8 +320,8 @@ module.exports = async(db, event_data, line_sender) => {
                 });
               });
 
+            // 課題手動追加処理
             } else if (message.includes("【☆課題追加フォーム☆】")){
-              // 課題手動追加処理
               const app_add_manual_task = require("./app_add_manual_task");
               app_add_manual_task(db, {
                 user_id: event_data.source.userId,
@@ -347,9 +347,10 @@ module.exports = async(db, event_data, line_sender) => {
                 });
               });
 
+
             } else if (message == "eAlps連携設定" || message == "通知設定" || message == "超過課題の表示" || message == "ご意見・ご要望"){
               line_sender.text({
-                message: "設定項目はまだ未実装です…"
+                message: "この項目はまだ未実装です…"
               })
             } else {}
             break;

@@ -114,7 +114,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「9:00」"
                     }
                   },
                   {
@@ -126,7 +126,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「9:00」"
                     }
                   }
                 ],
@@ -151,7 +151,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「9:00」"
                     }
                   },
                   {
@@ -163,7 +163,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「9:00」"
                     }
                   }
                 ],
@@ -188,7 +188,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「9:00」"
                     }
                   },
                   {
@@ -200,7 +200,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「9:00」"
                     }
                   }
                 ],
@@ -225,7 +225,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「9:00」"
                     }
                   },
                   {
@@ -237,7 +237,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「9:00」"
                     }
                   }
                 ],
@@ -262,7 +262,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「9:00」"
                     }
                   },
                   {
@@ -274,7 +274,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「9:00」"
                     }
                   }
                 ],
@@ -315,7 +315,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「10:40」"
                     }
                   },
                   {
@@ -327,7 +327,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「10:40」"
                     }
                   }
                 ],
@@ -352,7 +352,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「10:40」"
                     }
                   },
                   {
@@ -364,7 +364,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「10:40」"
                     }
                   }
                 ],
@@ -389,7 +389,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「10:40」"
                     }
                   },
                   {
@@ -401,7 +401,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「10:40」"
                     }
                   }
                 ],
@@ -426,7 +426,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「10:40」"
                     }
                   },
                   {
@@ -438,7 +438,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「10:40」"
                     }
                   }
                 ],
@@ -463,7 +463,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「10:40」"
                     }
                   },
                   {
@@ -475,7 +475,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「10:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「10:40」"
                     }
                   }
                 ],
@@ -516,7 +516,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「13:00」"
                     }
                   },
                   {
@@ -528,7 +528,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「13:00」"
                     }
                   }
                 ],
@@ -553,7 +553,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「13:00」"
                     }
                   },
                   {
@@ -565,7 +565,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「13:00」"
                     }
                   }
                 ],
@@ -590,7 +590,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「13:00」"
                     }
                   },
                   {
@@ -602,7 +602,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「13:00」"
                     }
                   }
                 ],
@@ -627,7 +627,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「13:00」"
                     }
                   },
                   {
@@ -639,7 +639,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「13:00」"
                     }
                   }
                 ],
@@ -664,7 +664,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「13:00」"
                     }
                   },
                   {
@@ -676,7 +676,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「13:00」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「13:00」"
                     }
                   }
                 ],
@@ -717,7 +717,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「14:40」"
                     }
                   },
                   {
@@ -729,7 +729,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「14:40」"
                     }
                   }
                 ],
@@ -754,7 +754,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「14:40」"
                     }
                   },
                   {
@@ -766,7 +766,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「14:40」"
                     }
                   }
                 ],
@@ -791,7 +791,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「14:40」"
                     }
                   },
                   {
@@ -803,7 +803,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「14:40」"
                     }
                   }
                 ],
@@ -828,7 +828,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「14:40」"
                     }
                   },
                   {
@@ -840,7 +840,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「14:40」"
                     }
                   }
                 ],
@@ -865,7 +865,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「14:40」"
                     }
                   },
                   {
@@ -877,7 +877,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「14:40」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「14:40」"
                     }
                   }
                 ],
@@ -918,7 +918,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「16:20」"
                     }
                   },
                   {
@@ -930,7 +930,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「16:20」"
                     }
                   }
                 ],
@@ -955,7 +955,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「16:20」"
                     }
                   },
                   {
@@ -967,7 +967,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「16:20」"
                     }
                   }
                 ],
@@ -992,7 +992,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「16:20」"
                     }
                   },
                   {
@@ -1004,7 +1004,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「16:20」"
                     }
                   }
                 ],
@@ -1029,7 +1029,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「16:20」"
                     }
                   },
                   {
@@ -1041,7 +1041,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「16:20」"
                     }
                   }
                 ],
@@ -1066,7 +1066,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「16:20」"
                     }
                   },
                   {
@@ -1078,7 +1078,7 @@
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「16:20」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「16:20」"
                     }
                   }
                 ],
@@ -1098,9 +1098,9 @@
             "contents": [
               {
                 "type": "text",
+                "text": "23:59",
                 "gravity": "center",
-                "text": "その後",
-                "offsetStart": "xs"
+                "offsetStart": "sm"
               },
               {
                 "type": "separator",
@@ -1112,14 +1112,26 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "23:59",
+                    "text": "翌週",
                     "decoration": "underline",
                     "color": "#1a0dab",
                     "action": {
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週月曜」\n期限時間：「23:59」"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「23:59」"
                     }
                   }
                 ],
@@ -1137,14 +1149,26 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "23:59",
+                    "text": "翌週",
                     "decoration": "underline",
                     "color": "#1a0dab",
                     "action": {
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週火曜」\n期限時間：「23:59」"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週火曜」\n期限時間：「23:59」"
                     }
                   }
                 ],
@@ -1162,14 +1186,26 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "23:59",
+                    "text": "翌週",
                     "decoration": "underline",
                     "color": "#1a0dab",
                     "action": {
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週水曜」\n期限時間：「23:59」"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週水曜」\n期限時間：「23:59」"
                     }
                   }
                 ],
@@ -1187,14 +1223,26 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "23:59",
+                    "text": "翌週",
                     "decoration": "underline",
                     "color": "#1a0dab",
                     "action": {
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週木曜」\n期限時間：「23:59」"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週木曜」\n期限時間：「23:59」"
                     }
                   }
                 ],
@@ -1212,14 +1260,26 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "23:59",
+                    "text": "翌週",
                     "decoration": "underline",
                     "color": "#1a0dab",
                     "action": {
                       "type": "postback",
                       "data": "set_limit",
                       "inputOption": "openKeyboard",
-                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週月曜」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌週金曜」\n期限時間：「23:59」"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "翌々週",
+                    "decoration": "underline",
+                    "color": "#1a0dab",
+                    "action": {
+                      "type": "postback",
+                      "data": "set_limit",
+                      "inputOption": "openKeyboard",
+                      "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「翌々週金曜」\n期限時間：「23:59」"
                     }
                   }
                 ],
@@ -1252,7 +1312,7 @@
               "type": "postback",
               "data": "set_limit",
               "inputOption": "openKeyboard",
-              "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「2023/01/01」\n期限時間：「23:59」\n\n「」の中を書き換えて送信してください。"
+              "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「2023/01/01」\n期限時間：「23:59」"
             }
           }
         ],

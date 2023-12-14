@@ -1,15 +1,14 @@
 const get_env_rich_menu_id = () => {
-  let env_rich_menu;
+  const env_rich_menu = require("../data/richmenu_ids.json");;
   if (process.env.K_REVISION == 1){
-    env_rich_menu = require("../data/richmenu_id/local.json");
+    return env_rich_menu.local;
 
   } else if (process.env.GCLOUD_PROJECT == "racsu-develop"){
-    env_rich_menu = require("../data/richmenu_id/dev.json");
+    return env_rich_menu.dev;
 
   } else if (process.env.GCLOUD_PROJECT == "racsu-shindai"){
-    env_rich_menu = require("../data/richmenu_id/prod.json");
+    return env_rich_menu.prod;
   }
-  return env_rich_menu;
 }
 
 module.exports = async(db, event_data, line_sender) => {

@@ -28,7 +28,6 @@ module.exports = async(db, {user_id="", message="", account_data={}}) => {
   const url = (url_param_department == "g")
   ? `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/g/calendar/export_execute.php?userid=${url_param_userid}&authtoken=${url_param_authtoken}&preset_what=all&preset_time=recentupcoming`
   : `https://lms.ealps.shinshu-u.ac.jp/${term.getFullYear()}/${user_department}/calendar/export_execute.php?userid=${url_param_userid}&authtoken=${url_param_authtoken}&preset_what=all&preset_time=recentupcoming`;
-  console.log(url);
 
   const { is_valid_url } = require("../file_modules/ical_fetch");
   if (!(await is_valid_url({url: url}))){

@@ -120,7 +120,7 @@
         ],
         "action": {
             "type": "postback",
-            "data": "add_task",
+            "data": "retry_add_task",
             "inputOption": "openKeyboard",
             "fillInText": "$5"
         },

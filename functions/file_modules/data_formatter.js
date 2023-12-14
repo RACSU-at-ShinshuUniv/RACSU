@@ -477,7 +477,10 @@ exports.json_to_flex = ({tasks={}}) => {
       ], cornerRadius: "md", flex: 0, background_color: "#1f90ff", padding_all: "md", action: "message", action_data: "cmd@delete?target=finish"}),
       flex_content.box({contents: [
         flex_content.text({text: "超過を削除", size: "sm", color: "#ffffff"})
-      ], cornerRadius: "md", flex: 0, background_color: "#941f57", padding_all: "md", margin: "md", action: "message", action_data: "cmd@delete?target=past"})
+      ], cornerRadius: "md", flex: 0, background_color: "#941f57", padding_all: "md", margin: "md", action: "message", action_data: "cmd@delete?target=past"}),
+      flex_content.box({contents: [
+        flex_content.text({text: "表示を更新", size: "sm", color: "#ffffff"})
+      ], cornerRadius: "md", flex: 0, background_color: "#1b5aad", padding_all: "md", margin: "md", action: "message", action_data: "登録済みの課題を表示"})
     ], margin: "sm", layout: "horizontal"})
   )
 

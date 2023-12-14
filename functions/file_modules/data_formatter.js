@@ -149,7 +149,7 @@ exports.ical_to_json = async({ical_data={}, class_name_dic={}, dev_msg=""}) => {
   let task_data = {};
 
   // 課題としての認識パターンインポート
-  const valid_task_patterns = require("../data/regexp/valid_task_patterns.json");
+  const valid_task_patterns = require("../data/task_patterns.json");
 
   for (const key of ical_keys){
 

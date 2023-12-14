@@ -15,10 +15,9 @@ if (process.env.K_REVISION == 1){
   console.log("webhook接続先は「[ngrokURL]/racsu-develop/asia-northeast1/node_functions/webhook」です。")
   linebot_account = require("./data/keys/LineAccount_local.json");
 
-} else{
+} else {
   linebot_account = require("./data/keys/LineAccount.json");
 }
-// const linebot_account = require("./data/keys/LineAccount.json");
 const linebot_sdk = require("@line/bot-sdk");
 const Line_Sender = require("./file_modules/line_sender");
 const linebot_client = new linebot_sdk.Client(linebot_account);
@@ -93,6 +92,7 @@ app.post("/webhook", (req, res) => {
 app.get("/test_point", async(req, res) => {
   console.log("Test point OK.")
   // -------------------------------
+  
 
   // -------------------------------
   res.status(200).json({}).end();

@@ -68,6 +68,15 @@ module.exports = async(db, event_data, line_sender) => {
           break;
         }
 
+        case "add_task": {
+          const flex_contents = require("../data/flex_msg/add_task_limit_list.json");
+          line_sender.flex({
+            contents: flex_contents,
+            alt_text: "提出期限を選択してください。"
+          });
+          break;
+        }
+
         default: {
           break;
         }

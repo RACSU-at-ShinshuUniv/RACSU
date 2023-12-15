@@ -82,7 +82,7 @@ app.post("/webhook", (req, res) => {
     res.status(200).json({}).end();
 
   }).catch((e) => {
-    line_sender.alert_error({
+    line_sender.text_alert({
       error_msg: e
     })
     res.status(200).json({}).end();

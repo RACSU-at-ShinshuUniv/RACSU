@@ -1,0 +1,38 @@
+{
+  "idSavePath": "../../data/richmenu_ids.json",
+  "defaultMenuAlias": "alias-default",
+  "contents": [
+    {
+      "objectPath": "../../data/richmenu_object/default.json",
+      "imagePath": "../../../images/richmenu/初期画面.png",
+      "alias": "alias-default"
+    },
+    {
+      "objectPath": "../../data/richmenu_object/tuto_1.json",
+      "imagePath": "../../../images/richmenu/チュートリアル1.png",
+      "alias": "alias-tutorial-1"
+    },
+    {
+      "objectPath": "../../data/richmenu_object/tuto_2.json",
+      "imagePath": "../../../images/richmenu/チュートリアル2.png",
+      "alias": "alias-tutorial-2"
+    },
+    {
+      "objectPath": "../../data/richmenu_object/tuto_3.json",
+      "imagePath": "../../../images/richmenu/チュートリアル3.png",
+      "alias": "alias-tutorial-3"
+    },{
+      "objectPath": "../../data/richmenu_object/list_menu.json",
+      "imagePath": "../../../images/richmenu/リスト.png",
+      "alias": "alias-list-menu"
+    },{
+      "objectPath": "../../data/richmenu_object/list_menu_overlay.json",
+      "imagePath": "../../../images/richmenu/リストオーバーレイ.png",
+      "alias": "alias-list-menu-overlay"
+    },{
+      "objectPath": "../../data/richmenu_object/setting_menu.json",
+      "imagePath": "../../../images/richmenu/設定.png",
+      "alias": "alias-setting-menu"
+    }
+  ]
+}

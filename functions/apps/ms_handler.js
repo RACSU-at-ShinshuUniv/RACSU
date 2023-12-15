@@ -208,7 +208,7 @@ module.exports = async (db, event_data, line_sender) => {
                 const env_rich_menu = get_env_rich_menu_id();
                 line_sender.link_rich_menu({
                   user_id: event_data.source.userId,
-                  rich_menu_id: env_rich_menu.tuto_1
+                  rich_menu_id: env_rich_menu["alias-tutorial-1"]
                 });
 
               } else {
@@ -258,7 +258,7 @@ module.exports = async (db, event_data, line_sender) => {
 
               line_sender.link_rich_menu({
                 user_id: event_data.source.userId,
-                rich_menu_id: env_rich_menu.list_menu_overlay
+                rich_menu_id: env_rich_menu["alias-list-menu-overlay"]
               });
 
               const app_update_task = require("./app_update_task");
@@ -270,7 +270,7 @@ module.exports = async (db, event_data, line_sender) => {
                 if (res.result == "ok") {
                   line_sender.link_rich_menu({
                     user_id: event_data.source.userId,
-                    rich_menu_id: env_rich_menu.list_menu
+                    rich_menu_id: env_rich_menu["alias-list-menu"]
                   });
                   line_sender.flex_task_list({
                     contents: res.data.contents,

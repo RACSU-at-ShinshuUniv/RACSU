@@ -78,7 +78,7 @@
         },
         "action": {
           "type": "richmenuswitch",
-          "richMenuAliasId": "list_menu",
+          "richMenuAliasId": "alias-list-menu",
           "data": "switch_list_menu"
         }
       }

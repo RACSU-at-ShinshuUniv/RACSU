@@ -41,7 +41,7 @@
         "action": {
           "type": "richmenuswitch",
           "data": "switch_setting_menu",
-          "richMenuAliasId": "setting_menu"
+          "richMenuAliasId": "alias-setting-menu"
         }
       },
       {

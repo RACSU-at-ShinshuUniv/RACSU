@@ -17,7 +17,7 @@
         "action": {
           "type": "richmenuswitch",
           "data": "switch_list_menu",
-          "richMenuAliasId": "list_menu"
+          "richMenuAliasId": "alias-list-menu"
         }
       }
     ]

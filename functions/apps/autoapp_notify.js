@@ -2,7 +2,7 @@ module.exports = async({all_user_data, all_reg_tasks, all_user_id, notify_user_i
   const mail_sender = require("../file_modules/mail_sender");
   const { json_to_mail_param } = require("../file_modules/data_formatter");
 
-  const is_dev_mode = JSON.parse(process.env.DEBUG_FLAG);
+  const is_dev_mode = JSON.parse(process.env.AUTOAPP_DEBUG_FLAG);
   if (!is_dev_mode){
     console.log(`課題通知：送信処理開始（送信候補：${notify_user_id.length}件）`);
   } else if (is_dev_mode){

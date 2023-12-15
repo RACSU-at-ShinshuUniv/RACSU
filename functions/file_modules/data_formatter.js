@@ -321,8 +321,8 @@ exports.json_to_flex = ({tasks={}}) => {
         }
       })();
 
-      // 累計15個以上の課題があった場合、それ以上はスキップ
-      if (contents_count > 15) {
+      // 累計process.env.MAX_LIST_CONTENTS個以上の課題があった場合、それ以上はスキップ
+      if (contents_count > process.env.MAX_LIST_CONTENTS) {
         overflow = true;
       }
 
@@ -412,8 +412,8 @@ exports.json_to_flex = ({tasks={}}) => {
         };
       }
 
-      // 累計15個以上の課題があった場合、それ以上はスキップ
-      if (contents_count > 15) {
+      // 累計process.env.MAX_LIST_CONTENTS個以上の課題があった場合、それ以上はスキップ
+      if (contents_count > process.env.MAX_LIST_CONTENTS) {
         overflow = true;
       }
 
@@ -500,8 +500,20 @@ exports.json_to_flex = ({tasks={}}) => {
     );
   }
 
+  const flex_contents = {
+    "type": "bubble",
+    "size": "giga",
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": task_data_json,
+      "paddingAll": "xl"
+    }
+  }
+
+
   const result = {
-    "contents": task_data_json,
+    "contents": flex_contents,
     "alt_text": `本日提出${todays_task_count}件 今後提出${other_task_count}件`
   }
 

@@ -13,6 +13,7 @@ module.exports = (db, {user_id="", user_name=""}) => {
     student_id: "",
     temporary_data: "",
     process_status: "",
+    notify: true,
     user_name: `${user_name}`
   });
   db.collection("tasks").doc(user_id).set({});

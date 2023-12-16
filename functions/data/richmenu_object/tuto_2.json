@@ -17,7 +17,7 @@
       "action": {
         "type": "richmenuswitch",
         "data": "switch_tuto_3",
-        "richMenuAliasId": "tuto_3"
+        "richMenuAliasId": "alias-tutorial-3"
       }
     },
     {
@@ -30,7 +30,7 @@
       "action": {
         "type": "richmenuswitch",
         "data": "finish_tutorial",
-        "richMenuAliasId": "list_menu"
+        "richMenuAliasId": "alias-list-menu"
       }
     }
   ]

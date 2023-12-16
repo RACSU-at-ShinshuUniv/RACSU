@@ -164,6 +164,32 @@ module.exports = async(db, {user_id="", message=""}) => {
       }
     }
 
+    case "config": {
+      const target = (message.match(/cmd@config\?(.+)=.+/) !== null)
+        ? message.match(/cmd@config\?(.+)=.+/)[1]
+        : null;
+      const change_to = (message.match(/cmd@config\?.+=(.+)/) !== null)
+        ? message.match(/cmd@config\?.+=(.+)/)[1]
+        : null;
+      if (target == null || change_to == null){
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
+      }
+
+      if (target == "notify"){
+        if (change_to == "9:00"){
+          db.collection("users").doc(user_id).update({"notify": true});
+          return Promise.resolve({result: "ok", res_type: "message", message: "「9:00に通知」に変更しました。"});
+        } else if (change_to == "none"){
+          db.collection("users").doc(user_id).update({"notify": false});
+          return Promise.resolve({result: "ok", res_type: "message", message: "「通知しない」に変更しました。"});
+        } else {
+          return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
+        }
+      } else {
+        return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。");
+      }
+    }
+
 
     default: {
       return Promise.reject("無効なコマンドです。正しいパラメータを送信してください。")

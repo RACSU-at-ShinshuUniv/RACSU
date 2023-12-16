@@ -41,12 +41,12 @@ const add_batch = async(db, batch, {user_id="", account_data={}, class_name_dic=
 }
 
 
-module.exports = async(db, {all_user_data, all_reg_tasks, all_user_id}) => {
+module.exports = async(db, {all_user_data, all_reg_tasks, all_user_id, notify_user_id}) => {
   const batch = db.batch();
   const class_name_dic = (await db.collection("overall").doc("classes").get()).data();
   const prev_length = Object.keys(class_name_dic).length;
 
-  const is_dev_mode = JSON.parse(process.env.DEBUG_FLAG);
+  const is_dev_mode = JSON.parse(process.env.AUTOAPP_DEBUG_FLAG);
   if (!is_dev_mode){
     console.log(`課題更新処理開始（総タスク：${all_user_id.length}件 最大並列ノード数：${process.env.MAX_ASYNC_NODES}）`);
   } else if (is_dev_mode){

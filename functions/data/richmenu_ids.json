@@ -1,0 +1,29 @@
+{
+  "local": {
+    "alias-list-menu": "richmenu-e5d9782cd7c9b1de0fb0cb8e76d8d8cd",
+    "alias-tutorial-2": "richmenu-db0941a76c6764b229308229dac0672c",
+    "alias-tutorial-1": "richmenu-b3b20aa79316ec53712958f22bb3968f",
+    "alias-list-menu-overlay": "richmenu-7944c7d4e6a286ace034926447972f23",
+    "alias-setting-menu": "richmenu-aa3ada501dbfb42da5a1acb655081fd6",
+    "alias-default": "richmenu-897070995c9e9277d9f507ba78fa658c",
+    "alias-tutorial-3": "richmenu-d54f50d95f6148cdd970c9aadd1e97d2"
+  },
+  "dev": {
+    "alias-list-menu-overlay": "richmenu-2bb527e15a0026b75ae73b96c8812200",
+    "alias-tutorial-3": "richmenu-30b9408c5571efc8d269a025e4eed188",
+    "alias-tutorial-1": "richmenu-c37a25209abc71493dbe248cc6e803a0",
+    "alias-tutorial-2": "richmenu-feac17d364f66269d386bc993fdcc830",
+    "alias-list-menu": "richmenu-c25f2484662898241f5dd51e7b68e31d",
+    "alias-setting-menu": "richmenu-11e044803bda5e8dc2d491434c42e610",
+    "alias-default": "richmenu-7cb89c83de6b8a79e356d66e1bb0bd4f"
+  },
+  "prod": {
+    "list_menu": "richmenu-6805ea890134b8ee9f3061d46d924a63",
+    "list_menu_overlay": "richmenu-254d12055479034a3c4bd8d837224d16",
+    "setting_menu": "",
+    "default": "",
+    "tuto_1": "richmenu-15a3c1f2fee88749a70ee2ea02a3c0a1",
+    "tuto_2": "",
+    "tuto_3": ""
+  }
+}

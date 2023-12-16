@@ -1,0 +1,85 @@
+{
+  "type": "bubble",
+  "size": "mega",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "メール通知設定：",
+        "size": "lg",
+        "weight": "bold"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "flex": 0,
+            "text": "現在の設定は「$1」です。"
+          },
+          {
+            "type": "text",
+            "text": "設定を変更しますか？"
+          }
+        ],
+        "paddingAll": "sm"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "color": "#ffffff",
+                "text": "9:00に通知",
+                "align": "center"
+              }
+            ],
+            "backgroundColor": "#06C755",
+            "paddingAll": "lg",
+            "cornerRadius": "md",
+            "borderColor": "#06C755",
+            "borderWidth": "normal",
+            "action": {
+              "type": "message",
+              "text": "cmd@config?notify=9:00"
+            }
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "align": "center",
+                "color": "#ffffff",
+                "text": "通知しない"
+              }
+            ],
+            "backgroundColor": "#666666",
+            "paddingAll": "lg",
+            "cornerRadius": "md",
+            "borderColor": "#666666",
+            "borderWidth": "normal",
+            "margin": "sm",
+            "action": {
+              "type": "message",
+              "text": "cmd@config?notify=none"
+            }
+          }
+        ],
+        "paddingStart": "sm",
+        "paddingEnd": "sm",
+        "margin": "md"
+      }
+    ],
+    "paddingAll": "md"
+  }
+}

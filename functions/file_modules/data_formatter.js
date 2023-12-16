@@ -149,7 +149,7 @@ exports.ical_to_json = async({ical_data={}, class_name_dic={}, dev_msg=""}) => {
   let task_data = {};
 
   // 課題としての認識パターンインポート
-  const valid_task_patterns = require("../data/regexp/valid_task_patterns.json");
+  const valid_task_patterns = require("../data/task_patterns.json");
 
   for (const key of ical_keys){
 
@@ -321,8 +321,8 @@ exports.json_to_flex = ({tasks={}}) => {
         }
       })();
 
-      // 累計15個以上の課題があった場合、それ以上はスキップ
-      if (contents_count > 15) {
+      // 累計process.env.MAX_LIST_CONTENTS個以上の課題があった場合、それ以上はスキップ
+      if (contents_count > process.env.MAX_LIST_CONTENTS) {
         overflow = true;
       }
 
@@ -412,8 +412,8 @@ exports.json_to_flex = ({tasks={}}) => {
         };
       }
 
-      // 累計15個以上の課題があった場合、それ以上はスキップ
-      if (contents_count > 15) {
+      // 累計process.env.MAX_LIST_CONTENTS個以上の課題があった場合、それ以上はスキップ
+      if (contents_count > process.env.MAX_LIST_CONTENTS) {
         overflow = true;
       }
 
@@ -477,7 +477,10 @@ exports.json_to_flex = ({tasks={}}) => {
       ], cornerRadius: "md", flex: 0, background_color: "#1f90ff", padding_all: "md", action: "message", action_data: "cmd@delete?target=finish"}),
       flex_content.box({contents: [
         flex_content.text({text: "超過を削除", size: "sm", color: "#ffffff"})
-      ], cornerRadius: "md", flex: 0, background_color: "#941f57", padding_all: "md", margin: "md", action: "message", action_data: "cmd@delete?target=past"})
+      ], cornerRadius: "md", flex: 0, background_color: "#941f57", padding_all: "md", margin: "md", action: "message", action_data: "cmd@delete?target=past"}),
+      flex_content.box({contents: [
+        flex_content.text({text: "表示を更新", size: "sm", color: "#ffffff"})
+      ], cornerRadius: "md", flex: 0, background_color: "#1b5aad", padding_all: "md", margin: "md", action: "message", action_data: "登録済みの課題を表示"})
     ], margin: "sm", layout: "horizontal"})
   )
 
@@ -497,8 +500,20 @@ exports.json_to_flex = ({tasks={}}) => {
     );
   }
 
+  const flex_contents = {
+    "type": "bubble",
+    "size": "giga",
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": task_data_json,
+      "paddingAll": "xl"
+    }
+  }
+
+
   const result = {
-    "contents": task_data_json,
+    "contents": flex_contents,
     "alt_text": `本日提出${todays_task_count}件 今後提出${other_task_count}件`
   }
 

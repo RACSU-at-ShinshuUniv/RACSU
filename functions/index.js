@@ -15,10 +15,9 @@ if (process.env.K_REVISION == 1){
   console.log("webhook接続先は「[ngrokURL]/racsu-develop/asia-northeast1/node_functions/webhook」です。")
   linebot_account = require("./data/keys/LineAccount_local.json");
 
-} else{
+} else {
   linebot_account = require("./data/keys/LineAccount.json");
 }
-// const linebot_account = require("./data/keys/LineAccount.json");
 const linebot_sdk = require("@line/bot-sdk");
 const Line_Sender = require("./file_modules/line_sender");
 const linebot_client = new linebot_sdk.Client(linebot_account);
@@ -35,12 +34,15 @@ const db = getFirestore();
 // ----------------------------------------------
 // 連携済み全ユーザーデータ取得関数
 // ----------------------------------------------
-const get_all_data = async() => {
-  const all_user_data = {}, all_reg_tasks = {};
+const get_linked_user_data = async() => {
+  const all_user_data = {}, all_reg_tasks = {}, notify_user_id=[];
   (await db.collection("users").get()).forEach(doc => {
     const data = doc.data();
     if (data.account_status == "linked"){
       all_user_data[doc.id] = data;
+      if (data.notify){
+        notify_user_id.push(doc.id);
+      }
     }
   });
   (await db.collection("tasks").get()).forEach(doc => {
@@ -49,7 +51,7 @@ const get_all_data = async() => {
     }
   });
   const all_user_id = Object.keys(all_user_data);
-  return {all_user_data: all_user_data, all_reg_tasks: all_reg_tasks, all_user_id: all_user_id};
+  return {all_user_data: all_user_data, all_reg_tasks: all_reg_tasks, all_user_id: all_user_id, notify_user_id: notify_user_id};
 }
 
 // ----------------------------------------------
@@ -80,7 +82,7 @@ app.post("/webhook", (req, res) => {
     res.status(200).json({}).end();
 
   }).catch((e) => {
-    line_sender.alert_error({
+    line_sender.text_alert({
       error_msg: e
     })
     res.status(200).json({}).end();
@@ -93,6 +95,7 @@ app.post("/webhook", (req, res) => {
 app.get("/test_point", async(req, res) => {
   console.log("Test point OK.")
   // -------------------------------
+
 
   // -------------------------------
   res.status(200).json({}).end();
@@ -127,7 +130,7 @@ exports.trigger_update = functions
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const autoapp_update = require("./apps/autoapp_update");
-  autoapp_update(db, await get_all_data())
+  autoapp_update(db, await get_linked_user_data())
   .catch((e) => {
     console.log("自動更新でエラー発生", e);
   });
@@ -150,7 +153,7 @@ exports.trigger_notify = functions
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
   const autoapp_notify = require("./apps/autoapp_notify");
-  autoapp_notify(await get_all_data())
+  autoapp_notify(await get_linked_user_data())
   .catch((e) => {
     console.log("自動通知でエラー発生", e);
   });

@@ -2,6 +2,12 @@ const linebot_account = require("../../data/keys/LineAccount.json");
 const linebot_sdk = require("@line/bot-sdk");
 const linebot_client = new linebot_sdk.Client(linebot_account);
 
+const { initializeApp, cert } = require("firebase-admin/app");
+const serviceAccount = require("../../data/keys/ServiceAccount.json");
+initializeApp({ credential: cert(serviceAccount) });
+const { getFirestore } = require('firebase-admin/firestore');
+const db = getFirestore();
+
 const fs = require('fs');
 const path = require('path');
 
@@ -66,9 +72,26 @@ const saveToFile = async(to, richMenuIdDict) => {
   });
 }
 
+const getLinkedUserIdList = async() => {
+  const linkedUserIdList = [];
+  (await db.collection("users").get()).forEach(doc => {
+    const data = doc.data();
+    if (data.account_status == "linked"){
+      linkedUserIdList.push(doc.id);
+    }
+  });
+  return linkedUserIdList;
+}
+
 (async() => {
   const config = require("./config.json");
   const richMenuIdDict = require(config.idSavePath);
+
+  const saveIndex = await readUserInput("ID書き込み先のインデックスを選択（local/dev/prod）:");
+  if (!["local", "dev", "prod"].includes(saveIndex)){
+    console.log(`不正なインデックス：${saveIndex}\n`);
+    return
+  }
 
   console.log("----- 初期化開始 -----");
   await deleteAllAlias();
@@ -77,12 +100,16 @@ const saveToFile = async(to, richMenuIdDict) => {
 
 
   console.log("----- アップロード開始 -----");
+  let linkedUserMenuId = ""
   for (const content of config.contents) {
     const richMenuObject = require(content.objectPath);
     const createdRichMenuId = await linebot_client.createRichMenu(richMenuObject);
     const image = fs.readFileSync(path.resolve(__dirname, content.imagePath));
     await linebot_client.setRichMenuImage(createdRichMenuId, image);
     await linebot_client.createRichMenuAlias(createdRichMenuId, content.alias);
+    if (content.alias == config.linkedUserMenuAlias){
+      linkedUserMenuId = createdRichMenuId;
+    }
     if (content.alias == config.defaultMenuAlias){
       await linebot_client.setDefaultRichMenu(createdRichMenuId);
       console.log(`${createdRichMenuId}をデフォルトとして作成しました。`);
@@ -92,12 +119,19 @@ const saveToFile = async(to, richMenuIdDict) => {
   }
   console.log("");
 
+  for (const linkedUserId of await getLinkedUserIdList()){
+    if (!linkedUserId.includes("dev_")){
+      linebot_client.linkRichMenuToUser(linkedUserId, linkedUserMenuId);
+      console.log(`リンク済みのユーザー${linkedUserId}に${linkedUserMenuId}を設定しました。`);
+    }
+  }
+  console.log("");
+
   console.log("----- アップロード結果 -----")
   const result = await checkAllRichMenu();
   console.log("");
 
-  const saveIndex = await readUserInput("ID書き込み先のインデックスを選択（local/dev/prod）:");
   richMenuIdDict[saveIndex] = result;
   await saveToFile(config.idSavePath, richMenuIdDict);
-  console.log("----- 完了 -----")
+  console.log(`${saveIndex}に記録しました。\n`);
 })();

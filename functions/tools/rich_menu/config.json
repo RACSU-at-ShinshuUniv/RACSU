@@ -1,6 +1,7 @@
 {
   "idSavePath": "../../data/richmenu_ids.json",
   "defaultMenuAlias": "alias-default",
+  "linkedUserMenuAlias": "alias-list-menu",
   "contents": [
     {
       "objectPath": "../../data/richmenu_object/default.json",

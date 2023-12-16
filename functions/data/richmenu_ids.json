@@ -18,12 +18,12 @@
     "alias-default": "richmenu-7cb89c83de6b8a79e356d66e1bb0bd4f"
   },
   "prod": {
-    "list_menu": "richmenu-6805ea890134b8ee9f3061d46d924a63",
-    "list_menu_overlay": "richmenu-254d12055479034a3c4bd8d837224d16",
-    "setting_menu": "",
-    "default": "",
-    "tuto_1": "richmenu-15a3c1f2fee88749a70ee2ea02a3c0a1",
-    "tuto_2": "",
-    "tuto_3": ""
+    "alias-tutorial-3": "richmenu-efb28f2e4dcb95ccb5640459128f53fe",
+    "alias-list-menu-overlay": "richmenu-0229497ed140ec1e66d228dfcdc2e539",
+    "alias-tutorial-1": "richmenu-5bb149b9ce9734f9bee0be1a6dc12165",
+    "alias-setting-menu": "richmenu-adc4e62ddfd558d7752ba84e701c49c1",
+    "alias-list-menu": "richmenu-a4cd8af589e70d0e0491e7e4e8ca671a",
+    "alias-default": "richmenu-22d0cfdd6e60e3acfec5d151288f11cb",
+    "alias-tutorial-2": "richmenu-203250dcd21f9cc83299066241aa520a"
   }
 }

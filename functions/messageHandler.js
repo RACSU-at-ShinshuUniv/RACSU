@@ -269,7 +269,7 @@ module.exports = (db, eventData, lineAccount) => {
 
               }).then((res) => {
                 if (res.status == "done") {
-                  line.setFlex(res.message.contents, res.message.altText).send();
+                  line.setText(res.message.contents).send();
                 }
 
               }).catch(e => {console.log(e);line.setError(e).send()});

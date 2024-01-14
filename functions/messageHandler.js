@@ -1,6 +1,6 @@
 const { LineBotController } = require("./lib/LineBotController")
 const getEnvRichMenuIdDict = () => {
-  const envRichMenuIdDict = require("./data/richMenuIds.json");;
+  const envRichMenuIdDict = require("./data/richmenuIds.json");
   if (process.env.K_REVISION == 1) {
     return envRichMenuIdDict.local;
 

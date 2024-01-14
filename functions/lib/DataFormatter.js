@@ -184,8 +184,6 @@ const getClassName = async(code) => {
   }
 }
 
-
-
 const getSortedKeys = (taskDataDict={}) => {
   const array = Object.keys(taskDataDict).map((k)=>({ key: k, value: taskDataDict[k] }));
   array.sort((a, b) => (a.value.taskLimit.toDate()) - (b.value.taskLimit.toDate()));
@@ -420,7 +418,7 @@ class JsonTask {
             }
           })();
 
-          if (!this[_json][otherTaskKeys[i]].finish){
+          if (!this[_json][otherTaskKeys[i]].finish && !overflow){
             contents_thisLoop.push(
               flexContent.box({contents: [
                 flexContent.text({text: "☐", color: "#555555", margin: "md"}),
@@ -431,7 +429,7 @@ class JsonTask {
             );
             otherContentsCount++;
 
-          } else {
+          } else if (!overflow){
             contents_thisLoop.push(
               flexContent.box({contents: [
                 flexContent.text({text: "☑", color: "#bbbbbb", margin: "md"}),
@@ -442,6 +440,11 @@ class JsonTask {
             );
           }
           totalContentsCount++;
+
+          // 累計process.env.MAX_LIST_CONTENTS個以上の課題があった場合、それ以上はスキップ
+          if (totalContentsCount > process.env.MAX_LIST_CONTENTS) {
+            overflow = true;
+          }
 
           // 最後まで読み込んだ場合break
           if (i+1 == otherTaskKeys.length){
@@ -454,13 +457,9 @@ class JsonTask {
           };
         }
 
-        // 累計process.env.MAX_LIST_CONTENTS個以上の課題があった場合、それ以上はスキップ
-        if (totalContentsCount > process.env.MAX_LIST_CONTENTS) {
-          overflow = true;
-        }
 
         // 同日課題をまとめて追加
-        if (this[_json][otherTaskKeys[i]].taskLimit.toDate() < today && !overflow){
+        if (this[_json][otherTaskKeys[i]].taskLimit.toDate() < today){
           flexContents.push(
             flexContent.box({contents: [
               flexContent.box({contents: [
@@ -475,7 +474,7 @@ class JsonTask {
             ], margin: "md"})
           );
 
-        } else if (this[_json][otherTaskKeys[i]].taskLimit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD") && !overflow){
+        } else if (this[_json][otherTaskKeys[i]].taskLimit.toDate().toFormat("YYYYMMDD") == tomorrow.toFormat("YYYYMMDD")){
           flexContents.push(
             flexContent.box({contents: [
               flexContent.box({contents: [
@@ -490,7 +489,7 @@ class JsonTask {
             ], margin: "md"})
           );
 
-        } else if (!overflow){
+        } else {
           flexContents.push(
             flexContent.box({contents: [
               flexContent.text({text: `${taskLimit_thisLoop}(${["日", "月", "火", "水", "木", "金", "土"][this[_json][otherTaskKeys[i]].taskLimit.toDate().getDay()]})`, size: "sm", color: "#555555", margin: "sm"}),

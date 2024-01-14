@@ -80,12 +80,6 @@ app.get("/test_point", async(req, res) => {
   console.log("Test point OK.")
   // -------------------------------
 
-  const autoapp_update = require("./auto/autoTaskUpdate");
-  autoapp_update(db, await getAutoRunTargetUser())
-  .catch((e) => {
-    console.log("自動更新でエラー発生", e);
-  });
-
   // -------------------------------
   res.status(200).json({}).end();
   return null;
@@ -108,7 +102,7 @@ exports.expressFunctions = functions
 // ----------------------------------------------
 // 定期実行関数設定：課題アップデート
 // ----------------------------------------------
-exports.trigger_update = functions
+exports.triggerUpdate = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 1,
@@ -117,8 +111,8 @@ exports.trigger_update = functions
 .pubsub.schedule('every day 8:30')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
-  const autoapp_update = require("./auto/autoTaskUpdate");
-  autoapp_update(db, await getAutoRunTargetUser())
+  const autoTaskUpdate = require("./auto/autoTaskUpdate");
+  autoTaskUpdate(db, await getAutoRunTargetUser())
   .catch((e) => {
     console.log("自動更新でエラー発生", e);
   });
@@ -129,7 +123,7 @@ exports.trigger_update = functions
 // ----------------------------------------------
 // 定期実行関数設定：課題通知
 // ----------------------------------------------
-exports.trigger_notify = functions
+exports.triggerNotify = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 1,
@@ -139,8 +133,8 @@ exports.trigger_notify = functions
 .pubsub.schedule('every day 9:00')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
-  const autoapp_notify = require("./auto/autoTaskNotify");
-  autoapp_notify(await getAutoRunTargetUser())
+  const autoTaskNotify = require("./auto/autoTaskNotify");
+  autoTaskNotify(await getAutoRunTargetUser())
   .catch((e) => {
     console.log("自動通知でエラー発生", e);
   });

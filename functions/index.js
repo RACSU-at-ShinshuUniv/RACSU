@@ -2,10 +2,9 @@
 require("firebase-functions/logger/compat");
 process.env.TZ = "Asia/Tokyo";
 
-const {initializeApp} = require("firebase-admin/app");
+const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require('firebase-admin/firestore');
 const functions = require("firebase-functions");
-
 initializeApp();
 
 let lineAccount;
@@ -19,6 +18,7 @@ if (process.env.K_REVISION == 1){
   lineAccount = require("./data/keys/LineAccount.json");
 }
 
+// LINEミドルウェア
 const { LineBotMiddleware } = require("./lib/LineBotController")
 
 // ExpressApp作成

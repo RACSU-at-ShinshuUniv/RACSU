@@ -76,7 +76,7 @@ const getLinkedUserIdList = async() => {
   const linkedUserIdList = [];
   (await db.collection("users").get()).forEach(doc => {
     const data = doc.data();
-    if (data.account_status == "linked"){
+    if (data.accountStatus == "linked"){
       linkedUserIdList.push(doc.id);
     }
   });

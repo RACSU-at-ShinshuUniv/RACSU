@@ -1,7 +1,7 @@
 const { LineBotController } = require("./lib/LineBotController")
 const getEnvRichMenuIdDict = () => {
   const envRichMenuIdDict = require("./data/richmenuIds.json");
-  if (process.env.K_REVISION == 1) {
+  if (JSON.parse(process.env.FIREBASE_CONFIG).locationId == undefined) {
     return envRichMenuIdDict.local;
 
   } else if (process.env.GCLOUD_PROJECT == "racsu-develop") {

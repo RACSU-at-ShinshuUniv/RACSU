@@ -8,7 +8,7 @@ const functions = require("firebase-functions");
 initializeApp();
 
 let lineAccount;
-if (process.env.K_REVISION == 1){
+if (JSON.parse(process.env.FIREBASE_CONFIG).locationId == undefined){
   console.log("ローカル環境で起動中…");
   console.log("ローカルデバック用LINEアカウント情報を読み込みます。");
   console.log("webhook接続先は「[ngrokURL]/racsu-develop/asia-northeast1/expressFunctions/webhook」です。")
@@ -27,9 +27,6 @@ const app = express();
 
 // データベースインスタンス作成
 const db = getFirestore();
-
-// メッセージ処理スクリプト
-const messageHandler = require("./messageHandler");
 
 
 // ----------------------------------------------
@@ -70,13 +67,21 @@ app.post("/webhook", (req, res) => {
     }
   }
 
+  // メッセージ処理スクリプト
+  const messageHandler = require("./messageHandler");
   messageHandler(db, req.body.events[0], lineAccount);
 
   res.status(200).json({}).end();
   return null;
 });
 
-app.get("/test_point", async(req, res) => {
+app.get("/hotStandby", (req, res) => {
+  console.log("Hot standby.")
+  res.status(200).json({}).end();
+  return null;
+})
+
+app.get("/testPoint", async(req, res) => {
   console.log("Test point OK.")
   // -------------------------------
 
@@ -139,5 +144,24 @@ exports.triggerNotify = functions
     console.log("自動通知でエラー発生", e);
   });
 
+  return null;
+});
+
+// ----------------------------------------------
+// 定期実行関数設定：ホットスタンバイ
+// ----------------------------------------------
+exports.hotStandBy = functions
+.region('asia-northeast1')
+.runWith({
+  maxInstances: 1,
+  memory: "1GB",
+  timeoutSeconds: 540
+})
+.pubsub.schedule('every 15 minutes')
+.timeZone('Asia/Tokyo')
+.onRun(async(context) => {
+    const firebaseConfig = process.env.FIREBASE_CONFIG;
+    const url = `https://${firebaseConfig.locationId}-${firebaseConfig.projectId}.cloudfunctions.net/expressFunctions/hotStandby`;
+    axios.get(url);
   return null;
 });

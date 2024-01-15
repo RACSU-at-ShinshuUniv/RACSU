@@ -1,22 +1,24 @@
-// Firebase関連設定
 require("firebase-functions/logger/compat");
 process.env.TZ = "Asia/Tokyo";
-
+ 
 const { initializeApp } = require("firebase-admin/app");
-const { getFirestore } = require('firebase-admin/firestore');
-const functions = require("firebase-functions");
 initializeApp();
 
-let lineAccount;
-if (JSON.parse(process.env.FIREBASE_CONFIG).locationId == undefined){
-  console.log("ローカル環境で起動中…");
-  console.log("ローカルデバック用LINEアカウント情報を読み込みます。");
-  console.log("webhook接続先は「[ngrokURL]/racsu-develop/asia-northeast1/expressFunctions/webhook」です。")
-  lineAccount = require("./data/keys/LineAccount_local.json");
+// Firebase機能
+// const { getFirestore } = require('firebase-admin/firestore');
+const { Firestore } = require('@google-cloud/firestore');
+const functions = require("firebase-functions");
 
-} else {
-  lineAccount = require("./data/keys/LineAccount.json");
-}
+// LINEアカウントデータ
+const lineAccount = (() => {
+  if (JSON.parse(process.env.FIREBASE_CONFIG).locationId == undefined){
+    const lineAccount = require("./data/keys/LineAccount_local.json");
+    return lineAccount;
+  } else {
+    const lineAccount = require("./data/keys/LineAccount.json");
+    return lineAccount;
+  }
+})();
 
 // LINEミドルウェア
 const { LineBotMiddleware } = require("./lib/LineBotController")
@@ -26,7 +28,7 @@ const express = require("express");
 const app = express();
 
 // データベースインスタンス作成
-const db = getFirestore();
+const db = new Firestore();
 
 
 // ----------------------------------------------
@@ -56,30 +58,19 @@ const getAutoRunTargetUser = async() => {
 // ----------------------------------------------
 app.use("/webhook", LineBotMiddleware(lineAccount));
 app.post("/webhook", (req, res) => {
-  try{
-    console.log(`webhook処理開始 from: [${req.body.events[0].source.userId}] msg: [${(req.body.events[0].message.text).replace(/\n/g, "")}]`);
-  } catch(e) {
-    if (req.body.events[0] !== undefined){
-      console.log(`webhook処理開始 from: [${req.body.events[0].source.userId}] type: [${req.body.events[0].type}]`);
-    } else {
-      res.status(200).json({}).end();
-      return null;
-    }
-  }
+  console.log(`Access from ${req.body.events[0].source.userId}. actionType=${(req.body.events[0].type)}${req.body.events[0]?.message?.text !== undefined ? `, message=「${(req.body.events[0]?.message?.text).replace(/\n/g, "")}」` : ""}`);
 
-  // メッセージ処理スクリプト
-  const messageHandler = require("./messageHandler");
-  messageHandler(db, req.body.events[0], lineAccount);
+  (async() => {
+    console.time(`Status check of ${req.body.events[0].source.userId}`);
+    const userDoc = await db.collection("users").doc(req.body.events[0].source.userId).get();
+    console.timeEnd(`Status check of ${req.body.events[0].source.userId}`);
+    const messageHandler = require("./messageHandler");
+    messageHandler(db, req.body.events[0], (userDoc.exists ? userDoc.data() : {}), lineAccount);
+  })();
 
   res.status(200).json({}).end();
   return null;
 });
-
-app.get("/hotStandby", (req, res) => {
-  console.log("Hot standby.")
-  res.status(200).json({}).end();
-  return null;
-})
 
 app.get("/testPoint", async(req, res) => {
   console.log("Test point OK.")
@@ -144,24 +135,5 @@ exports.triggerNotify = functions
     console.log("自動通知でエラー発生", e);
   });
 
-  return null;
-});
-
-// ----------------------------------------------
-// 定期実行関数設定：ホットスタンバイ
-// ----------------------------------------------
-exports.hotStandBy = functions
-.region('asia-northeast1')
-.runWith({
-  maxInstances: 1,
-  memory: "1GB",
-  timeoutSeconds: 540
-})
-.pubsub.schedule('every 15 minutes')
-.timeZone('Asia/Tokyo')
-.onRun(async(context) => {
-    const firebaseConfig = process.env.FIREBASE_CONFIG;
-    const url = `https://${firebaseConfig.locationId}-${firebaseConfig.projectId}.cloudfunctions.net/expressFunctions/hotStandby`;
-    axios.get(url);
   return null;
 });

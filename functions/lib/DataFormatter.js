@@ -381,7 +381,7 @@ class JsonTask {
           flexContents.push(
             flexContent.box({contents: [
               flexContent.text({text: "☑", color: "#bbbbbb"}),
-              flexContent.text({text: limit, color: "#ff4500"}),
+              flexContent.text({text: taskLimit_time, color: "#ff4500"}),
               flexContent.text({text: this[_json][key].className.substr(0, 10), size: "lg", color: "#bbbbbb", flex: 1, margin: "md"}),
               flexContent.text({text: this[_json][key].taskName.substr(0, 7), size: "sm", color: "#bbbbbb"})
             ], margin: "md", action: "message", actionData: `cmd@redo?key=${key}`})

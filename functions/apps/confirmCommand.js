@@ -58,7 +58,9 @@ module.exports = async(db, {userId="", message=""}) => {
     }
 
     case "add": {
-      const { Timestamp } = require('firebase-admin/firestore');
+      // const { Timestamp } = require('firebase-admin/firestore');
+      const { Timestamp } = require('@google-cloud/firestore');
+
       try{
         const confirmedTask = message.match(/cmd@add\?cn=(?<className>.+)&tn=(?<taskName>.+)&tl=(?<taskLimit>\d{4}\/\d{2}\/\d{2}-\d{2}:\d{2})/).groups;
         const newTaskData = {

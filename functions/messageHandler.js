@@ -270,8 +270,10 @@ module.exports = (db, eventData, userData, lineAccount) => {
                 }
 
               }).catch(e => {console.log(e);line.setError(e).send()});
+            } else if (message == "ご意見・ご要望") {
+              line.setText("管理者への連絡モードへと切り替えました。").setText("キーボードを開いてメッセージを送信してください。").setText("課題の表示・更新等の通常操作で、連絡モードを終了します。").send();
 
-            } else if (["eAlps連携設定", "超過課題の表示", "ご意見・ご要望"].includes(message)) {
+            } else if (["eAlps連携設定", "超過課題の表示"].includes(message)) {
               line.setText("この項目は準備中です。").send();
             } else { }
             break;

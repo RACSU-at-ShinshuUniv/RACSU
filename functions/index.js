@@ -1,11 +1,10 @@
 require("firebase-functions/logger/compat");
 process.env.TZ = "Asia/Tokyo";
- 
+
 const { initializeApp } = require("firebase-admin/app");
 initializeApp();
 
 // Firebase機能
-// const { getFirestore } = require('firebase-admin/firestore');
 const { Firestore } = require('@google-cloud/firestore');
 const functions = require("firebase-functions");
 

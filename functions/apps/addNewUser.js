@@ -2,7 +2,6 @@ module.exports = (db, {userId="", userName=""}) => {
   if (userId == "" || userName == ""){
     return Promise.reject(new Error("Parameter not defined"));
   }
-  // const { Timestamp } = require('firebase-admin/firestore');
   const { Timestamp } = require('@google-cloud/firestore');
 
   db.collection("users").doc(userId).set({

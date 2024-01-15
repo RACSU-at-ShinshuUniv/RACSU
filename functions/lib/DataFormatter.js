@@ -1,6 +1,5 @@
 require("date-utils")
 const axios = require('axios');
-// const { Timestamp } = require('firebase-admin/firestore');
 const { Timestamp } = require('@google-cloud/firestore');
 
 const _ical = Symbol();

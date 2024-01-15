@@ -58,7 +58,6 @@ module.exports = async(db, {userId="", message=""}) => {
     }
 
     case "add": {
-      // const { Timestamp } = require('firebase-admin/firestore');
       const { Timestamp } = require('@google-cloud/firestore');
 
       try{

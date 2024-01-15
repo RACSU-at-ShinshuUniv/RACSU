@@ -12,7 +12,8 @@ const getEnvRichMenuIdDict = () => {
   }
 }
 
-module.exports = (db, eventData, lineAccount) => {
+module.exports = (db, eventData, userData, lineAccount) => {
+  console.time(`Message handling of ${eventData.source.userId}`);
   const line = new LineBotController(lineAccount);
   line.setReplyToken(eventData.replyToken);
 
@@ -81,10 +82,6 @@ module.exports = (db, eventData, lineAccount) => {
         if (eventData.message.type !== "text") {
           break;
         }
-
-        console.time("ユーザーデータ取得所要時間");
-        const userData = (await db.collection("users").doc(eventData.source.userId).get()).data();
-        console.timeEnd("ユーザーデータ取得所要時間");
 
         switch (userData.accountStatus) {
 
@@ -289,5 +286,7 @@ module.exports = (db, eventData, lineAccount) => {
   })().catch((e) => {
     console.log(e);
     line.setError(e).send();
+  }).finally(() => {
+    console.timeEnd(`Message handling of ${eventData.source.userId}`);
   })
 }

@@ -49,7 +49,9 @@ class LineBotController extends lineBotSDK.Client {
     }
     if (this.replyToken !== undefined){
       try{
+        console.time(`Reply message by ${this.replyToken}`);
         const res = await super.replyMessage(this.replyToken, this.messageContents);
+        console.timeEnd(`Reply message by ${this.replyToken}`);
         return Promise.resolve(res);
       } catch(e) {
         return Promise.reject(e);

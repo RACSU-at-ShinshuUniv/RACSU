@@ -1,101 +1,79 @@
-// Firebase関連設定
 require("firebase-functions/logger/compat");
 process.env.TZ = "Asia/Tokyo";
 
-const {initializeApp} = require("firebase-admin/app");
-const { getFirestore } = require('firebase-admin/firestore');
-const functions = require("firebase-functions");
-
+const { initializeApp } = require("firebase-admin/app");
 initializeApp();
 
-let linebot_account;
-if (process.env.K_REVISION == 1){
-  console.log("ローカル環境で起動中…");
-  console.log("ローカルデバック用LINEアカウント情報を読み込みます。");
-  console.log("webhook接続先は「[ngrokURL]/racsu-develop/asia-northeast1/node_functions/webhook」です。")
-  linebot_account = require("./data/keys/LineAccount_local.json");
+// Firebase機能
+const { Firestore } = require('@google-cloud/firestore');
+const functions = require("firebase-functions");
 
-} else {
-  linebot_account = require("./data/keys/LineAccount.json");
-}
-const linebot_sdk = require("@line/bot-sdk");
-const Line_Sender = require("./file_modules/line_sender");
-const linebot_client = new linebot_sdk.Client(linebot_account);
+// LINEアカウントデータ
+const lineAccount = (() => {
+  if (JSON.parse(process.env.FIREBASE_CONFIG).locationId == undefined){
+    const lineAccount = require("./data/keys/LineAccount_local.json");
+    return lineAccount;
+  } else {
+    const lineAccount = require("./data/keys/LineAccount.json");
+    return lineAccount;
+  }
+})();
 
+// LINEミドルウェア
+const { LineBotMiddleware } = require("./lib/LineBotController")
 
 // ExpressApp作成
 const express = require("express");
 const app = express();
 
 // データベースインスタンス作成
-const db = getFirestore();
+const db = new Firestore();
 
 
 // ----------------------------------------------
 // 連携済み全ユーザーデータ取得関数
 // ----------------------------------------------
-const get_linked_user_data = async() => {
-  const all_user_data = {}, all_reg_tasks = {}, notify_user_id=[];
+const getAutoRunTargetUser = async() => {
+  const linkedUserData = {}, notifyUserIds=[];
   (await db.collection("users").get()).forEach(doc => {
     const data = doc.data();
-    if (data.account_status == "linked"){
-      all_user_data[doc.id] = data;
+    if (data.accountStatus == "linked"){
+      linkedUserData[doc.id] = data;
       if (data.notify){
-        notify_user_id.push(doc.id);
+        notifyUserIds.push(doc.id);
       }
     }
   });
   (await db.collection("tasks").get()).forEach(doc => {
-    if (doc.id in all_user_data){
-      all_reg_tasks[doc.id] = doc.data();;
+    if (doc.id in linkedUserData){
+      linkedUserData[doc.id]["registeredTask"] = doc.data();;
     }
   });
-  const all_user_id = Object.keys(all_user_data);
-  return {all_user_data: all_user_data, all_reg_tasks: all_reg_tasks, all_user_id: all_user_id, notify_user_id: notify_user_id};
+  return {linkedUserData: linkedUserData, notifyUserIds: notifyUserIds};
 }
 
 // ----------------------------------------------
 // エンドポイント内部処理設定
 // ----------------------------------------------
-app.use("/webhook", linebot_sdk.middleware(linebot_account));
+app.use("/webhook", LineBotMiddleware(lineAccount));
 app.post("/webhook", (req, res) => {
-  try{
-    console.log(`webhook処理開始 from: [${req.body.events[0].source.userId}] msg: [${(req.body.events[0].message.text).replace(/\n/g, "")}]`);
-  } catch(e) {
-    if (req.body.events[0] !== undefined){
-      console.log(`webhook処理開始 from: [${req.body.events[0].source.userId}] type: [${req.body.events[0].type}]`);
-    } else {
-      res.status(200).json({}).end();
-      return null;
-    }
-  }
-  console.time("レスポンス処理所要時間");
+  console.log(`Access from ${req.body.events[0].source.userId}. actionType=${(req.body.events[0].type)}${req.body.events[0]?.message?.text !== undefined ? `, message=「${(req.body.events[0]?.message?.text).replace(/\n/g, "")}」` : ""}`);
 
-  const line_sender = new Line_Sender({
-    client: linebot_client,
-    reply_token: req.body.events[0].replyToken
-  });
+  (async() => {
+    console.time(`Status check of ${req.body.events[0].source.userId}`);
+    const userDoc = await db.collection("users").doc(req.body.events[0].source.userId).get();
+    console.timeEnd(`Status check of ${req.body.events[0].source.userId}`);
+    const messageHandler = require("./messageHandler");
+    messageHandler(db, req.body.events[0], (userDoc.exists ? userDoc.data() : {}), lineAccount);
+  })();
 
-  const ms_handler = require("./apps/ms_handler");
-  ms_handler(db, req.body.events[0], line_sender
-  ).then(() => {
-    res.status(200).json({}).end();
-
-  }).catch((e) => {
-    line_sender.text_alert({
-      error_msg: e
-    })
-    res.status(200).json({}).end();
-  })
-
-  console.timeEnd("レスポンス処理所要時間");
+  res.status(200).json({}).end();
   return null;
 });
 
-app.get("/test_point", async(req, res) => {
+app.get("/testPoint", async(req, res) => {
   console.log("Test point OK.")
   // -------------------------------
-
 
   // -------------------------------
   res.status(200).json({}).end();
@@ -106,12 +84,11 @@ app.get("/test_point", async(req, res) => {
 // ----------------------------------------------
 // エンドポイント公開設定
 // ----------------------------------------------
-exports.node_functions = functions
+exports.expressFunctions = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 10,
-  memory: "2GB",
-  secrets: ["MAIL_PASS"]
+  memory: "2GB"
 })
 .https
 .onRequest(app);
@@ -120,7 +97,7 @@ exports.node_functions = functions
 // ----------------------------------------------
 // 定期実行関数設定：課題アップデート
 // ----------------------------------------------
-exports.trigger_update = functions
+exports.triggerUpdate = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 1,
@@ -129,8 +106,8 @@ exports.trigger_update = functions
 .pubsub.schedule('every day 8:30')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
-  const autoapp_update = require("./apps/autoapp_update");
-  autoapp_update(db, await get_linked_user_data())
+  const autoTaskUpdate = require("./auto/autoTaskUpdate");
+  autoTaskUpdate(db, await getAutoRunTargetUser())
   .catch((e) => {
     console.log("自動更新でエラー発生", e);
   });
@@ -141,19 +118,18 @@ exports.trigger_update = functions
 // ----------------------------------------------
 // 定期実行関数設定：課題通知
 // ----------------------------------------------
-exports.trigger_notify = functions
+exports.triggerNotify = functions
 .region('asia-northeast1')
 .runWith({
   maxInstances: 1,
   memory: "1GB",
-  secrets: ["MAIL_PASS"],
   timeoutSeconds: 540
 })
 .pubsub.schedule('every day 9:00')
 .timeZone('Asia/Tokyo')
 .onRun(async(context) => {
-  const autoapp_notify = require("./apps/autoapp_notify");
-  autoapp_notify(await get_linked_user_data())
+  const autoTaskNotify = require("./auto/autoTaskNotify");
+  autoTaskNotify(await getAutoRunTargetUser())
   .catch((e) => {
     console.log("自動通知でエラー発生", e);
   });

@@ -1,0 +1,129 @@
+{
+  "type": "bubble",
+  "size": "kilo",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "text",
+            "text": "講義名：",
+            "flex": 0,
+            "align": "center",
+            "gravity": "center"
+          },
+          {
+            "type": "text",
+            "text": "$1",
+            "wrap": true
+          }
+        ],
+        "paddingAll": "sm"
+      },
+      {
+        "type": "separator",
+        "margin": "xs"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "text",
+            "text": "課題名：",
+            "flex": 0,
+            "align": "center",
+            "gravity": "center"
+          },
+          {
+            "type": "text",
+            "text": "$2",
+            "wrap": true
+          }
+        ],
+        "margin": "sm",
+        "paddingAll": "sm"
+      },
+      {
+        "type": "separator",
+        "margin": "xs"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "text",
+            "text": "提出期限：",
+            "flex": 0,
+            "align": "center",
+            "gravity": "center"
+          },
+          {
+            "type": "text",
+            "text": "$3",
+            "wrap": true,
+            "color": "#555555"
+          }
+        ],
+        "margin": "sm",
+        "paddingAll": "sm"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "以上の内容で記録する",
+            "align": "center",
+            "gravity": "center",
+            "color": "#ffffff",
+            "wrap": true
+          }
+        ],
+        "backgroundColor": "#06C755",
+        "paddingAll": "lg",
+        "cornerRadius": "md",
+        "borderColor": "#06C755",
+        "borderWidth": "normal",
+        "margin": "xxl",
+        "action": {
+          "type": "message",
+          "text": "$4"
+        }
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "内容を訂正する",
+            "align": "center",
+            "gravity": "center",
+            "color": "#ffffff",
+            "wrap": true
+          }
+        ],
+        "backgroundColor": "#1b5aad",
+        "paddingAll": "sm",
+        "cornerRadius": "md",
+        "borderColor": "#1b5aad",
+        "borderWidth": "normal",
+        "margin": "md"
+      }
+    ],
+    "action": {
+      "type": "postback",
+      "data": "retry_add_task",
+      "inputOption": "openKeyboard",
+      "fillInText": "$5"
+    },
+    "paddingAll": "md"
+  }
+}

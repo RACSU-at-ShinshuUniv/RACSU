@@ -67,7 +67,7 @@ app.post("/webhook", (req, res) => {
 
   if (!process.env.INITIALIZED){
     process.env.INITIALIZED = true;
-    console.log("Init")
+    console.log("Instance initialized.")
     db.collection("users").doc(req.body.events[0].source.userId).get();
   }
 

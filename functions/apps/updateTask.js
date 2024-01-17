@@ -46,7 +46,7 @@ module.exports = async(db, {userId="", userData={}}) => {
       t.set(db.collection("tasks").doc(userId), latestJsonTask);
     });
 
-    if (classNameDict.initLength !== Object.keys(classNameDict).length){
+    if (classNameDict.initLength !== Object.keys(classNameDict).length-1){
       delete classNameDict.initLength;
       db.collection("overall").doc("classes").set(classNameDict).then(() => {
         console.log("update classNameDict");

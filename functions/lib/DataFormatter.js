@@ -655,7 +655,7 @@ class JsonTask {
 
     let footerText = ""
     if (otherTaskKeys.length !== 0){
-      footerText = `その他の未完了課題も${counts_other}件あります。<br>`
+      footerText = `その他の未完了課題も${otherTaskKeys.length}件あります。<br>`
     }
 
     const mailParam = {

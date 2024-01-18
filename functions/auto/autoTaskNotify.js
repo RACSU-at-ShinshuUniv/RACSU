@@ -27,27 +27,19 @@ module.exports = async({linkedUserData, notifyUserIds}) => {
       continue;
     }
 
-    const activeAddress = (() => {
-      if (isAutoAppDevMode){
-        return "racsu.shinshu.univ@gmail.com";
-      } else {
-        return `${linkedUserData[userId].studentId}@shinshu-u.ac.jp`;
-      }
-    })();
-
-    if (process.env.GCLOUD_PROJECT == "racsu-shindai"){
+    if (!isAutoAppDevMode){
       try{
-        await mailClient.taskNotify(htmlTask).sendTo(activeAddress)
-        console.log(`メール送信完了（to: ${activeAddress}, title: ${htmlTask.title}）`);
+        await mailClient.taskNotify(htmlTask).sendTo(`${linkedUserData[userId].studentId}@shinshu-u.ac.jp`)
+        console.log(`メール送信（to: ${`${linkedUserData[userId].studentId}@shinshu-u.ac.jp`}, title: ${htmlTask.title}）`);
         sendCount++;
 
       }catch(e){
-        console.log(activeAddress, e);
+        console.log(`${linkedUserData[userId].studentId}@shinshu-u.ac.jp`, e);
         errorCount++;
       }
 
-    } else if (process.env.GCLOUD_PROJECT == "racsu-develop"){
-      console.log(`${userId} メール送信はスキップされました。（to: ${activeAddress} title: ${htmlTask.title}）`);
+    } else {
+      console.log(`${userId} 環境変数によりメール送信はスキップされました。（to: ${linkedUserData[userId].studentId}@shinshu-u.ac.jp title: ${htmlTask.title}）`);
     }
   };
 

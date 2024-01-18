@@ -109,8 +109,7 @@ module.exports = async({message=""}) => {
     });
   }
 
-
-  const taskLimit = new Date(`${taskLimit_day} ${taskLimit_time}`);
+  const taskLimit = new Date(`${taskLimit_day} ${taskLimit_time}:00`);
 
   if (taskLimit < today){
     const flexContents = require("../data/flexMessage/retryAddManualTask.json");
@@ -132,8 +131,8 @@ module.exports = async({message=""}) => {
       contents: JSON.parse(JSON.stringify(flexContents)
         .replace("$1", className)
         .replace("$2", taskName)
-        .replace("$3", taskLimit.toFormat("YYYY/MM/DD HH24:MM"))
-        .replace("$4", `cmd@add?cn=${className}&tn=${taskName}&tl=${taskLimit.toFormat("YYYY/MM/DD-HH24:MM")}`)
+        .replace("$3", taskLimit.toFormat("YYYY/MM/DD HH24:MI"))
+        .replace("$4", `cmd@add?cn=${className}&tn=${taskName}&tl=${taskLimit.toFormat("YYYY/MM/DD-HH24:MI")}`)
         .replace("$5", message.replace(/\n/g, "\\n"))),
       altText: "この内容で課題を追加しますか？"
     }

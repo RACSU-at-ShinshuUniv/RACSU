@@ -1,4 +1,4 @@
-require("date-utils")
+require("date-utils");
 const axios = require('axios');
 const { Timestamp } = require('@google-cloud/firestore');
 

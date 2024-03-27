@@ -1,0 +1,21 @@
+{
+  "name": "My Extension",
+  "description": "My Extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
+  "options_page": "src/options.html",
+  "background": {
+    "service_worker": "src/js/background.js"
+  },
+  "action": {
+    "default_popup": "src/popup.html"
+  },
+  "content_scripts": [{
+    "matches": ["https://lms.ealps.shinshu-u.ac.jp/*/*/calendar/export.php"],
+    "js": ["src/js/autoSetting.js"]
+  },{
+    "matches": ["https://timetable.ealps.shinshu-u.ac.jp/portal/"],
+    "js": ["src/js/portal.js"]
+  }]
+}

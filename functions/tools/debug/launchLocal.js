@@ -18,6 +18,6 @@ http.createServer((req,res) => {
 
   await line.setWebhookEndpointUrl(`${listener.url()}/racsu-develop/asia-northeast1/expressFunctions/webhook`);
   console.log(`Endpoint set to ${listener.url()}/racsu-develop/asia-northeast1/expressFunctions/webhook`);
-  console.log("\nRunning... (Ctrl+C to quit)\n");
+  console.log("\n\u001b[32mRunning... (Ctrl+C to quit)\u001b[0m");
 })();
 

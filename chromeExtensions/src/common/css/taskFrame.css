@@ -1,0 +1,259 @@
+/* ヘッダー */
+.header {
+  display: flex;
+  height: 44px;
+  border-bottom: 1px solid #00000020;
+}
+
+#logo_img {
+  width: 35px;
+  height: 35px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 15px;
+}
+
+#update_date {
+  display: flex;
+  align-items: center;
+  color: #1DB446;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+#update_date img {
+  display: block;
+  transform: rotate(90deg);
+  width: 16px;
+  height: 16px;
+}
+
+#update_date img:hover {
+  opacity:0.8;
+}
+
+#setting {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+}
+
+#setting img {
+  display: block;
+  transform: rotate(90deg);
+  width: 20px;
+  height: 20px;
+}
+
+#setting img:hover {
+  opacity:0.8;
+}
+
+
+
+/* 課題リスト部 */
+.task_list {
+  margin: 0;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 5px;
+  overflow: auto;
+  height: 260px;
+}
+
+.task_list > div:last-child {
+  margin-bottom: 10px;
+}
+
+#no_task{
+  font-size: 15px;
+}
+
+/* インデックススタイル */
+.task_list_today > p {
+  color: #ffa500;
+  font-size: 20px;
+}
+
+.task_list_other > p {
+  color: #1e90ff;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+/* 課題コンテンツスタイル */
+.content {
+  display: flex;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid #00000020;
+}
+
+.tomorrow .limit_day::before{
+  content: "あす";
+  font-size: 14px;
+  width: 36px;
+  height: 23px;
+  color: #ffffff;
+  background-color: #ffa500;
+  text-align: center;
+  margin-right: 5px;
+}
+
+.past .limit_day::before{
+  content: "超過";
+  font-size: 14px;
+  width: 36px;
+  height: 23px;
+  color: #ffffff;
+  background-color: #941f57;
+  text-align: center;
+  margin-right: 5px;
+}
+
+/* 締め切り日付スタイル */
+.limit_day {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.today .limit_day {
+  display: none;
+}
+
+/* 課題詳細スタイル */
+.task_details {
+  width: 100%;
+}
+
+.task_item {
+  display: flex;
+}
+
+.task_item ul {
+  display: flex;
+  list-style: none;
+  width: 100%;
+}
+
+.task_item ul li {
+  display: block;
+  font-size: 15px;
+}
+
+.limit_time {
+  margin-left: 5px;
+}
+
+.class_name {
+  margin-left: 10px;
+}
+
+.task_name {
+  margin-left: auto;
+}
+
+.today .limit_time {
+  color: #ff4500;
+}
+
+/* 完了表示 */
+.finished {
+  color: #00000049 !important;
+}
+
+.today .finished .limit_time {
+  color: #ff44006e !important;
+}
+
+
+/* フッダー */
+.footer {
+  display: flex;
+  height: 34px;
+  padding-top: 5px;
+  margin-right: 20px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border-top: 1px solid #00000020;
+}
+
+.footer p {
+  font-size: 12px;
+  margin-left: 20px;
+  margin-right: auto;
+}
+
+/* ロード画面 */
+#overlay_loading p {
+  font-size: 18px;
+  color: #1b5aad;
+  margin-left: 10px;
+}
+
+
+/* 初期設定メッセージ */
+#overlay_link_message {
+  flex-direction: column;
+}
+
+#overlay_link_message p {
+  font-size: 18px;
+  color: #1b5aad;
+  margin-right: 5px;
+}
+
+#overlay_link_message a {
+  display: flex;
+  color: #1b5aad;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#overlay_link_message img {
+  width: 16px;
+  height: 16px;
+}
+
+
+/* 削除確認画面 */
+#overlay_conform_delete_finish p,
+#overlay_conform_delete_past p {
+  font-size: 16px;
+  color: #1b5aad;
+}
+
+
+/* ボタン色 */
+.delete_finish {
+  background: #1DB446;
+}
+
+.delete_past {
+  background: #941f57;
+}
+
+.cancel {
+  background: #484d49;
+}
+
+#update, #setting {
+  background: transparent;
+}
+
+/* デバック用 */
+/* #overlay_loading {
+  display: none;
+}
+#overlay_link_message {
+  display: flex;
+}
+#overlay_conform_delete_finish {
+  display: none;
+}
+#overlay_conform_delete_past {
+  display: none;
+} */

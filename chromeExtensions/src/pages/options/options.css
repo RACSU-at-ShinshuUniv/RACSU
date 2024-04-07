@@ -1,0 +1,154 @@
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+/* ヘッダー */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.header #logo_img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.header > p {
+  font-size: 24px;
+}
+
+
+/* メイン */
+.main {
+  width: 90vw;
+  max-width: 560px;
+}
+
+
+/* 設定段落 */
+.setting_index {
+  margin-top: 30px;
+}
+
+.setting_index_title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* 設定項目 */
+.setting_item {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-bottom: 6px;
+}
+
+.setting_item > p {
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.setting_item > input {
+  margin-left: auto;
+}
+
+.setting_item > textarea {
+  font-family: 'Noto Sans JP', sans-serif;
+  margin-left: auto;
+  width: 400px;
+  height: 80px;
+  resize: none;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
+
+.setting_item_button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 10px;
+  margin-bottom: 6px;
+}
+
+
+/* 設定項目説明 */
+.setting_item_description {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #727272;
+}
+
+
+/* 連携確認メッセージ */
+#link_description p {
+  font-size: 13px;
+  color: #727272;
+}
+
+.window_center > button {
+  margin-left: 10px;
+}
+
+.warning {
+  display: none;
+  color: #ff0000;
+  font-size: 13px;
+}
+
+
+/* インストールメッセージ */
+#installed_message {
+  margin-bottom: 10px;
+}
+
+#installed_message h1 {
+  font-size: 22px;
+  color: #1b5aad;
+  margin: 0;
+  margin-top: 10px;
+  font-weight: normal;
+}
+
+#installed_message p {
+  font-size: 18px;
+}
+
+
+/* 連携待ちメッセージ */
+#overlay_waiting > .window {
+  display: flex;
+  padding: 30px 30px;
+}
+
+#overlay_waiting p {
+  margin-left: 10px;
+}
+
+
+/* ボタン色 */
+.edit {
+  background: #484d49;
+}
+
+.auto_setting {
+  background: #1DB446;
+}
+
+
+/* デバック用 */
+/* #overlay_conform_auto_setting {
+  display: none;
+}
+#overlay_waiting {
+  display: none;
+}
+#installed_message {
+  display: none;
+} */

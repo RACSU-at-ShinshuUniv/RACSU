@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>RACSU for eALPS 拡張機能オプション</title>
+  <link rel="stylesheet" href="./options.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/common.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/button.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/switch.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/pulldown.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/loading.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/window.css" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+  <script type="module" src="./options.js"></script>
+</head>
+<body>
+  <div class="header">
+    <img id="logo_img" src="../../common/image/icon128.png" alt="RACSU Logo">
+    <p>RACSU for eALPS 拡張機能オプション</p>
+  </div>
+
+  <div class="main">
+    <div class="setting_index">
+      <p class="setting_index_title">eALPS連携設定</p>
+      <div class="setting_item">
+        <p>共通教育URL：</p>
+        <textarea id="moodle_url_g" wrap="soft" disabled></textarea>
+      </div>
+      <div class="setting_item">
+        <p>専門教育URL：</p>
+        <textarea id="moodle_url_s" wrap="soft" disabled></textarea>
+      </div>
+      <div class="setting_item_button">
+        <button class="edit" type="button" id="edit_url">URLを編集</button>
+        <button class="auto_setting" type="button" id="conform_auto_setting">URL自動取得を開始</button>
+      </div>
+      <div class="setting_item_description">
+        <p>RACSUは、eALPSが発行するカレンダー共有URLから課題を取得します。</p>
+        <p>iCalendar形式のファイルが発行されるURLを設定してください。</p>
+        <p>「自動設定を開始」ボタンより、カレンダー共有URLを自動取得できます。</p>
+      </div>
+      <span class="warning" id="warning_edit_url"></span>
+    </div>
+
+    <div class="setting_index">
+      <p class="setting_index_title">課題表示設定</p>
+      <div class="setting_item">
+        <p>eALPSポータルでの課題リスト表示：</p>
+        <input type="checkbox" id="display_list">
+        <label for="display_list"></label>
+      </div>
+      <div class="setting_item_description">
+        <p>有効にすると、eALPS時間割ページに課題一覧を表示します。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay_conform_auto_setting">
+    <div class="window">
+      <span class="close"></span>
+      <div id="installed_message">
+        <h1>RACSUをインストールしていただきありがとうございます！</h1>
+        <p>eALPSと連携すると、課題の取得/一覧表示が行えます。</p>
+      </div>
+      <p>学部を選択して、「取得開始」ボタンを押してください。</p>
+      <div id="link_description">
+        <p>別タブでACSUログインページが開きます。</p>
+        <p>ログイン後、数回ページ遷移をして連携情報を取得します。</p>
+      </div>
+      <div class="window_center">
+        <div class="pulldown">
+          <label>
+            <select id="department">
+              <option value="" selected>学部を選択</option>
+              <option value="l">人文学部</option>
+              <option value="e">教育学部</option>
+              <option value="j">経法学部</option>
+              <option value="s">理学部</option>
+              <option value="m">医学部</option>
+              <option value="t">工学部</option>
+              <option value="a">農学部</option>
+              <option value="f">繊維学部</option>
+            </select>
+          </label>
+        </div>
+        <button class="auto_setting" type="button" id="start_auto_setting">取得開始</button>
+      </div>
+      <span class="warning" id="warning_department">※学部を選択してください。</span>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay_waiting">
+    <div class="window">
+      <div class="sk-fading-circle">
+        <div class="sk-circle1 sk-circle"></div>
+        <div class="sk-circle2 sk-circle"></div>
+        <div class="sk-circle3 sk-circle"></div>
+        <div class="sk-circle4 sk-circle"></div>
+        <div class="sk-circle5 sk-circle"></div>
+        <div class="sk-circle6 sk-circle"></div>
+        <div class="sk-circle7 sk-circle"></div>
+        <div class="sk-circle8 sk-circle"></div>
+        <div class="sk-circle9 sk-circle"></div>
+        <div class="sk-circle10 sk-circle"></div>
+        <div class="sk-circle11 sk-circle"></div>
+        <div class="sk-circle12 sk-circle"></div>
+      </div>
+      <p>連携情報の取得を待機中</p>
+    </div>
+  </div>
+
+</body>
+</html>

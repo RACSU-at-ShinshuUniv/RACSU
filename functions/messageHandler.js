@@ -151,7 +151,7 @@ module.exports = (db, eventData, userData, lineAccount) => {
           }
 
 
-          // eAlps連携処理
+          // eALPS連携処理
           case "linking": {
             const confirmTaskUrl = require("./apps/confirmTaskUrl");
             confirmTaskUrl(db, {
@@ -278,7 +278,7 @@ module.exports = (db, eventData, userData, lineAccount) => {
               .setText("課題の表示・更新等の通常操作で、連絡モードを終了します。")
               .send();
 
-            } else if (["eAlps連携設定", "超過課題の表示"].includes(message)) {
+            } else if (["eALPS連携設定", "超過課題の表示"].includes(message)) {
               line.setText("この項目は準備中です。").send();
             } else { }
             break;

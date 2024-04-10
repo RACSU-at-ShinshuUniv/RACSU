@@ -29,23 +29,34 @@
 }
 
 #update_date img:hover {
-  opacity:0.8;
+  opacity: 0.8;
 }
 
-#setting {
+#add, #setting {
   margin-top: auto;
   margin-bottom: auto;
+  padding: 0;
+  margin-right: 15px;
+}
+
+#add {
   margin-left: auto;
 }
 
-#setting img {
+#setting img{
   display: block;
-  transform: rotate(90deg);
   width: 20px;
   height: 20px;
 }
 
-#setting img:hover {
+#add img {
+  display: block;
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+}
+
+#setting img:hover, #add img:hover {
   opacity:0.8;
 }
 
@@ -179,10 +190,17 @@
   border-top: 1px solid #00000020;
 }
 
-.footer p {
+.footer > div {
   font-size: 12px;
   margin-left: 20px;
   margin-right: auto;
+}
+
+.footer #net_error {
+  display: none;
+  color: #ff0000;
+  font-weight: bold;
+  font-size: 13px;
 }
 
 /* ロード画面 */
@@ -226,10 +244,38 @@
   color: #1b5aad;
 }
 
+/* 課題追加画面 */
+.task_input_section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.task_input_section > input {
+  width: 200px;
+}
+
+.task_input_button {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#task_info_error {
+  display: none;
+  font-size: 13px;
+}
+
+#task_limit_confirm {
+  overflow: auto;
+  max-height: 100px;
+  padding-left: 10px;
+  padding-right: 5px;
+}
 
 /* ボタン色 */
-.delete_finish {
-  background: #1DB446;
+.delete_finish, .confirm_task {
+  background: #5cb85c;
 }
 
 .delete_past {
@@ -240,20 +286,26 @@
   background: #484d49;
 }
 
-#update, #setting {
+#update, #setting, #add {
   background: transparent;
 }
 
 /* デバック用 */
-/* #overlay_loading {
+#overlay_loading {
   display: none;
 }
 #overlay_link_message {
-  display: flex;
+  display: none;
 }
 #overlay_conform_delete_finish {
   display: none;
 }
 #overlay_conform_delete_past {
   display: none;
-} */
+}
+#add_task {
+  display: none;
+}
+#add_task_confirm {
+  display: none;
+}

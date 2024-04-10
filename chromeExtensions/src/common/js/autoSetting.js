@@ -53,7 +53,7 @@ window.onload = () => {
         chrome.runtime.sendMessage({
           type: "setting",
           status: "complete"
-        });
+        }).catch((e) => console.log(e));
         window.open('about:blank','_self').close();
 
       } else {

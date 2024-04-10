@@ -39,24 +39,33 @@ const updateTaskData = async() => {
   const moodleURL_s = `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/${userConfig.userDepartment}/calendar/export_execute.php?userid=${userConfig.moodleSpecificId}&authtoken=${userConfig.moodleSpecificToken}&preset_what=all&preset_time=recentupcoming`;
 
   const icalClient = new IcalClient(moodleURL_g, moodleURL_s);
-  const icalSource = await icalClient.getLatestContents();
 
-  const {userTask, classNameDict} = await chrome.storage.local.get(["userTask", "classNameDict"]);
-  const syllabusClient = new SyllabusClient(classNameDict);
-  const overwriteIcalSource = await syllabusClient.overwriteIcalClassCode(icalSource);
+  try {
+    const icalSource = await icalClient.getLatestContents();
+    const {userTask, classNameDict} = await chrome.storage.local.get(["userTask", "classNameDict"]);
+    const syllabusClient = new SyllabusClient(classNameDict);
+    const overwriteIcalSource = await syllabusClient.overwriteIcalClassCode(icalSource);
 
-  const icalData = new IcalData(overwriteIcalSource);
-  const saveData = icalData.removeInvalidEvent().formatToSaveData().margeWith(userTask).get();
+    const icalData = new IcalData(overwriteIcalSource);
+    const saveData = icalData.removeInvalidEvent().formatToSaveData().margeWith(userTask).get();
 
-  await chrome.storage.local.set({
-    userTask: saveData,
-    lastUpdate: (new Date()).toISOString()
-  });
-  chrome.runtime.sendMessage({
-    type: "update",
-    status: "complete"
-  });
-  console.log("課題の更新が完了しました：", saveData);
+    await chrome.storage.local.set({
+      userTask: saveData,
+      lastUpdate: (new Date()).toISOString()
+    });
+    chrome.runtime.sendMessage({
+      type: "update",
+      status: "complete"
+    }).catch((e) => console.log(e));
+    console.log("課題の更新が完了しました：", saveData);
+
+  } catch(e) {
+    console.log(e);
+    chrome.runtime.sendMessage({
+      type: "update",
+      status: "error"
+    }).catch((e) => console.log(e));
+  }
 }
 
 // 定期更新登録
@@ -69,7 +78,7 @@ chrome.alarms.onAlarm.addListener(alarm => {
 
 // メッセージリスナー登録
 chrome.runtime.onMessage.addListener((message) => {
-  console.log("メッセージを受信しました：", message);
+  console.log("サービスワーカーでメッセージを受信しました：", message);
 
   if (message.type == "update"){
     if (message.status == "start"){

@@ -1,4 +1,5 @@
-import { SaveData, formatTimeCode } from "../../common/js/modules/DataFormatter.js";
+import { SaveData, formatTimeCode, generateTaskLimit } from "../../common/js/modules/DataFormatter.js";
+let cacheData = {};
 
 const loadTaskListFrame = async() => {
   const userConfig = await chrome.storage.sync.get();
@@ -82,7 +83,7 @@ window.onload = () => {
     chrome.runtime.sendMessage({
       type: "update",
       status: "start"
-    });
+    }).catch((e) => console.log(e));
   });
   document.querySelector("#setting").addEventListener("click", () => {
     const optionsPage = chrome.runtime.getURL("pages/options/options.html");
@@ -126,6 +127,83 @@ window.onload = () => {
     chrome.storage.local.set({userTask: saveData});
     loadTaskListFrame();
   });
+  document.querySelectorAll(".close").forEach(close => {
+    close.addEventListener("click", () => {
+      close.closest(".overlay").style.display = "none";
+    })
+  });
+  document.querySelector("#add").addEventListener("click", () => {
+    document.querySelector("#add_task").style.display = "flex";
+  });
+  document.querySelector("#send_task").addEventListener("click", () => {
+    const className = document.querySelector("#class_name").value;
+    const taskName = document.querySelector("#task_name").value;
+    const taskLimit = document.querySelector("#task_limit").value;
+    const repeat = document.querySelector("#repeat_task").checked;
+    if (!className) {
+      document.querySelector("#task_info_error").textContent = "※講義名を入力してください";
+      document.querySelector("#task_info_error").style.display = "block";
+    } else if (!taskName) {
+      document.querySelector("#task_info_error").textContent = "※課題名を入力してください";
+      document.querySelector("#task_info_error").style.display = "block";
+    } else if (!taskLimit) {
+      document.querySelector("#task_info_error").textContent = "※提出期限を入力してください";
+      document.querySelector("#task_info_error").style.display = "block";
+    } else {
+      document.querySelector("#task_info_error").style.display = "none";
+
+      document.querySelector("#class_name_confirm").textContent = className;
+      document.querySelector("#task_name_confirm").textContent = taskName;
+
+      const {fragment, limitList} = generateTaskLimit(taskLimit, repeat);
+      const taskLimitList = document.querySelector("#task_limit_confirm");
+      while(taskLimitList.firstChild){
+        taskLimitList.removeChild(taskLimitList.firstChild);
+      }
+      document.querySelector("#task_limit_confirm").appendChild(fragment);
+      cacheData = {
+        className: className,
+        taskName: taskName,
+        limitList: limitList
+      };
+
+      document.querySelector("#add_task").style.display = "none";
+      document.querySelector("#add_task_confirm").style.display = "flex";
+    }
+  });
+  document.querySelector("#save_task").addEventListener("click", () => {
+    const rawSaveData = {}
+    cacheData.limitList.forEach(limit => {
+      let uid = "9";
+      for (let i=0; i<5; i++){
+        uid += Math.floor(Math.random()*10).toString();
+      }
+      rawSaveData[uid] = {
+        className: cacheData.className,
+        taskName: cacheData.taskName,
+        taskLimit: limit,
+        finish: false,
+        display: true
+      }
+    });
+
+    chrome.storage.local.get(["userTask"]).then(async(userLocalData) => {
+      const saveData = (new SaveData(rawSaveData)).margeWith(userLocalData.userTask).get();
+
+      await chrome.storage.local.set({
+        userTask: saveData,
+      });
+      chrome.runtime.sendMessage({
+        type: "update",
+        status: "complete"
+      }).catch((e) => console.log(e));
+      document.querySelector("#class_name").value = "";
+      document.querySelector("#task_name").value = "";
+      document.querySelector("#task_limit").value = "";
+      document.querySelector("#add_task_confirm").style.display = "none";
+      loadTaskListFrame();
+    });
+  });
 
   // 課題リストフレームを更新
   loadTaskListFrame();
@@ -133,8 +211,15 @@ window.onload = () => {
   // メッセージリスナー登録
   chrome.runtime.onMessage.addListener((message) => {
     // アップデート完了時に課題リストフレームを更新
-    if (message.type == "update" && (message.status == "refresh" || message.status == "complete")){
-      loadTaskListFrame();
+    if (message.type == "update"){
+      if (message.status == "refresh" || message.status == "complete") {
+        document.querySelector("#net_error").style.display = "none";
+        loadTaskListFrame();
+
+      } else if (message.status == "error") {
+        document.querySelector("#net_error").style.display = "block";
+        document.querySelector("#overlay_loading").style.display = "none";
+      }
     }
   });
 }

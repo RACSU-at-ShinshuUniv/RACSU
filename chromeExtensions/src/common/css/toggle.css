@@ -1,10 +1,10 @@
-input[type=checkbox]{
+input.toggle[type=checkbox]{
   height: 0;
   width: 0;
   visibility: hidden;
 }
 
-input[type=checkbox] + label {
+input.toggle[type=checkbox] + label {
   cursor: pointer;
   width: 40px;
   height: 22px;
@@ -14,7 +14,7 @@ input[type=checkbox] + label {
   position: relative;
 }
 
-input[type=checkbox] + label:after {
+input.toggle[type=checkbox] + label:after {
   content: '';
   position: absolute;
   top: 2px;
@@ -26,11 +26,11 @@ input[type=checkbox] + label:after {
   transition: 0.3s;
 }
 
-input[type=checkbox]:checked + label {
+input.toggle[type=checkbox]:checked + label {
   background: #1DB446;
 }
 
-input[type=checkbox]:checked + label:after {
+input.toggle[type=checkbox]:checked + label:after {
   left: calc(100% - 2px);
   transform: translateX(-100%);
 }

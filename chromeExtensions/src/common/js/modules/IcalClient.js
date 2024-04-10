@@ -46,12 +46,23 @@ export class IcalClient {
   }
 
   async getLatestContents(){
-    const result = await Promise.all(this.urls.map(async(url) => {
-      const res = (await fetch(url)).text();
-      return res;
-    }));
+    try{
+      const result = await Promise.all(this.urls.map(async(url) => {
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), 3000);
+        const res = (await fetch(url, { signal: controller.signal })).text();
+        return res;
+      }));
 
-    return icalParser(result);
+      return Promise.resolve(icalParser(result));
+
+    } catch(e) {
+      if (e.name == "AbortError"){
+        return Promise.reject(new Error("接続がタイムアウトしました。"))
+      } else {
+        return Promise.reject(new Error("インターネットの接続を確認してください。"))
+      }
+    }
   }
 
   async isValidUrl(){

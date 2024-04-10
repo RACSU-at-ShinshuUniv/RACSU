@@ -100,7 +100,7 @@ export const formatTimeCode = (timeCode) => {
       time: time,
       weekDay: weekDay,
       fullDate: `${year}/${date}`,
-      source: timeCode
+      source: limit.toISOString()
     }
 
   } else {
@@ -134,9 +134,39 @@ export const formatTimeCode = (timeCode) => {
       time: `24:${time.split(":")[1]}`,
       weekDay: weekDay,
       fullDate: `${year}/${date}`,
-      source: timeCode
+      source: limit.toISOString()
     }
   }
+}
+
+export const generateTaskLimit = (taskLimit, repeat) => {
+  const html = new GenerateHtmlObject();
+  const fragment = html.fragment();
+  const limitList = []
+
+  if (repeat) {
+    const limit = new Date(taskLimit);
+    for (;;) {
+      const formattedLimit = formatTimeCode(limit)
+      fragment.appendChild(html.p(`${formattedLimit.fullDate} ${formattedLimit.time}`));
+      limitList.push(formattedLimit);
+
+      // 1週間後にセット
+      limit.setDate(limit.getDate()+7);
+
+      // 学期末判定
+      if (limit.getMonth() <= 2 && limit > (new Date(`${formattedLimit.year}/01/20`))) {
+        break;
+      } else if (limit.getMonth() <= 7 && limit > (new Date(`${formattedLimit.year}/08/01`))) {
+        break;
+      }
+    }
+  } else {
+    const formattedLimit = formatTimeCode(taskLimit)
+    fragment.appendChild(html.p(`${formattedLimit.fullDate} ${formattedLimit.time}`));
+    limitList.push(formattedLimit);
+  }
+  return {fragment: fragment, limitList: limitList};
 }
 
 const detectLimitType = (timeCode) => {
@@ -287,10 +317,10 @@ export class SaveData {
 
         if (this.saveData[key].finish){
           taskItem.classList.add("finished");
-          taskItem.appendChild(html.checkbox("finish", key, true));
+          taskItem.appendChild(html.checkbox("finish", key, true, ".flag"));
         } else {
           todayTaskCount++;
-          taskItem.appendChild(html.checkbox("finish", key, false));
+          taskItem.appendChild(html.checkbox("finish", key, false, ".flag"));
         }
         taskItem.appendChild(taskUl);
         taskDetails.appendChild(taskItem);
@@ -321,7 +351,7 @@ export class SaveData {
 
           if (this.saveData[otherTaskKeys[i]].finish){
             taskItem.classList.add("finished");
-            taskItem.appendChild(html.checkbox("finish", otherTaskKeys[i], true));
+            taskItem.appendChild(html.checkbox("finish", otherTaskKeys[i], true, ".flag"));
           } else {
             otherTaskCount++;
             taskItem.appendChild(html.checkbox("finish", otherTaskKeys[i], false));

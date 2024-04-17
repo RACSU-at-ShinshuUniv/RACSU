@@ -1,0 +1,37 @@
+.button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: 4px;
+  margin-left: 5px;
+  padding: 4px 16px;
+  font-size: 13px;
+  height: 32px;
+  width: fit-content;
+}
+
+.button:hover {
+  opacity:0.8;
+}
+
+.button:active  {
+  -webkit-transform: translate(0,2px);
+	-moz-transform: translate(0,2px);
+	transform: translate(0,2px);
+}
+
+.green {
+  color: #ffffff;
+  background: #5cb85c;
+}
+
+.wine {
+  color: #ffffff;
+  background: #941f57;
+}
+
+.gray {
+  color: #ffffff;
+  background: #484d49;
+}

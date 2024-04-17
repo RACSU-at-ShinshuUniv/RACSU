@@ -174,6 +174,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Header updateAt='none'/>
     <Footer warningMessage='テストメッセージ'/>
-    <BasicModal />
+    {/* <BasicModal /> */}
   </React.StrictMode>,
 )

@@ -1,0 +1,11 @@
+{
+  "color": {
+    "text": "#333333",
+    "green": "#1db446",
+    "green_hover": "#19a840",
+    "wine": "#941f57",
+    "wine_hover": "#751745",
+    "gray": "#333333",
+    "window_border": "#00000020"
+  }
+}

@@ -1,0 +1,36 @@
+input.toggle[type=checkbox]{
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+input.toggle[type=checkbox] + label {
+  cursor: pointer;
+  width: 40px;
+  height: 22px;
+  background: grey;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+}
+
+input.toggle[type=checkbox] + label:after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #ffffff;
+  border-radius: 9px;
+  transition: 0.3s;
+}
+
+input.toggle[type=checkbox]:checked + label {
+  background: #1DB446;
+}
+
+input.toggle[type=checkbox]:checked + label:after {
+  left: calc(100% - 2px);
+  transform: translateX(-100%);
+}

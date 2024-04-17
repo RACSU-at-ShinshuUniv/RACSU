@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>RACSU課題一覧表示</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./popup.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/common.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/button.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/toggle.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/loading.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/window.css" type="text/css">
+  <link rel="stylesheet" href="../../common/css/taskFrame.css" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+  <script type="module" src="./popup.js"></script>
+</head>
+<body>
+  <div class="frame">
+    <div class="header">
+      <img id="logo_img" src="../../common/image/icon128.png" alt="RACSU Logo">
+      <div id="update_date">
+        <p>eALPS 登録課題一覧（最終更新 <span id="last_update"></span>）</p>
+        <button type="button" id="update"><img src="../../common/image/update.png" alt="課題を更新"></button>
+      </div>
+      <button type="button" id="add"><img src="../../common/image/add.png" alt="課題を追加"></button>
+      <button type="button" id="setting"><img src="../../common/image/setting.png" alt="RACSU設定"></button>
+    </div>
+
+    <div class="task_list"></div>
+
+    <div class="footer">
+      <div>
+        <p id="net_error">通信エラー：ネットワークに接続できません</p>
+        <p>※課題の完了情報はeALPSと同期されません。</p>
+      </div>
+      <button type="button" class="delete_finish" id="conform_delete_finish">完了済みをすべて削除</button>
+      <button type="button" class="delete_past" id="conform_delete_past">超過をすべて削除</button>
+    </div>
+
+    <div class="overlay" id="overlay_loading">
+      <div class="sk-fading-circle">
+        <div class="sk-circle1 sk-circle"></div>
+        <div class="sk-circle2 sk-circle"></div>
+        <div class="sk-circle3 sk-circle"></div>
+        <div class="sk-circle4 sk-circle"></div>
+        <div class="sk-circle5 sk-circle"></div>
+        <div class="sk-circle6 sk-circle"></div>
+        <div class="sk-circle7 sk-circle"></div>
+        <div class="sk-circle8 sk-circle"></div>
+        <div class="sk-circle9 sk-circle"></div>
+        <div class="sk-circle10 sk-circle"></div>
+        <div class="sk-circle11 sk-circle"></div>
+        <div class="sk-circle12 sk-circle"></div>
+      </div>
+      <p>課題データを更新中</p>
+    </div>
+
+    <div class="overlay" id="overlay_link_message">
+      <p id="overlay_link_message_info">設定が未完了です。</p>
+      <a id="options" rel="noopener noreferrer">
+        <p>連携設定を開始する</p>
+        <img src="../../common/image/openLink.png" alt="課題を更新">
+      </a>
+    </div>
+
+    <div class="overlay" id="overlay_conform_delete_finish">
+      <div class="window">
+        <p>すべての完了済み課題をリストから削除してもよろしいですか？</p>
+        <p>※この操作は実行後取り消せません。</p>
+        <div class="window_right">
+          <button type="button" class="delete_finish" id="delete_finish">完了済みをすべて削除</button>
+          <button type="button" class="cancel" id="cancel_delete_finish">やめる</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="overlay_conform_delete_past">
+      <div class="window">
+        <p>すべての超過課題をリストから削除してもよろしいですか？</p>
+        <p>※この操作は実行後取り消せません。</p>
+        <div class="window_right">
+          <button type="button" class="delete_past" id="delete_past">超過をすべて削除</button>
+          <button type="button" class="cancel" id="cancel_delete_past">やめる</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="add_task">
+      <div class="window">
+        <span class="close"></span>
+        <div class="task_input_section">
+          <p>講義名：</p>
+          <input type="text" name="add_task_info" id="class_name">
+        </div>
+        <div class="task_input_section">
+          <p>課題名：</p>
+          <input type="text" name="add_task_info" id="task_name">
+        </div>
+        <div class="task_input_section">
+          <p>提出期限：</p>
+          <input type="datetime-local" name="add_task_info" id="task_limit">
+        </div>
+        <div class="task_input_section">
+          <p>今期中の毎週繰り返す：</p>
+          <input type="checkbox" class="toggle" id="repeat_task">
+          <label for="repeat_task"></label>
+        </div>
+        <div class="task_input_section">
+          <p class="warning" id="task_info_error"></p>
+        </div>
+        <div class="task_input_button">
+          <button type="button" class="confirm_task" id="send_task">入力内容を確認</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="add_task_confirm">
+      <div class="window">
+        <span class="close"></span>
+        <div class="task_input_section">
+          <p>講義名：</p>
+          <p id="class_name_confirm"></p>
+        </div>
+        <div class="task_input_section">
+          <p>課題名：</p>
+          <p id="task_name_confirm"></p>
+        </div>
+        <div class="task_input_section">
+          <p>提出期限：</p>
+          <div id="task_limit_confirm"></div>
+        </div>
+
+        <div class="task_input_button">
+          <button type="button" class="confirm_task" id="save_task">上記の内容で追加</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

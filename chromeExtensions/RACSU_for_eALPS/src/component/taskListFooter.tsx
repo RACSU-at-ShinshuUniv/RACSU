@@ -1,21 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import commonDesign from "../common/design.json"
+import commonDesign from "../design.json";
 
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 const style = {
-  footer: css`
-    display: flex;
-    height: 34px;
-    padding-top: 5px;
-    padding-left: 20px;
-    padding-right: 20px;
-    justify-content: flex-end;
-    align-items: flex-end;
-    border-top: 1px solid ${commonDesign.color.window_border};
-  `,
-
   button_delete_finish: css`
     margin-right: 4px;
     font-size: 12px;
@@ -33,28 +23,32 @@ const style = {
   }
   `,
 
-  info: css`
-    font-size: 12px;
-    margin-right: auto;
-  `,
-
   warning: css`
-    color: #ff0000;
+    color: ${commonDesign.color.warning};
     font-weight: bold;
     font-size: 13px;
-  `
+  `,
+
+  info: css`
+    font-size: 12px;
+  `,
 }
 
+type props = {
+  warningMessage: string,
+  modalHandler_A: (isOpen: boolean) => void,
+  modalHandler_B: (isOpen: boolean) => void
+}
 
-export default function Footer({warningMessage}: {warningMessage: string}) {
+export default function Footer({warningMessage, modalHandler_A, modalHandler_B}: props) {
   return (
-    <div css={style.footer}>
-      <div css={style.info}>
+    <Box display="flex" alignItems="center" padding="5px 16px" height="fit-content" borderTop={`1px solid ${commonDesign.color.frame_border}`}>
+      <Box marginRight="auto" marginTop="auto">
         <p css={style.warning}>{warningMessage}</p>
-        <p>※課題の完了情報はeALPSと同期されません。</p>
-      </div>
-      <Button css={style.button_delete_finish} variant="contained">完了済みをすべて削除</Button>
-      <Button css={style.button_delete_past} variant="contained">超過をすべて削除</Button>
-    </div>
+        <p css={style.info}>※課題の完了情報はeALPSと同期されません。</p>
+      </Box>
+      <Button css={style.button_delete_finish} onClick={() => modalHandler_A(true)} variant="contained">完了済みをすべて削除</Button>
+      <Button css={style.button_delete_past} onClick={() => modalHandler_B(true)} variant="contained">超過をすべて削除</Button>
+    </Box>
   );
 }

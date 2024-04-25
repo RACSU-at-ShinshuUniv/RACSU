@@ -1,35 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import commonDesign from "../common/design.json"
+import commonDesign from "../design.json";
 
 import IconButton from '@mui/material/IconButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import Box from '@mui/material/Box';
 
 const style = {
-  header: css`
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    color: ${commonDesign.color.text};
-    height: 44px;
-    border-bottom: 1px solid ${commonDesign.color.window_border};
-  `,
-
-  logo: css`
-    width: 35px;
-    height: 35px;
-  `,
-
   title: css`
     color: ${commonDesign.color.green};
     font-size: 16px;
     margin-left: 10px;
-  `,
-
-  button_refresh: css`
-    margin-right: auto;
   `,
 
   icon_refresh: css`
@@ -47,22 +30,29 @@ const style = {
   `
 };
 
-export default function Header({updateAt}: {updateAt: string}) {
+type props = {
+  updateAt: string,
+  refreshHandler: () => void,
+  addHandler: () => void,
+  settingHandler: () => void
+}
+
+export default function Header({updateAt, refreshHandler, addHandler, settingHandler}: props) {
   return (
-    <div css={style.header}>
-      <img css={style.logo} src="/icon/icon32.png" alt="RACSU Logo" />
+    <Box display="flex" alignItems="center" padding="0 10px" borderBottom={`1px solid ${commonDesign.color.frame_border}`}>
+      <img width="35px" height="35px" src="/icon/icon32.png" alt="RACSU Logo" />
       <p css={style.title}>
         eALPS 登録課題一覧（最終更新 {updateAt}）
       </p>
-      <IconButton css={style.button_refresh} aria-label="refresh">
+      <IconButton sx={{marginRight: "auto"}} onClick={() => refreshHandler()}>
         <RefreshIcon css={style.icon_refresh} />
       </IconButton>
-      <IconButton aria-label="add">
+      <IconButton onClick={() => addHandler()}>
         <AddIcon css={style.icon_add} />
       </IconButton>
-      <IconButton aria-label="setting">
+      <IconButton onClick={() => settingHandler()}>
         <SettingsOutlinedIcon css={style.icon_setting} />
       </IconButton>
-    </div>
+    </Box>
   );
 }

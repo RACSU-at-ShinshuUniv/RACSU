@@ -13,7 +13,9 @@
     "wine_hover": "#751745",
     "red": "#ff3c3c",
     "red_hover": "#e23333",
+    "red_checked": "#ff44006e",
     "blue": "#1b5aad",
+    "sky": "#1e90ff",
     "yellow": "#ffa500",
     "gray": "#333333",
     "gray_hover": "#00000015"

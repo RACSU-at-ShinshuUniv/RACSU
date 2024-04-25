@@ -3,177 +3,124 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-// import "../../src/css/common.css"
+import Header from '../../src/component/TaskListHeader'
+import Footer from '../../src/component/TaskListFooter'
+import DeleteConfirmModal from '../../src/component/DeleteConfirmModal'
+import TaskAddModal from '../../src/component/TaskAddModal'
+import Loading from '../../src/component/Loading'
+import TaskList from '../../src/component/TaskList'
 
-import Header from '../../src/component/taskListHeader'
-import Footer from '../../src/component/taskListFooter'
+const testData = {
+  892:{
+    className: 'シラバス未登録授業',
+    display: true,
+    finish: false,
+    taskLimit: {
+      date: "04/18",
+      fullDate: "2024/04/18",
+      source: "2024-04-18T14:59:00.000Z",
+      time: "23:59",
+      weekDay: "木",
+      year: "2024"
+    },
+    taskName: '第二回講義の確認小テスト'
+  },
 
-import LoadingButton from '@mui/lab/LoadingButton';
-import Box from '@mui/material/Box';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import SaveIcon from '@mui/icons-material/Save';
-import SendIcon from '@mui/icons-material/Send';
+  893: {
+    className: 'シラバス未登録授業',
+    display: true,
+    finish: true,
+    taskLimit: {
+      date: "04/24",
+      fullDate: "2024/04/24",
+      source: "2024-04-24T14:59:00.000Z",
+      time: "23:59",
+      weekDay: "木",
+      year: "2024"
+    },
+    taskName: '小テスト'
+  },
 
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import Button from '@mui/material/Button';
+  894: {
+    className: 'シラバス未登録授業',
+    display: true,
+    finish: false,
+    taskLimit: {
+      date: "04/30",
+      fullDate: "2024/04/30",
+      source: "2024-04-30T14:59:00.000Z",
+      time: "23:59",
+      weekDay: "木",
+      year: "2024"
+    },
+    taskName: '講義資料のダウンロード1'
+  },
 
-import { css } from '@emotion/react';
+  895: {
+    className: 'シラバス未登録授業',
+    display: true,
+    finish: false,
+    taskLimit: {
+      date: "04/30",
+      fullDate: "2024/04/30",
+      source: "2024-04-30T14:59:00.000Z",
+      time: "23:59",
+      weekDay: "木",
+      year: "2024"
+    },
+    taskName: '講義資料のダウンロード2'
+  },
 
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  border: '1px solid #000',
-  borderRadius: "5px",
-  boxShadow: 24,
-  padding: 2,
-};
+  896: {
+    className: 'シラバス未登録授業',
+    display: true,
+    finish: false,
+    taskLimit: {
+      date: "04/25",
+      fullDate: "2024/04/25",
+      source: "2024-04-25T14:59:00.000Z",
+      time: "23:59",
+      weekDay: "木",
+      year: "2024"
+    },
+    taskName: '講義資料のダウンロード'
+  }
+}
 
-const cssStyle = css`
-  background-color: #0000ff;
-`
+function App() {
+  const [openModal_delFinish, setOpenModal_delFinish] = React.useState(false);
+  const [openModal_delPast, setOpenModal_delPast] = React.useState(false);
+  const [openModal_add, setOpenModal_add] = React.useState(true);
+  const [openLoading, setOpenLoading] = React.useState(false);
 
-
-function LoadingButtonsTransition() {
-  const [loading, setLoading] = React.useState(true);
-  function handleClick() {
-    setLoading(true);
+  const refreshHandler = () => {
+    setOpenLoading(true);
+  };
+  const addHandler = () => {
+    return
+  };
+  const settingHandler = () => {
+    return
+  };
+  const checkHandler = (checked: boolean, id: string) => {
+    console.log(id, checked);
   }
 
   return (
-    <div>
-      <FormControlLabel
-        sx={{
-          display: 'block',
-        }}
-        control={
-          <Switch
-            checked={loading}
-            onChange={() => setLoading(!loading)}
-            name="loading"
-            color="primary"
-          />
-        }
-        label="Loading"
-      />
-      <Box sx={{ '& > button': { m: 1 } }}>
-        <LoadingButton
-          size="small"
-          onClick={handleClick}
-          loading={loading}
-          variant="outlined"
-          disabled
-        >
-          <span>disabled</span>
-        </LoadingButton>
-        <LoadingButton
-          size="small"
-          onClick={handleClick}
-          loading={loading}
-          loadingIndicator="Loading…"
-          variant="outlined"
-        >
-          <span>Fetch data</span>
-        </LoadingButton>
-        <LoadingButton
-          size="small"
-          onClick={handleClick}
-          endIcon={<SendIcon />}
-          loading={loading}
-          loadingPosition="end"
-          variant="contained"
-        >
-          <span>Send</span>
-        </LoadingButton>
-        <LoadingButton
-          size="small"
-          color="secondary"
-          onClick={handleClick}
-          loading={loading}
-          loadingPosition="start"
-          startIcon={<SaveIcon />}
-          variant="contained"
-        >
-          <span>Save</span>
-        </LoadingButton>
-      </Box>
-
-      <Box sx={{ '& > button': { m: 1 } }}>
-        <LoadingButton
-          onClick={handleClick}
-          loading={loading}
-          variant="outlined"
-          disabled
-        >
-          <span>disabled</span>
-        </LoadingButton>
-        <LoadingButton
-          onClick={handleClick}
-          loading={loading}
-          loadingIndicator="Loading…"
-          variant="outlined"
-        >
-          <span>Fetch data</span>
-        </LoadingButton>
-        <LoadingButton
-          onClick={handleClick}
-          endIcon={<SendIcon />}
-          loading={loading}
-          loadingPosition="end"
-          variant="contained"
-        >
-          <span>Send</span>
-        </LoadingButton>
-        <LoadingButton
-          color="secondary"
-          onClick={handleClick}
-          loading={loading}
-          loadingPosition="start"
-          startIcon={<SaveIcon />}
-          variant="contained"
-        >
-          <span>Save</span>
-        </LoadingButton>
-      </Box>
-    </div>
-  );
-}
-
-function BasicModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  return (
-    <div>
-      <Button onClick={handleOpen}>Open modal</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <LoadingButtonsTransition />
-          </Typography>
-        </Box>
-      </Modal>
-    </div>
-  );
+    <>
+      <Header updateAt='none' refreshHandler={refreshHandler} addHandler={addHandler} settingHandler={settingHandler}/>
+      <TaskList saveData={testData} checkHandler={checkHandler}/>
+      <DeleteConfirmModal modalIsOpen={openModal_delFinish} modalHandler={setOpenModal_delFinish} deleteType='完了済みの課題' deleteHandler={() => console.log("del")} />
+      <DeleteConfirmModal modalIsOpen={openModal_delPast} modalHandler={setOpenModal_delPast} deleteType='超過課題' deleteHandler={() => console.log("del")} />
+      <TaskAddModal modalIsOpen={openModal_add} modalHandler={setOpenModal_add} addHandler={() => null}/>
+      <Loading isOpen={openLoading} />
+      <Footer warningMessage='' modalHandler_A={setOpenModal_delFinish} modalHandler_B={setOpenModal_delPast}/>
+    </>
+  )
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Header updateAt='none'/>
-    <Footer warningMessage='テストメッセージ'/>
-    {/* <BasicModal /> */}
-  </React.StrictMode>,
+    <App />
+  </React.StrictMode>
 )

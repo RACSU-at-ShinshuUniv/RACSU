@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import commonDesign from "../design.json";
+import color from "../color.json";
 
 import React from 'react'
 
@@ -55,7 +55,7 @@ const style = {
 
   task_day: css`
     font-size: 12px;
-    color: ${commonDesign.color.text};
+    color: ${color.text};
     margin-right: 5px;
   `,
 
@@ -64,7 +64,7 @@ const style = {
     width: 36px;
     height: 23px;
     color: #ffffff;
-    background-color: ${commonDesign.color.yellow};
+    background-color: ${color.yellow};
     text-align: center;
     margin-right: 5px;
   `,
@@ -74,7 +74,7 @@ const style = {
     width: 36px;
     height: 23px;
     color: #ffffff;
-    background-color: ${commonDesign.color.wine};
+    background-color: ${color.wine};
     text-align: center;
     margin-right: 5px;
   `
@@ -142,18 +142,18 @@ function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
 
   const indexColor = () => {
     if (checked) {
-      return commonDesign.color.text_checked;
+      return color.text_checked;
     } else {
-      return commonDesign.color.text;
+      return color.text;
     }
   };
 
   const timeColor = () => {
     if (type == "today") {
       if (checked) {
-        return commonDesign.color.red_checked;
+        return color.red_checked;
       } else {
-        return commonDesign.color.red;
+        return color.red;
       }
     } else {
       return indexColor();
@@ -181,7 +181,7 @@ function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
 function TaskContainer({type, day, children}: taskContainerProps) {
   if (type == "tomorrow") {
     return (
-      <Box display="flex" alignItems="center" borderBottom={`1px solid ${commonDesign.color.frame_border}`}>
+      <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
         <Box css={style.task_index_tomorrow}>あす</Box>
         <p css={style.task_day}>{day}</p>
         <Box width="100%">
@@ -192,7 +192,7 @@ function TaskContainer({type, day, children}: taskContainerProps) {
 
   } else if (type == "past") {
     return (
-      <Box display="flex" alignItems="center" borderBottom={`1px solid ${commonDesign.color.frame_border}`}>
+      <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
         <Box css={style.task_index_past}>超過</Box>
         <p css={style.task_day}>{day}</p>
         <Box width="100%">
@@ -203,7 +203,7 @@ function TaskContainer({type, day, children}: taskContainerProps) {
 
   } else if (type == "other") {
     return (
-      <Box display="flex" alignItems="center" borderBottom={`1px solid ${commonDesign.color.frame_border}`}>
+      <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
         <p css={style.task_day}>{day}</p>
         <Box width="100%">
           {children}
@@ -214,15 +214,15 @@ function TaskContainer({type, day, children}: taskContainerProps) {
 }
 
 function TaskIndex({type, children}: {type: "today" | "other", children: React.ReactNode}) {
-  const color = (() => {
+  const _color:string = (() => {
     if (type == "today") {
-      return commonDesign.color.yellow
+      return color.yellow
     } else {
-      return commonDesign.color.sky
+      return color.sky
     }
   })();
   return (
-    <Box color={color} fontSize="20px" marginTop="10px" marginBottom="5px">
+    <Box color={_color} fontSize="20px" marginTop="10px" marginBottom="5px">
       {children}
     </Box>
   )
@@ -310,7 +310,7 @@ function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: c
 
   if (taskNodeList.length == 0) {
     taskNodeList.push(
-      <Box color={commonDesign.color.text} fontSize="14px">
+      <Box color={color.text} fontSize="14px">
         取得可能期間内に表示できる課題がありません。
       </Box>
     );

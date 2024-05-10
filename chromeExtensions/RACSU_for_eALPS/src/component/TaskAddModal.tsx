@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import commonDesign from "../design.json";
+import color from "../color.json";
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -16,7 +16,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     bgcolor: "#ffffff",
-    border: `2px solid ${commonDesign.color.modal_border}`,
+    border: `2px solid ${color.modal_border}`,
     borderRadius: "5px",
     boxShadow: 10,
     width: "75%",
@@ -26,26 +26,26 @@ const style = {
   },
 
   info: css`
-    color: ${commonDesign.color.text};
+    color: ${color.text};
     font-size: 16px;
   `,
 
   button_cancel: css`
     margin-right: 4px;
     font-size: 13px;
-    color: ${commonDesign.color.gray};
-    border-color: ${commonDesign.color.gray};
+    color: ${color.gray};
+    border-color: ${color.gray};
     :hover {
-      border-color: ${commonDesign.color.gray};
-      background-color: ${commonDesign.color.gray_hover};
+      border-color: ${color.gray};
+      background-color: ${color.gray_hover};
     }
   `,
 
   button_delete: css`
   font-size: 13px;
-  background-color: ${commonDesign.color.red};
+  background-color: ${color.red};
   :hover {
-    background-color: ${commonDesign.color.red_hover};
+    background-color: ${color.red_hover};
   }
   `,
 }

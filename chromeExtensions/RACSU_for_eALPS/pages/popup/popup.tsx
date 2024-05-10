@@ -3,12 +3,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import Header from '../../src/component/TaskListHeader'
-import Footer from '../../src/component/TaskListFooter'
-import DeleteConfirmModal from '../../src/component/DeleteConfirmModal'
-import TaskAddModal from '../../src/component/TaskAddModal'
-import Loading from '../../src/component/Loading'
-import TaskList from '../../src/component/TaskList'
+import Header from '../../src/component/TaskListHeader';
+import Footer from '../../src/component/TaskListFooter';
+import DeleteConfirmModal from '../../src/component/DeleteConfirmModal';
+import TaskAddModal from '../../src/component/TaskAddModal';
+import Loading from '../../src/component/Loading';
+import TaskList from '../../src/component/TaskList';
 
 const testData = {
   892:{

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import commonDesign from "../design.json";
+import color from "../color.json";
 
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -9,22 +9,22 @@ const style = {
   button_delete_finish: css`
     margin-right: 4px;
     font-size: 12px;
-    background-color: ${commonDesign.color.green};
+    background-color: ${color.green};
     :hover {
-      background-color: ${commonDesign.color.green_hover};
+      background-color: ${color.green_hover};
     }
   `,
 
   button_delete_past: css`
   font-size: 12px;
-  background-color: ${commonDesign.color.wine};
+  background-color: ${color.wine};
   :hover {
-    background-color: ${commonDesign.color.wine_hover};
+    background-color: ${color.wine_hover};
   }
   `,
 
   warning: css`
-    color: ${commonDesign.color.warning};
+    color: ${color.warning};
     font-weight: bold;
     font-size: 13px;
   `,
@@ -42,7 +42,7 @@ type props = {
 
 export default function Footer({warningMessage, modalHandler_A, modalHandler_B}: props) {
   return (
-    <Box display="flex" alignItems="center" padding="5px 16px" height="fit-content" borderTop={`1px solid ${commonDesign.color.frame_border}`}>
+    <Box display="flex" alignItems="center" padding="5px 16px" height="fit-content" borderTop={`1px solid ${color.frame_border}`}>
       <Box marginRight="auto" marginTop="auto">
         <p css={style.warning}>{warningMessage}</p>
         <p css={style.info}>※課題の完了情報はeALPSと同期されません。</p>

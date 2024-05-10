@@ -16,7 +16,7 @@ const style = {
     height: 100vh;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 9999;
   `,
 
   circle: css`
@@ -24,6 +24,7 @@ const style = {
   `,
 
   info: css`
+    font-size: 16px;
     margin-left: 10px;
   `
 }
@@ -33,7 +34,7 @@ export default function Loading({isOpen}: {isOpen: boolean}) {
     return (
       <Box css={style.overlay}>
         <CircularProgress size={20} css={style.circle}/>
-        <p css={style.info}>課題データを更新中</p>
+        <p css={style.info}>表示を更新中</p>
       </Box>
     );
   } else {

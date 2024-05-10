@@ -65,14 +65,14 @@ export default function DeleteConfirmModal({modalIsOpen, modalHandler, deleteTyp
         open={modalIsOpen}
         onClose={() => modalHandler(false)}
         aria-labelledby="削除の確認"
-        aria-describedby={`すべての${deleteType}をリストから削除してもよろしいですか？`}
+        aria-describedby={`すべての${deleteType}を非表示にしてもよろしいですか？`}
       >
         <Box sx={style.window}>
-          <p css={style.info}>すべての{deleteType}をリストから削除してもよろしいですか？</p>
+          <p css={style.info}>すべての{deleteType}を非表示にしてもよろしいですか？</p>
           <p css={style.warning}>※この操作は実行後取り消せません。</p>
           <Box display="flex" justifyContent="flex-end" marginTop="10px">
             <Button css={style.button_cancel} onClick={() => modalHandler(false)} variant="outlined">キャンセル</Button>
-            <Button css={style.button_delete} onClick={() => deleteHandler()} variant="contained">{deleteType}の削除を実行</Button>
+            <Button css={style.button_delete} onClick={() => deleteHandler()} variant="contained">{deleteType}を非表示</Button>
           </Box>
         </Box>
       </Modal>

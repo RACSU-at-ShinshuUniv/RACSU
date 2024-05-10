@@ -1,9 +1,11 @@
 export class SyllabusClient {
-  constructor(initClassNameDict) {
+  private classNameDict: {[classCode: string]: string}
+
+  constructor(initClassNameDict: {[classCode: string]: string}) {
     this.classNameDict = initClassNameDict;
   }
 
-  getClassName = async(classCode) => {
+  getClassName = async(classCode: string) => {
     if (classCode in this.classNameDict){
       console.log(`ローカルデータから取得：${classCode}->${this.classNameDict[classCode]}`);
       return this.classNameDict[classCode];
@@ -20,9 +22,9 @@ export class SyllabusClient {
       const detectedClassName_B = syllabusContents.replace(/\n|\r\n|\t| /g, "").match(/科目名<\/td><tdcolspan="1">(?<name>.*?)<\/td>/);
 
       const className = (() => {
-        if (detectedClassName_A !== null && detectedClassName_A.groups.name !== undefined){
+        if (detectedClassName_A !== null && detectedClassName_A.groups !== undefined && detectedClassName_A.groups.name !== undefined){
           return detectedClassName_A.groups.name;
-        } else if (detectedClassName_B !== null && detectedClassName_B.groups.name !== undefined){
+        } else if (detectedClassName_B !== null && detectedClassName_B.groups !== undefined && detectedClassName_B.groups.name !== undefined){
           return detectedClassName_B.groups.name;
         } else {
           return "シラバス未登録授業";
@@ -35,7 +37,7 @@ export class SyllabusClient {
     }
   }
 
-  overwriteIcalClassCode = async(icalData) => {
+  overwriteIcalClassCode = async(icalData: {[uid: string]: {[index: string]: string}}) => {
     const overwriteIcalData = await Promise.all(Object.keys(icalData).map(key => {
       if (icalData[key].CATEGORIES == undefined){
         return {[key]: {

@@ -10,79 +10,9 @@ import Box from '@mui/material/Box';
 
 import formatTimeCode, { formattedTimeCodeProps } from "../modules/formatTimeCode";
 
-const style = {
-  task_list: css`
-    & > .MuiBox-root:last-child {
-      border-bottom: none;
-    }
-  `,
-
-  task_content: css`
-    display: flex;
-    margin: 3px 0;
-    & .MuiTypography-root { // FormControlLabelのラベル要素の横幅上書き
-      width: 100%;
-    }
-  `,
-
-  task_checkbox: css`
-    padding: 0;
-    & .MuiSvgIcon-root {
-      font-size: 17px;
-    }
-  `,
-
-  task_ul: css`
-    display: flex;
-    list-style: none;
-    font-size: 15px;
-  `,
-
-  task_li_time: css`
-    display: block;
-    margin-left: 5px;
-  `,
-
-  task_li_cName: css`
-    display: block;
-    margin-left: 10px;
-  `,
-
-  task_li_tName: css`
-    display: block;
-    margin-left: auto;
-  `,
-
-  task_day: css`
-    font-size: 12px;
-    color: ${color.text};
-    margin-right: 5px;
-  `,
-
-  task_index_tomorrow: css`
-    font-size: 14px;
-    width: 36px;
-    height: 23px;
-    color: #ffffff;
-    background-color: ${color.yellow};
-    text-align: center;
-    margin-right: 5px;
-  `,
-
-  task_index_past: css`
-    font-size: 14px;
-    width: 36px;
-    height: 23px;
-    color: #ffffff;
-    background-color: ${color.wine};
-    text-align: center;
-    margin-right: 5px;
-  `
-}
-
 type checkHandlerProps = (
-  checked: boolean,
-  id: string
+  id: string,
+  checked: boolean
 ) => void;
 
 type saveDataProps = {
@@ -93,26 +23,7 @@ type saveDataProps = {
     finish: boolean,
     taskLimit: formattedTimeCodeProps
   }
-}
-
-type taskItemProps = {
-  id: string,
-  saveData: {
-    className: string,
-    taskName: string,
-    display: boolean,
-    finish: boolean,
-    taskLimit: formattedTimeCodeProps
-  },
-  checkHandler: checkHandlerProps
-  type?: "other" | "today"
-}
-
-type taskContainerProps = {
-  type: "today" | "tomorrow" | "past" | "other",
-  day: string
-  children: React.ReactNode[]
-}
+};
 
 const getSortedIds = (saveData: saveDataProps) => {
   const array = Object.keys(saveData).map((k)=>({ key: k, value: saveData[k] }));
@@ -133,11 +44,76 @@ const detectLimitType = (timeCode: formattedTimeCodeProps) => {
   }
 }
 
+type taskItemProps = {
+  id: string,
+  saveData: {
+    className: string,
+    taskName: string,
+    display: boolean,
+    finish: boolean,
+    taskLimit: formattedTimeCodeProps
+  },
+  checkHandler: checkHandlerProps
+  type?: "other" | "today"
+};
+
 function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
+  const style = {
+    task_content: css`
+      display: flex;
+      margin: 3px 0;
+      & .MuiTypography-root { // FormControlLabelのラベル要素の横幅上書き
+        width: 100%;
+      }
+    `,
+
+    task_checkbox: css`
+      padding: 0;
+      & .MuiSvgIcon-root {
+        font-size: 17px;
+      }
+    `,
+
+    task_ul: css`
+      display: flex;
+      list-style: none;
+      font-size: 15px;
+    `,
+
+    task_li_time: css`
+      display: block;
+      margin-left: 5px;
+    `,
+
+    task_li_cName: css`
+      display: block;
+      margin-left: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 30vw;
+      @media screen and (max-width:535px) {
+        max-width: 80px;
+      }
+    `,
+
+    task_li_tName: css`
+      display: block;
+      margin-left: auto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 35vw;
+      @media screen and (max-width:460px) {
+        max-width: 120px;
+      }
+    `
+  };
+
   const [checked, setChecked] = React.useState(saveData.finish);
   const _checkHandler = () => {
     setChecked(!checked);
-    checkHandler(!checked, id);
+    checkHandler(id, !checked);
   };
 
   const indexColor = () => {
@@ -178,7 +154,51 @@ function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
   );
 }
 
+type taskContainerProps = {
+  type: "today" | "tomorrow" | "past" | "other",
+  day: string
+  children: React.ReactNode[]
+}
+
 function TaskContainer({type, day, children}: taskContainerProps) {
+  const style = {
+    task_day: css`
+      font-size: 12px;
+      color: ${color.text};
+      margin-right: 5px;
+    `,
+
+    task_index_tomorrow: css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      padding: 2px 3px;
+      white-space: nowrap;
+      color: #ffffff;
+      background-color: ${color.yellow};
+      margin-right: 5px;
+      @media screen and (max-width:850px) {
+        font-size: 13px;
+      }
+    `,
+
+    task_index_past: css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      padding: 2px 3px;
+      white-space: nowrap;
+      color: #ffffff;
+      background-color: ${color.wine};
+      margin-right: 5px;
+      @media screen and (max-width:850px) {
+        font-size: 13px;
+      }
+    `
+  };
+
   if (type == "tomorrow") {
     return (
       <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
@@ -317,7 +337,7 @@ function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: c
   }
 
   return (
-    <Box padding="0 10px" height="260px" overflow="auto" css={style.task_list}>
+    <Box css={css`& > .MuiBox-root:last-child {border-bottom: none;}`}>
       {taskNodeList}
     </Box>
   )

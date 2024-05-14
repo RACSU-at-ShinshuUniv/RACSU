@@ -4,10 +4,10 @@ import color from "../color.json";
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 // import Autocomplete from '@mui/joy/Autocomplete';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
+// import Autocomplete from '@mui/material/Autocomplete';
+// import TextField from '@mui/material/TextField';
 
 const style = {
   window: {
@@ -61,13 +61,14 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
     <div>
       <Modal
         open={modalIsOpen}
-        onClose={() => modalHandler(true)}
-        aria-labelledby="削除の確認"
-        aria-describedby={`す`}
+        onClose={() => modalHandler(false)}
+        aria-labelledby="課題の手動追加"
+        aria-describedby="課題の手動追加機能は公開準備中です"
       >
         <Box sx={style.window}>
-          <p css={style.info}>すべてのをリストから削除してもよろしいですか？</p>
-          <Autocomplete options={['Option 1', 'Option 2']} renderInput={(params) => <TextField {...params} label="Movie" />}/>
+          <p css={style.info}>課題の手動追加機能は公開準備中です！</p>
+          <p css={style.info}>アップデートをお待ち下さい…</p>
+          {/* <Autocomplete options={['Option 1', 'Option 2']} renderInput={(params) => <TextField {...params} label="Movie" />}/> */}
         </Box>
       </Modal>
     </div>

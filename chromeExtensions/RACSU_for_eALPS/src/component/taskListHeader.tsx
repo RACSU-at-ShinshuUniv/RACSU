@@ -49,13 +49,13 @@ const style = {
 
 type props = {
   lastUpdate: string,
-  refreshHandler: () => void,
+  updateHandler: () => void,
   confirmDelPastHandler: () => void,
   confirmDelFinishHandler: () => void,
   settingHandler: () => void
 }
 
-export default function Header({lastUpdate, refreshHandler, confirmDelPastHandler, confirmDelFinishHandler, settingHandler}: props) {
+export default function Header({lastUpdate, updateHandler, confirmDelPastHandler, confirmDelFinishHandler, settingHandler}: props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -64,7 +64,7 @@ export default function Header({lastUpdate, refreshHandler, confirmDelPastHandle
   const handleClose = (type: "refresh" | "delPast" | "delFinish" | "setting" | "close") => {
     switch (type) {
       case "refresh":
-        refreshHandler()
+        updateHandler()
         break;
 
       case "delFinish":

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { crx, defineManifest } from '@crxjs/vite-plugin'
+import path from 'path';
 
 const manifest = defineManifest({
   name: "DevMode | RACSU for eALPS",
@@ -21,7 +22,19 @@ const manifest = defineManifest({
   action: {
     default_popup: "pages/popup/index.html"
   },
-  options_page: "pages/popup/index.html"
+  content_scripts: [{
+    matches: ["https://lms.ealps.shinshu-u.ac.jp/*/*/calendar/export.php"],
+    js: ["src/autoSetting.js"],
+    run_at: "document_end"
+  },{
+    matches: ["https://timetable.ealps.shinshu-u.ac.jp/portal/"],
+    js: ["src/loadFrame.js"]
+  }],
+  options_page: "pages/options/index.html",
+  web_accessible_resources: [{
+    resources: ["pages/*"],
+    matches: ["<all_urls>"]
+  }]
 });
 
 export default defineConfig({
@@ -35,6 +48,7 @@ export default defineConfig({
       input: {
         // defineManifestで指定したファイルは自動でコンパイル対象になる
         // それ以外にコンパイルしたいファイルがあれば記述
+        portal: path.resolve(__dirname, 'pages/portal/index.html')
       }
     },
   },

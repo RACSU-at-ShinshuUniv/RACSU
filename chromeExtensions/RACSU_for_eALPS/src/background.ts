@@ -1,6 +1,8 @@
 import { IcalClient } from "./modules/IcalClient.js";
 import { SyllabusClient } from "./modules/SyllabusClient.js";
 import { IcalData } from "./modules/DataFormatter.js";
+import formatTimeCode from "./modules/formatTimeCode";
+
 chrome.alarms.clearAll();
 
 chrome.runtime.onInstalled.addListener((details) => {
@@ -25,10 +27,25 @@ chrome.runtime.onInstalled.addListener((details) => {
       lastUpdate: ""
     });
     chrome.tabs.create({
-      url: "chrome-extension://" + chrome.runtime.id + "/pages/options/options.html"
+      url: "chrome-extension://" + chrome.runtime.id + "/pages/options/index.html"
     });
 
   } else {
+    chrome.storage.sync.set({
+      needToSetGeneral: false,
+      needToSetSpecific: false,
+      userDepartment: "",
+      moodleGeneralId: "",
+      moodleGeneralToken: "",
+      moodleSpecificId: "",
+      moodleSpecificToken: "",
+      accountStatus: "installed",
+      accountExpiration: "",
+      displayList: true
+    });
+    chrome.tabs.create({
+      url: "chrome-extension://" + chrome.runtime.id + "/pages/options/index.html"
+    });
   }
 });
 
@@ -47,11 +64,13 @@ const updateTaskData = async() => {
     const overwriteIcalSource = await syllabusClient.overwriteIcalClassCode(icalSource);
 
     const icalData = new IcalData(overwriteIcalSource);
+    // const saveData = icalData.removeInvalidEvent().formatToSaveData().get();
     const saveData = icalData.removeInvalidEvent().formatToSaveData().margeWith(userTask).get();
 
+    const today = formatTimeCode(new Date());
     await chrome.storage.local.set({
       userTask: saveData,
-      lastUpdate: (new Date()).toISOString()
+      lastUpdate: `${today.date} ${today.time}`
     });
     chrome.runtime.sendMessage({
       type: "update",
@@ -102,4 +121,4 @@ chrome.storage.sync.get().then(userConfig => {
       accountStatus: "accountExpired"
     });
   }
-})
+});

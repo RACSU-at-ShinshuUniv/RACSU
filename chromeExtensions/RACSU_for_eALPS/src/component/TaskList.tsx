@@ -1,350 +1,223 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import color from "../color.json";
 
-import React from 'react'
+import React from 'react';
 
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import Header from './TaskListHeader';
+import Footer from './TaskListFooter';
+import Contents from '../../src/component/TaskListContents';
+import DeleteConfirmModal from './DeleteConfirmModal';
+import TaskAddModal from './TaskAddModal';
+import Loading from './Loading';
+import AccountExpired from './AccountExpired';
+
 import Box from '@mui/material/Box';
 
-import formatTimeCode, { formattedTimeCodeProps } from "../modules/formatTimeCode";
+function App({width}: {width: string}) {
+  // ReactHook作成
+  const [openModal_delFinish, setOpenModal_delFinish] = React.useState(false);
+  const [openModal_delPast, setOpenModal_delPast] = React.useState(false);
+  const [openModal_add, setOpenModal_add] = React.useState(false);
+  const [openLoading, setOpenLoading] = React.useState(false);
+  const [accountExpiredState, setAccountExpiredState] = React.useState({isOpen: false, message: "", settingCallback: () => {}});
+  const [localDataState, setLocalDataState] = React.useState({taskData: {}, lastUpdate: ""});
 
-type checkHandlerProps = (
-  id: string,
-  checked: boolean
-) => void;
 
-type saveDataProps = {
-  [id: string]: {
-    className: string,
-    taskName: string,
-    display: boolean,
-    finish: boolean,
-    taskLimit: formattedTimeCodeProps
-  }
-};
+  // 初期描画の非同期関数作成
+  const initRendering = async() => {
+    const userConfig = await chrome.storage.sync.get();
 
-const getSortedIds = (saveData: saveDataProps) => {
-  const array = Object.keys(saveData).map((k)=>({ key: k, value: saveData[k] }));
-  array.sort((a, b) => (new Date(a.value.taskLimit.source).getTime()) - (new Date(b.value.taskLimit.source)).getTime());
-  return array.map((val) => val.key);
-}
+    if (userConfig.accountStatus == "linked"){
+      const localData = await chrome.storage.local.get(["userTask", "lastUpdate"]);
+      setLocalDataState({
+        taskData: localData.userTask,
+        lastUpdate: localData.lastUpdate
+      })
+      setOpenLoading(false);
 
-const detectLimitType = (timeCode: formattedTimeCodeProps) => {
-  const diff = ((new Date(timeCode.source).getTime()) - (new Date().getTime())) / 86400000;
-  if (diff < 0){
-    return "past";
-  } else if (0 <= diff && diff < 1){
-    return "today";
-  } else if (1 <= diff && diff < 2){
-    return "tomorrow";
-  } else {
-    return "other";
-  }
-}
+    } else if (userConfig.accountStatus == "installed") {
+      const optionsPage = chrome.runtime.getURL("pages/options/index.html");
+      setAccountExpiredState({
+        isOpen: true,
+        message: "RACSUをご利用いただくにはeALPSとの連携が必要です。",
+        settingCallback: () => {
+          window.open(optionsPage, "_blank");
+        }
+      })
 
-type taskItemProps = {
-  id: string,
-  saveData: {
-    className: string,
-    taskName: string,
-    display: boolean,
-    finish: boolean,
-    taskLimit: formattedTimeCodeProps
-  },
-  checkHandler: checkHandlerProps
-  type?: "other" | "today"
-};
-
-function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
-  const style = {
-    task_content: css`
-      display: flex;
-      margin: 3px 0;
-      & .MuiTypography-root { // FormControlLabelのラベル要素の横幅上書き
-        width: 100%;
-      }
-    `,
-
-    task_checkbox: css`
-      padding: 0;
-      & .MuiSvgIcon-root {
-        font-size: 17px;
-      }
-    `,
-
-    task_ul: css`
-      display: flex;
-      list-style: none;
-      font-size: 15px;
-    `,
-
-    task_li_time: css`
-      display: block;
-      margin-left: 5px;
-    `,
-
-    task_li_cName: css`
-      display: block;
-      margin-left: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 30vw;
-      @media screen and (max-width:535px) {
-        max-width: 80px;
-      }
-    `,
-
-    task_li_tName: css`
-      display: block;
-      margin-left: auto;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 35vw;
-      @media screen and (max-width:460px) {
-        max-width: 120px;
-      }
-    `
-  };
-
-  const [checked, setChecked] = React.useState(saveData.finish);
-  const _checkHandler = () => {
-    setChecked(!checked);
-    checkHandler(id, !checked);
-  };
-
-  const indexColor = () => {
-    if (checked) {
-      return color.text_checked;
-    } else {
-      return color.text;
+    } else if (userConfig.accountStatus == "accountExpired") {
+      const thisTerm = new Date();
+      thisTerm.setMonth(thisTerm.getMonth()-3);
+      await chrome.storage.sync.set({
+        needToSetSpecific: true,
+        accountStatus: "linking"
+      });
+      setAccountExpiredState({
+        isOpen: true,
+        message: "年度変更によりeALPSとの再連携が必要です。",
+        settingCallback: () => {
+          open(`https://lms.ealps.shinshu-u.ac.jp/${thisTerm.getFullYear()}/${userConfig.userDepartment}/calendar/export.php`, "_blank", "width=500,height=700");
+        }
+      });
     }
   };
 
-  const timeColor = () => {
-    if (type == "today") {
-      if (checked) {
-        return color.red_checked;
-      } else {
-        return color.red;
-      }
-    } else {
-      return indexColor();
-    }
-  };
 
+  // 各ボタンのハンドラー作成
+  // 初回のみの定義で良いものはuseCallbackを使用
+  const updateHandler = React.useCallback(() => {
+    setOpenLoading(true);
+    chrome.runtime.sendMessage({
+      type: "update",
+      status: "start"
+    });
+  }, []);
+
+  const settingHandler = React.useCallback(() => {
+    const optionsPage = chrome.runtime.getURL("pages/options/options.html");
+    window.open(optionsPage, "_blank");
+  }, []);
+
+  const checkHandler = React.useCallback((id: string, checked: boolean) => {
+    // ローカルデータの完了フラグを立てる
+    chrome.storage.local.get(["userTask"]).then(localData => {
+      localData.userTask[id].finish = checked;
+
+      chrome.storage.local.set(localData).then(() => {
+        // 課題データのStateを更新して再描画
+        setLocalDataState(initData => {
+          return {
+            lastUpdate: initData.lastUpdate,
+            taskData: localData.userTask
+          }
+        });
+
+        // 全体へ更新メッセージ発信
+        chrome.runtime.sendMessage({
+          type: "update",
+          status: "refresh"
+        }).catch((e) => console.log(e));
+        });
+      })
+
+  }, []);
+
+  const delPastHandler = React.useCallback(() => {
+    setOpenModal_delPast(false);
+    setOpenLoading(true);
+
+    chrome.storage.local.get(["userTask"]).then(localData => {
+      // 超過課題を取得
+      document.querySelectorAll('.past').forEach(pastTask => {
+        pastTask.querySelectorAll("input[name=finish]").forEach(pastCheckbox => {
+          // ローカルデータの非表示フラグを立てる
+          localData.userTask[pastCheckbox.id].display = false;
+        });
+      });
+
+      // 課題データのStateを更新して再描画
+      setLocalDataState(initData => {
+        return {
+          lastUpdate: initData.lastUpdate,
+          taskData: localData.userTask
+        }
+      });
+
+      // ローカルに保存
+      chrome.storage.local.set(localData).then(() => {
+        // 全体へ更新メッセージ発信
+        chrome.runtime.sendMessage({
+          type: "update",
+          status: "refresh"
+        }).catch((e) => console.log(e));
+      });
+
+      // ローディング解除
+      setOpenLoading(false);
+    });
+  }, []);
+
+  const delFinishHandler = React.useCallback(() => {
+    setOpenModal_delFinish(false);
+    setOpenLoading(true);
+
+    chrome.storage.local.get(["userTask"]).then(localData => {
+      // 完了済みの課題を取得
+      document.querySelectorAll("input[name=finish]:checked").forEach(checkbox => {
+        // ローカルデータの非表示フラグを立てる
+        localData.userTask[checkbox.id].display = false;
+      });
+
+      // 課題データのStateを更新して再描画
+      setLocalDataState(initData => {
+        return {
+          lastUpdate: initData.lastUpdate,
+          taskData: localData.userTask
+        }
+      });
+
+      // ローカルに保存
+      chrome.storage.local.set(localData).then(() => {
+        // 全体へ更新メッセージ発信
+        chrome.runtime.sendMessage({
+          type: "update",
+          status: "refresh"
+        }).catch((e) => console.log(e));
+      });
+
+      // ローディング解除
+      setOpenLoading(false);
+    });
+  }, []);
+
+
+  // 初回のみの実行関数
+  React.useEffect(() => {
+    // 課題更新のイベントリスナー作成
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message.type == "update"){
+        if (message.status == "complete" || message.status == "refresh"){
+          chrome.storage.local.get(["userTask", "lastUpdate"]).then(localData => {
+            // 課題データのStateを更新して再描画
+            setLocalDataState({
+              lastUpdate: localData.lastUpdate,
+              taskData: localData.userTask
+            });
+
+            // ローディング解除
+            setOpenLoading(false);
+          })
+        }
+      }
+    });
+
+    // 初期描画
+    initRendering();
+  }, []);
+
+
+
+  console.log("Page rendering");
   return (
-    <FormControlLabel
-      control={
-      <Checkbox css={style.task_checkbox}
-        onClick={_checkHandler}
-        checked={checked}/>
-      }
-      css={style.task_content}
-      label={
-        <ul css={[style.task_ul, css`color: ${indexColor()};`]}>
-          <li css={[style.task_li_time, css`color: ${timeColor()};`]} className="taskLimitTime">{saveData.taskLimit.time}</li>
-          <li css={style.task_li_cName}>{saveData.className}</li>
-          <li css={style.task_li_tName}>{saveData.taskName}</li>
-        </ul>
-      }/>
-  );
-}
-
-type taskContainerProps = {
-  type: "today" | "tomorrow" | "past" | "other",
-  day: string
-  children: React.ReactNode[]
-}
-
-function TaskContainer({type, day, children}: taskContainerProps) {
-  const style = {
-    task_day: css`
-      font-size: 12px;
-      color: ${color.text};
-      margin-right: 5px;
-    `,
-
-    task_index_tomorrow: css`
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      padding: 2px 3px;
-      white-space: nowrap;
-      color: #ffffff;
-      background-color: ${color.yellow};
-      margin-right: 5px;
-      @media screen and (max-width:850px) {
-        font-size: 13px;
-      }
-    `,
-
-    task_index_past: css`
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      padding: 2px 3px;
-      white-space: nowrap;
-      color: #ffffff;
-      background-color: ${color.wine};
-      margin-right: 5px;
-      @media screen and (max-width:850px) {
-        font-size: 13px;
-      }
-    `
-  };
-
-  if (type == "tomorrow") {
-    return (
-      <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
-        <Box css={style.task_index_tomorrow}>あす</Box>
-        <p css={style.task_day}>{day}</p>
-        <Box width="100%">
-          {children}
-        </Box>
+    <Box position="relative" width={width}>
+      <Header
+        lastUpdate={localDataState.lastUpdate}
+        updateHandler={updateHandler}
+        confirmDelFinishHandler={() => setOpenModal_delFinish(true)}
+        confirmDelPastHandler={() => setOpenModal_delPast(true)}
+        settingHandler={settingHandler}
+      />
+      <Box padding="0 10px" height="300px" overflow="auto">
+        <Contents saveData={localDataState.taskData} checkHandler={checkHandler} />
       </Box>
-    )
+      <Footer addHandler={() => setOpenModal_add(true)} />
 
-  } else if (type == "past") {
-    return (
-      <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
-        <Box css={style.task_index_past}>超過</Box>
-        <p css={style.task_day}>{day}</p>
-        <Box width="100%">
-          {children}
-        </Box>
-      </Box>
-    )
-
-  } else if (type == "other") {
-    return (
-      <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
-        <p css={style.task_day}>{day}</p>
-        <Box width="100%">
-          {children}
-        </Box>
-      </Box>
-    )
-  }
-}
-
-function TaskIndex({type, children}: {type: "today" | "other", children: React.ReactNode}) {
-  const _color:string = (() => {
-    if (type == "today") {
-      return color.yellow
-    } else {
-      return color.sky
-    }
-  })();
-  return (
-    <Box color={_color} fontSize="20px" marginTop="10px" marginBottom="5px">
-      {children}
+      <DeleteConfirmModal modalIsOpen={openModal_delFinish} modalHandler={setOpenModal_delFinish} deleteType='完了済みの課題' deleteHandler={delFinishHandler} />
+      <DeleteConfirmModal modalIsOpen={openModal_delPast} modalHandler={setOpenModal_delPast} deleteType='超過課題' deleteHandler={delPastHandler} />
+      <TaskAddModal modalIsOpen={openModal_add} modalHandler={setOpenModal_add} addHandler={() => null}/>
+      <Loading isOpen={openLoading} />
+      <AccountExpired isOpen={accountExpiredState.isOpen} message={accountExpiredState.message} settingCallback={accountExpiredState.settingCallback} />
     </Box>
   )
 }
 
-function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: checkHandlerProps}) {
-  const today = formatTimeCode(new Date());
-  const taskNodeList: React.ReactNode[] = [];
-
-  // 各期間の表示課題数保存変数
-  let todayTaskCount: number = 0, otherTaskCount: number = 0;
-
-  // ソート済みキー配列を取得
-  const sortedKeys: string[] = getSortedIds(saveData);
-
-  // ソート済みキー配列を当日・その他に仕分け
-  const todayTaskIds: string[] = [], otherTaskIds: string[] = [];
-  sortedKeys.forEach(id => {
-    const task = saveData[id];
-    if (task.taskLimit.fullDate == today.fullDate && task.display){
-      todayTaskIds.push(id);
-    } else if (task.display){
-      otherTaskIds.push(id);
-    }
-  });
-
-  // 当日課題のコンテンツリスト作成
-  const todayTaskNodeList: React.ReactNode[] = [];
-  if (todayTaskIds.length !== 0) {
-    for (const id of todayTaskIds) {
-      todayTaskNodeList.push(
-        <TaskItem key={id} id={id} saveData={saveData[id]} checkHandler={checkHandler} type="today"/>
-      );
-      if (!saveData[id].finish) todayTaskCount++;
-    }
-    taskNodeList.push(
-      <TaskIndex key="today" type="today">
-        本日提出 {todayTaskCount}件
-      </TaskIndex>
-    );
-    taskNodeList.push(todayTaskNodeList);
-  }
-
-  // その他課題のコンテンツリスト作成
-  // 同日の課題はまとめるために2重ループ
-  const otherTaskNodeList: React.ReactNode[] = []
-  if (otherTaskIds.length !== 0) {
-    for (let i=0; ; i++) {
-      const taskLimit_thisContent = saveData[otherTaskIds[i]].taskLimit;
-      const taskId_thisContent = otherTaskIds[i];
-      const otherTaskNodeList_thisContent: React.ReactNode[] = [];
-
-      for (; ; i++) {
-        const id = otherTaskIds[i];
-        otherTaskNodeList_thisContent.push(<TaskItem key={id} id={id} saveData={saveData[id]} checkHandler={checkHandler}/>);
-        if (!saveData[id].finish) otherTaskCount++;
-
-        if (i+1 == otherTaskIds.length){
-          break;
-        };
-
-        if (saveData[otherTaskIds[i+1]].taskLimit.date !== taskLimit_thisContent.date){
-          break;
-        };
-      }
-
-      otherTaskNodeList.push(
-        <TaskContainer key={taskId_thisContent} type={detectLimitType(taskLimit_thisContent)} day={taskLimit_thisContent.date}>
-          {otherTaskNodeList_thisContent}
-        </TaskContainer>
-      )
-
-      if (i+1 == otherTaskIds.length){
-        break;
-      }
-    }
-
-    taskNodeList.push(
-      <TaskIndex key="other" type="other">
-        今後の提出予定 {otherTaskCount}件
-      </TaskIndex>
-    )
-    taskNodeList.push(otherTaskNodeList);
-  }
-
-  if (taskNodeList.length == 0) {
-    taskNodeList.push(
-      <Box color={color.text} fontSize="14px">
-        取得可能期間内に表示できる課題がありません。
-      </Box>
-    );
-  }
-
-  return (
-    <Box css={css`& > .MuiBox-root:last-child {border-bottom: none;}`}>
-      {taskNodeList}
-    </Box>
-  )
-}
-
-export default function TaskList({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: checkHandlerProps}) {
-  return (
-    <App saveData={saveData} checkHandler={checkHandler}/>
-  );
-}
+export default App;

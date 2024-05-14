@@ -23,5 +23,5 @@
   "references": [{ "path": "./tsconfig.node.json" }],
 
   /* typescript対象ディレクトリ */
-  "include": ["src", "pages/popup"]
+  "include": ["src", "pages"]
 }

@@ -29,12 +29,12 @@ const style = {
   `
 }
 
-export default function Loading({isOpen}: {isOpen: boolean}) {
+export default function Loading({isOpen, message="表示を更新中"}: {isOpen: boolean, message?: string}) {
   if (isOpen) {
     return (
       <Box css={style.overlay}>
         <CircularProgress size={20} css={style.circle}/>
-        <p css={style.info}>表示を更新中</p>
+        <p css={style.info}>{message}</p>
       </Box>
     );
   } else {

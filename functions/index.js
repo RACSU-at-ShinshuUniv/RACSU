@@ -109,42 +109,42 @@ exports.expressFunctions = functions
 // ----------------------------------------------
 // 定期実行関数設定：課題アップデート
 // ----------------------------------------------
-exports.triggerUpdate = functions
-.region('asia-northeast1')
-.runWith({
-  maxInstances: 1,
-  memory: "1GB"
-})
-.pubsub.schedule('every day 8:30')
-.timeZone('Asia/Tokyo')
-.onRun(async(context) => {
-  const autoTaskUpdate = require("./auto/autoTaskUpdate");
-  autoTaskUpdate(db, await getAutoRunTargetUser())
-  .catch((e) => {
-    console.log("自動更新でエラー発生", e);
-  });
-  return null;
-});
+// exports.triggerUpdate = functions
+// .region('asia-northeast1')
+// .runWith({
+//   maxInstances: 1,
+//   memory: "1GB"
+// })
+// .pubsub.schedule('every day 8:30')
+// .timeZone('Asia/Tokyo')
+// .onRun(async(context) => {
+//   const autoTaskUpdate = require("./auto/autoTaskUpdate");
+//   autoTaskUpdate(db, await getAutoRunTargetUser())
+//   .catch((e) => {
+//     console.log("自動更新でエラー発生", e);
+//   });
+//   return null;
+// });
 
 
 // ----------------------------------------------
 // 定期実行関数設定：課題通知
 // ----------------------------------------------
-exports.triggerNotify = functions
-.region('asia-northeast1')
-.runWith({
-  maxInstances: 1,
-  memory: "1GB",
-  timeoutSeconds: 540
-})
-.pubsub.schedule('every day 9:00')
-.timeZone('Asia/Tokyo')
-.onRun(async(context) => {
-  const autoTaskNotify = require("./auto/autoTaskNotify");
-  autoTaskNotify(await getAutoRunTargetUser())
-  .catch((e) => {
-    console.log("自動通知でエラー発生", e);
-  });
+// exports.triggerNotify = functions
+// .region('asia-northeast1')
+// .runWith({
+//   maxInstances: 1,
+//   memory: "1GB",
+//   timeoutSeconds: 540
+// })
+// .pubsub.schedule('every day 9:00')
+// .timeZone('Asia/Tokyo')
+// .onRun(async(context) => {
+//   const autoTaskNotify = require("./auto/autoTaskNotify");
+//   autoTaskNotify(await getAutoRunTargetUser())
+//   .catch((e) => {
+//     console.log("自動通知でエラー発生", e);
+//   });
 
-  return null;
-});
+//   return null;
+// });

@@ -8,7 +8,7 @@ module.exports = async(db, {userId="", message="", userData={}}) => {
     if (message.indexOf("https://") == -1){
       return Promise.resolve({status: "error", message: {contents: "URLの登録完了まで機能の利用・メッセージの送信が行えません。\n上の画像メニューを見ながら、登録を完了させてください。"}});
     } else {
-      return Promise.resolve({status: "error", message: {contents: "URL形式が不正です。eAlpsのカレンダーエクスポートURLのみ有効です。"}});
+      return Promise.resolve({status: "error", message: {contents: "URL形式が不正です。eALPSのカレンダーエクスポートURLのみ有効です。"}});
     }
 
   } else if (urlParams.length !== 15){

@@ -119,7 +119,7 @@ module.exports = async(db, {linkedUserData, notifyUserIds}) => {
   });
 
   // 全ユーザーの課題更新終了後、classNameDictに変更があればデータベースを更新
-  if (classNameDict.initLength !== Object.keys(classNameDict).length){
+  if (classNameDict.initLength !== Object.keys(classNameDict).length-1){
     delete classNameDict.initLength;
     db.collection("overall").doc("classes").set(classNameDict).then(() => {
       console.log("update classNameDict");

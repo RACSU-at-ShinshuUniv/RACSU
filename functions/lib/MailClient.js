@@ -35,8 +35,8 @@ class MailClient{
         .replace("$1", htmlTask.headerText)
         .replace("$2", htmlTask.today)
         .replace("$3", htmlTask.footerText)
-        .replace("<htmlContents_today></htmlContents_today>", htmlTask.htmlContents_today)
-        .replace("<htmlContents_tomorrow></htmlContents_tomorrow>", htmlTask.htmlContents_tomorrow))
+        .replace("<htmlContents_today></htmlContents_today>", htmlTask.html.today)
+        .replace("<htmlContents_tomorrow></htmlContents_tomorrow>", htmlTask.html.tomorrow))
     };
     return new Sender(this[_client], mailOptions);
   }

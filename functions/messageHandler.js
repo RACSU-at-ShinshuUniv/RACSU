@@ -1,3 +1,4 @@
+require("date-utils");
 const { LineBotController } = require("./lib/LineBotController")
 const getEnvRichMenuIdDict = () => {
   const envRichMenuIdDict = require("./data/richmenuIds.json");
@@ -66,7 +67,8 @@ module.exports = (db, eventData, userData, lineAccount) => {
           // 課題手動追加開始時
           case "add_task": {
             const flexContents = require("./data/flexMessage/manualTaskLimitList.json");
-            line.setFlex(flexContents, "提出期限を選択してください。").send();
+            const today = new Date()
+            line.setFlex(JSON.parse(JSON.stringify(flexContents).replace("$1", today.toFormat("YYYY/MM/DD"))), "提出期限を選択してください。").send();
             break;
           }
 
@@ -149,7 +151,7 @@ module.exports = (db, eventData, userData, lineAccount) => {
           }
 
 
-          // eAlps連携処理
+          // eALPS連携処理
           case "linking": {
             const confirmTaskUrl = require("./apps/confirmTaskUrl");
             confirmTaskUrl(db, {
@@ -271,7 +273,11 @@ module.exports = (db, eventData, userData, lineAccount) => {
 
               }).catch(e => {console.log(e);line.setError(e).send()});
             } else if (message == "ご意見・ご要望") {
-              line.setText("管理者への連絡モードへと切り替えました。").setText("キーボードを開いてメッセージを送信してください。").setText("課題の表示・更新等の通常操作で、連絡モードを終了します。").send();
+              line.setText("管理者への連絡モードへと切り替えました。")
+              .setText("キーボードを開いてメッセージを送信してください。")
+              .setText("課題の表示・更新等の通常操作で、連絡モードを終了します。")
+              .send()
+              
             } else if (message == "eAlps連携設定") {
               const re_registerTaskUrl = require("./apps/re_registerTaskUrl");
               re_registerTaskUrl(db, {
@@ -281,12 +287,9 @@ module.exports = (db, eventData, userData, lineAccount) => {
               }).then((res) => {
                 if (res.status == "done") {
                   line.setFlex(res.message.contents, res.message.altText).send();
-
                 }
-              })
+              });
 
-            } else if (["eAlps連携設定"].includes(message)) {
-              line.setText("この項目は準備中です。").send();
             } else { }
             break;
           }

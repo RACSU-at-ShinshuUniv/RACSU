@@ -1312,7 +1312,7 @@
               "type": "postback",
               "data": "set_limit",
               "inputOption": "openKeyboard",
-              "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「2023/01/01」\n期限時間：「23:59」"
+              "fillInText": "【☆課題追加フォーム☆】\n講義名：「」\n課題名：「」\n期限日：「$1」\n期限時間：「23:59」"
             }
           }
         ],

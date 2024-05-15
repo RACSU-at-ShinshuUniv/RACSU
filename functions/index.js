@@ -57,7 +57,19 @@ const getAutoRunTargetUser = async() => {
 // ----------------------------------------------
 app.use("/webhook", LineBotMiddleware(lineAccount));
 app.post("/webhook", (req, res) => {
-  console.log(`Access from ${req.body.events[0].source.userId}. actionType=${(req.body.events[0].type)}${req.body.events[0]?.message?.text !== undefined ? `, message=「${(req.body.events[0]?.message?.text).replace(/\n/g, "")}」` : ""}`);
+  if (req.body.events[0]?.source == undefined){
+    console.log("Connection checked.");
+    res.status(200).json({}).end();
+    return null;
+  }
+
+  console.log(`Access from ${req.body.events[0]?.source?.userId}. actionType=${(req.body.events[0]?.type)}${req.body.events[0]?.message?.text !== undefined ? `, message=「${(req.body.events[0]?.message?.text).replace(/\n/g, "")}」` : ""}`);
+
+  if (!process.env.INITIALIZED){
+    process.env.INITIALIZED = true;
+    console.log("Instance initialized.")
+    db.collection("users").doc(req.body.events[0].source.userId).get();
+  }
 
   (async() => {
     console.time(`Status check of ${req.body.events[0].source.userId}`);
@@ -66,8 +78,8 @@ app.post("/webhook", (req, res) => {
     const messageHandler = require("./messageHandler");
     messageHandler(db, req.body.events[0], (userDoc.exists ? userDoc.data() : {}), lineAccount);
   })();
-
   res.status(200).json({}).end();
+
   return null;
 });
 

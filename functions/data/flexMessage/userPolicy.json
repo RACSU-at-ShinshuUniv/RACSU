@@ -167,7 +167,7 @@
                     },
                     {
                         "type": "text",
-                        "text": "・eAlps上で提出期限が設定されていないもの",
+                        "text": "・eALPS上で提出期限が設定されていないもの",
                         "wrap": true,
                         "margin": "sm",
                         "size": "sm",
@@ -176,7 +176,7 @@
                     },
                     {
                         "type": "text",
-                        "text": "・eAlps以外（Google Classroom, Google Form等）で提出するもの",
+                        "text": "・eALPS以外（Google Classroom, Google Form等）で提出するもの",
                         "wrap": true,
                         "margin": "sm",
                         "size": "sm",

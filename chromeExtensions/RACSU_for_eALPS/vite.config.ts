@@ -4,9 +4,9 @@ import { crx, defineManifest } from '@crxjs/vite-plugin'
 import path from 'path';
 
 const manifest = defineManifest({
-  name: "DevMode | RACSU for eALPS",
+  name: "RACSU for eALPS",
   description: "eALPS登録課題を一覧表示します。この拡張機能は、「eALPS支援ツール」として信州大学e-Learningセンターに認定申請中です。",
-  version: "1.1.0",
+  version: "1.2.0",
   manifest_version: 3,
   permissions: ["alarms", "storage", "unlimitedStorage"],
   host_permissions: ["https://lms.ealps.shinshu-u.ac.jp/*/*/calendar/*", "https://campus-3.shinshu-u.ac.jp/syllabusj/*"],

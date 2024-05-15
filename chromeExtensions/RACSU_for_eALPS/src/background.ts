@@ -31,21 +31,6 @@ chrome.runtime.onInstalled.addListener((details) => {
     });
 
   } else {
-    chrome.storage.sync.set({
-      needToSetGeneral: false,
-      needToSetSpecific: false,
-      userDepartment: "",
-      moodleGeneralId: "",
-      moodleGeneralToken: "",
-      moodleSpecificId: "",
-      moodleSpecificToken: "",
-      accountStatus: "installed",
-      accountExpiration: "",
-      displayList: true
-    });
-    chrome.tabs.create({
-      url: "chrome-extension://" + chrome.runtime.id + "/pages/options/index.html"
-    });
   }
 });
 

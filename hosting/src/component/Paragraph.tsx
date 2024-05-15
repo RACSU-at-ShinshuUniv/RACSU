@@ -4,7 +4,7 @@
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
 import React from 'react';
-import color from "@/common/color.json";
+import color from "@/color.json";
 
 const style = {
   paragraph: css`

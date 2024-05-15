@@ -9,8 +9,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
 
-import color from "@/common/color.json";
-import url from "@/common/url.json";
+import color from "@/color.json";
+import url from "@/url.json";
 
 const style = {
   header: css`

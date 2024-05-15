@@ -7,11 +7,11 @@ import { css } from '@emotion/react';
 import { Box, Button } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 
-import color from "@/common/color.json"
-import url from "@/common/url.json";
+import color from "@/color.json"
+import url from "@/url.json";
 
-import MockTaskList from '@/common/component/MockTaskList';
-import Paragraph, { Title, Index, Content, Description } from "@/common/component/Paragraph";
+import MockTaskList from '@/component/MockTaskList';
+import Paragraph, { Title, Index, Content, Description } from "@/component/Paragraph";
 
 const style = {
   main: css`

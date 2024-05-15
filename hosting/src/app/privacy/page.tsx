@@ -3,7 +3,7 @@
 
 import { css } from '@emotion/react';
 import { Box } from '@mui/material';
-import Paragraph, { Title, Index, Content, Description } from "@/common/component/Paragraph";
+import Paragraph, { Title, Index, Content, Description } from "@/component/Paragraph";
 
 const style = {
   main: css`

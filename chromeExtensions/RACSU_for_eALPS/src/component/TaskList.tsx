@@ -73,7 +73,7 @@ function App({width}: {width: string}) {
   }, []);
 
   const settingHandler = React.useCallback(() => {
-    const optionsPage = chrome.runtime.getURL("pages/options/options.html");
+    const optionsPage = chrome.runtime.getURL("pages/options/index.html");
     window.open(optionsPage, "_blank");
   }, []);
 

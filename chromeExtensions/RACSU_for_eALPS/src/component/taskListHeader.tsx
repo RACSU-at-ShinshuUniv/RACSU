@@ -55,7 +55,7 @@ type props = {
   settingHandler: () => void
 }
 
-export default function Header({lastUpdate, updateHandler, confirmDelPastHandler, confirmDelFinishHandler, settingHandler}: props) {
+export default function TaskListHeader({lastUpdate, updateHandler, confirmDelPastHandler, confirmDelFinishHandler, settingHandler}: props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -87,7 +87,7 @@ export default function Header({lastUpdate, updateHandler, confirmDelPastHandler
 
   return (
     <Box display="flex" alignItems="center" padding="0 10px" borderBottom={`1px solid ${color.frame_border}`}>
-      <img width="35px" height="35px" src="/icon/icon32.png" alt="RACSU Logo" />
+      <img width="35px" height="35px" src="/icon/icon48.png" alt="RACSU Logo" />
       <p css={style.title}>
         eALPS 登録課題一覧（最終更新 {lastUpdate}）
       </p>

@@ -28,7 +28,7 @@ type props = {
   addHandler: () => void
 }
 
-export default function Footer({addHandler}: props) {
+export default function TaskListFooter({addHandler}: props) {
   return (
     <Fab aria-label="add" css={style.fab} onClick={addHandler}>
       <AddIcon />

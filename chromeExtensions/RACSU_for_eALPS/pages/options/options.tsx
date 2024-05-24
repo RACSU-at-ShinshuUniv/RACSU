@@ -239,7 +239,7 @@ function App() {
   return(
     <Box display="flex" alignItems="center" flexDirection="column">
       <Box display="flex" marginTop="50px" marginBottom="40px">
-        <img width="35px" height="35px" src="/icon/icon32.png" alt="RACSU Logo" />
+        <img width="35px" height="35px" src="/icon/icon48.png" alt="RACSU Logo" />
         <p css={style.title}>RACSU for eALPS 拡張機能オプション</p>
       </Box>
       <Box>

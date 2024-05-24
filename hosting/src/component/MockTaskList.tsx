@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { css } from '@emotion/react';
-import color from "@/common/color.json";
+import color from "@/color.json";
 
 import { Box, IconButton, Fab, Menu, MenuItem, Divider, FormControlLabel, Checkbox } from '@mui/material';
 

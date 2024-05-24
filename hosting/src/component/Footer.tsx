@@ -8,8 +8,8 @@ import { Box, Button } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
 
-import color from "@/common/color.json";
-import url from "@/common/url.json";
+import color from "@/color.json";
+import url from "@/url.json";
 
 const style = {
   footer: css`

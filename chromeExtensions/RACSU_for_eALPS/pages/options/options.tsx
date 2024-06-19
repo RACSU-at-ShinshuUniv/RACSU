@@ -143,21 +143,22 @@ function App() {
 
     button_edit: css`
       font-size: 13px;
-      background-color: ${color.gray};
+      background-color: ${color.button.cancel};
+      color: ${color.text.default};
 
       &:hover {
-        background-color: ${color.gray_hover};
+        background-color: ${color.button.cancel_hover};
 
       }
     `,
 
     button_start: css`
       font-size: 13px;
-      background-color: ${color.green};
+      background-color: ${color.button.ok};
       margin-left: 5px;
 
       &:hover {
-        background-color: ${color.green_hover};
+        background-color: ${color.button.ok_hover};
       }
     `,
 

@@ -26,7 +26,7 @@ const style = {
   },
 
   window: css`
-    color: ${color.text};
+    color: ${color.text.default};
 
     h1 {
       font-weight: normal;
@@ -48,9 +48,9 @@ const style = {
     font-size: 13px;
     height: fit-content;
     margin-left: 15px;
-    background-color: ${color.green};
+    background-color: ${color.button.ok};
     :hover {
-      background-color: ${color.green_hover};
+      background-color: ${color.button.ok_hover};
     }
   `,
 }
@@ -111,7 +111,7 @@ export default function DeleteConfirmModal({modalIsOpen, modalHandler, loadingHa
               options={options}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="学部を選択" />}
-              isOptionEqualToValue={(option, selectedValue) => option.value === selectedValue.value} 
+              isOptionEqualToValue={(option, selectedValue) => option.value === selectedValue.value}
               onChange={(_event: any, newValue: {label: string, value: string} | null) => {
                 setDepartment(newValue);
               }}

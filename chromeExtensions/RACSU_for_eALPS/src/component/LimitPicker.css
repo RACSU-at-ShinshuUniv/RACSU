@@ -1,0 +1,5 @@
+.MuiPickersPopper-root:has(.customized) {
+  width: 550px;
+  height: 300px;
+  transform: translate(calc((600px - 550px) / 2), calc((340px - 300px) / 2)) !important;
+}

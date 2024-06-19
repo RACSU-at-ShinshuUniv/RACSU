@@ -93,12 +93,11 @@ function App({width}: {width: string}) {
 
         // 全体へ更新メッセージ発信
         chrome.runtime.sendMessage({
-          type: "update",
-          status: "refresh"
+          type: "refresh",
+          status: "execution"
         }).catch((e) => console.log(e));
-        });
-      })
-
+      });
+    });
   }, []);
 
   const delPastHandler = React.useCallback(() => {
@@ -126,8 +125,8 @@ function App({width}: {width: string}) {
       chrome.storage.local.set(localData).then(() => {
         // 全体へ更新メッセージ発信
         chrome.runtime.sendMessage({
-          type: "update",
-          status: "refresh"
+          type: "refresh",
+          status: "execution"
         }).catch((e) => console.log(e));
       });
 
@@ -159,8 +158,8 @@ function App({width}: {width: string}) {
       chrome.storage.local.set(localData).then(() => {
         // 全体へ更新メッセージ発信
         chrome.runtime.sendMessage({
-          type: "update",
-          status: "refresh"
+          type: "refresh",
+          status: "execution"
         }).catch((e) => console.log(e));
       });
 
@@ -175,7 +174,7 @@ function App({width}: {width: string}) {
     // 課題更新のイベントリスナー作成
     chrome.runtime.onMessage.addListener((message) => {
       if (message.type == "update"){
-        if (message.status == "complete" || message.status == "refresh"){
+        if (message.status == "complete"){
           chrome.storage.local.get(["userTask", "lastUpdate"]).then(localData => {
             // 課題データのStateを更新して再描画
             setLocalDataState({
@@ -186,6 +185,20 @@ function App({width}: {width: string}) {
             // ローディング解除
             setOpenLoading(false);
           })
+        }
+
+      } else if (message.type == "refresh") {
+        if (message.status == "execution") {
+          chrome.storage.local.get(["userTask", "lastUpdate"]).then(localData => {
+          // 課題データのStateを更新して再描画
+            setLocalDataState({
+              lastUpdate: localData.lastUpdate,
+              taskData: localData.userTask
+            });
+          });
+
+          // ローディング解除
+          setOpenLoading(false);
         }
       }
     });

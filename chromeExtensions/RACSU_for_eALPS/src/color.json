@@ -1,22 +1,30 @@
 {
-  "text": "#333333",
-  "text_checked": "#03030348",
-  "warning": "#ff0000",
   "frame_border": "#00000020",
   "modal_border": "#000000a3",
   "loading_background": "#ffffffd7",
 
   "green": "#1db446",
-  "green_hover": "#19a840",
   "wine": "#941f57",
-  "wine_hover": "#751745",
   "red": "#ff3c3c",
-  "red_hover": "#e23333",
-  "red_checked": "#ff44006e",
   "blue": "#1b5aad",
-  "blue_checked": "#1b5aad92",
   "sky": "#1e90ff",
   "yellow": "#ffa500",
   "gray": "#333333",
-  "gray_hover": "#515151"
+
+  "button": {
+    "cancel": "#00000015",
+    "cancel_hover": "#00000020",
+    "ok": "#1db446",
+    "ok_hover": "#19a840",
+    "warning": "#ff3c3c",
+    "warning_hover": "#e23333",
+    "action": "#1b5aad92",
+    "action_hover": "#1b5aad"
+  },
+
+  "text": {
+    "default": "#333333",
+    "disabled": "#03030348",
+    "warning": "#ff0000"
+  }
 }

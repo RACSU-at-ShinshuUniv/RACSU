@@ -342,6 +342,15 @@ function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: c
     );
   }
 
+  if (todayTaskCount+otherTaskCount !== 0) {
+    chrome.action.setBadgeText({text: `${todayTaskCount+otherTaskCount}`});
+    chrome.action.setBadgeBackgroundColor({
+      color: '#555555'
+    });
+  } else {
+    chrome.action.setBadgeText({text: ""});
+  }
+
   console.log("Task list rendering");
   return (
     <Box css={css`& > .MuiBox-root:last-child {border-bottom: none;}`}>

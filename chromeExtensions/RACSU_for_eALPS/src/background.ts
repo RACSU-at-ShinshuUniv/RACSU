@@ -49,7 +49,6 @@ const updateTaskData = async() => {
     const overwriteIcalSource = await syllabusClient.overwriteIcalClassCode(icalSource);
 
     const icalData = new IcalData(overwriteIcalSource);
-    // const saveData = icalData.removeInvalidEvent().formatToSaveData().get();
     const saveData = icalData.removeInvalidEvent().formatToSaveData().margeWith(userTask).get();
 
     const today = formatTimeCode(new Date());

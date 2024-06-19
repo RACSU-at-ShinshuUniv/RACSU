@@ -21,6 +21,7 @@ import LimitPicker from './LimitPicker';
 import formatTimeCode from "../modules/formatTimeCode";
 import { SaveData, saveDataProps } from '../modules/DataFormatter';
 
+// 今期の間繰り返しボタンが有効化された場合の期限生成関数
 const generateTaskLimit = (initTaskLimit: dayjs.Dayjs) => {
   const limitList: dayjs.Dayjs[] = [];
   let taskLimit = dayjs(initTaskLimit);
@@ -46,12 +47,14 @@ const generateTaskLimit = (initTaskLimit: dayjs.Dayjs) => {
 
 
 const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, enableRepeat: "enable" | "disable") => {
+  // ランダムなID生成
   let id = "MT";
   for (let i=0; i<5; i++){
     id += Math.floor(Math.random()*10).toString();
   }
 
   const newData = (() => {
+    // 繰り返しが無効な場合
     if (enableRepeat == "disable") {
       return new SaveData({
         [id]: {
@@ -63,6 +66,7 @@ const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, en
         }
       });
 
+    // 繰り返しが有効な場合
     } else {
       const taskLimitList = generateTaskLimit(taskLimit.second(0).millisecond(0));
       const newSaveData: saveDataProps = {};
@@ -82,15 +86,18 @@ const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, en
     }
   })();
 
+
   chrome.storage.local.get(["userTask", "classNameDict"]).then(localData => {
     const saveData = newData.margeWith(localData.userTask).get();
 
     if (Object.values(localData.classNameDict).includes(className)){
+      // ローカルに保存
       chrome.storage.local.set({
         userTask: saveData
       });
 
     } else {
+      // 新たに入力された講義名ならそれとともにローカルに保存
       localData.classNameDict[id] = className;
       chrome.storage.local.set({
         userTask: saveData,
@@ -98,6 +105,7 @@ const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, en
       });
     }
 
+    // 画面を更新
     chrome.runtime.sendMessage({
       type: "refresh",
       status: "request"
@@ -162,27 +170,35 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
 
   const enableSend = (limitDate.isAfter(dayjs()) && className !== "" && taskName !== "");
 
+  // サジェストの削除関数
   const deleteSuggest = React.useCallback((deleteClassName: string) => {
     chrome.storage.local.get(["classNameDict"]).then(localData => {
+      // 引数の講義名を配列から削除
       for (const key in localData.classNameDict) {
         if (localData.classNameDict[key] == deleteClassName) {
           delete localData.classNameDict[key];
         }
       }
+
+      // 上書き保存
       chrome.storage.local.set({
         classNameDict: localData.classNameDict
       });
+
+      // 選択とサジェストを更新
       setClassName("");
       setClassNameOptions(Object.values(localData.classNameDict));
     });
   }, []);
 
+  // オートコンプリートのサジェスト挿入関数
   React.useEffect(() => {
     let active = true;
     if (!isClassNameSelectLoading) {
       return undefined;
     }
 
+    // 非同期で講義名を取得してサジェストを更新
     (async () => {
       const { classNameDict } = await chrome.storage.local.get(["classNameDict"]);
 
@@ -200,7 +216,9 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
     };
   }, [isClassNameSelectLoading]);
 
+  // オートコンプリートのサジェストクリア関数
   React.useEffect(() => {
+    // カーソルが外れたらサジェストをクリア
     if (!openClassNameSelect) {
       setClassNameOptions([]);
     }
@@ -223,14 +241,13 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                 freeSolo
                 disableClearable
                 open={openClassNameSelect}
-                onOpen={() => {
-                  setOpenClassNameSelect(true);
-                }}
-                onClose={() => {
-                  setOpenClassNameSelect(false);
-                }}
+                onOpen={() => setOpenClassNameSelect(true)}
+                onClose={() => setOpenClassNameSelect(false)}
+                onInputChange={(_event, newInputValue) => setClassName(newInputValue)}
+                getOptionDisabled={(option) => (option == "サジェストなし")}
                 options={classNameOptions}
                 loading={isClassNameSelectLoading}
+                value={className}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -242,9 +259,8 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                           {isClassNameSelectLoading ? <CircularProgress color="inherit" size={20} /> : null}
                           {params.InputProps.endAdornment}
                         </React.Fragment>
-                      ),
+                      )
                     }}
-
                   />
                 )}
                 renderOption={(props, option) => (
@@ -259,13 +275,6 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                     </Box>
                   </li>
                 )}
-                value={className}
-                onInputChange={(_event, newInputValue) => {
-                  setClassName(newInputValue);
-                }}
-                getOptionDisabled={(option) =>
-                  option == "サジェストなし"
-                }
               />
             </Box>
             <Box display="flex" alignItems="center" marginTop="15px" width="100%">
@@ -281,9 +290,7 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                     placeholder="選択または入力"
                   />
                 }
-                onInputChange={(_event, newInputValue) => {
-                  setTaskName(newInputValue);
-                }}
+                onInputChange={(_event, newInputValue) => setTaskName(newInputValue)}
               />
             </Box>
             <Box display="flex" alignItems="center" marginTop="15px" width="100%">
@@ -309,6 +316,8 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
             <Button css={style.button_cancel} onClick={() => modalHandler(false)} variant="outlined">キャンセル</Button>
             <Button css={style.button_ok} onClick={() => {
                 addTask(className, taskName, limitDate, enableRepeat);
+                setClassName("");
+                setTaskName("");
                 modalHandler(false);
               }}
               variant="contained"

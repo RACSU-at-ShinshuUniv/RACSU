@@ -66,11 +66,13 @@ export default function LimitPicker({limitDate, limitDateHandler}: {limitDate: d
     },
   ];
 
+  // 曜日表記を日本語化
   const dayOfWeekFormatter = (date: dayjs.Dayjs) => {
     const dayOfWeek = date.format("d");
     return ['日', '月', '火', '水', '木', '金', '土'][Number(dayOfWeek)];
   };
 
+  // ピッカー内部の独自レイアウトを作成
   function CustomLayout(props: any) {
     const { content, actionBar, shortcuts } = usePickerLayout(props);
     const style = css`

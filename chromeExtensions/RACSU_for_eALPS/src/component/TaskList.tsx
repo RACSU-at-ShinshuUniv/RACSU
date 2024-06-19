@@ -226,7 +226,7 @@ function App({width}: {width: string}) {
 
       <DeleteConfirmModal modalIsOpen={openModal_delFinish} modalHandler={setOpenModal_delFinish} deleteType='完了済みの課題' deleteHandler={delFinishHandler} />
       <DeleteConfirmModal modalIsOpen={openModal_delPast} modalHandler={setOpenModal_delPast} deleteType='超過課題' deleteHandler={delPastHandler} />
-      <TaskAddModal modalIsOpen={openModal_add} modalHandler={setOpenModal_add} addHandler={() => null}/>
+      <TaskAddModal modalIsOpen={openModal_add} modalHandler={setOpenModal_add} />
       <Loading isOpen={openLoading} />
       <AccountExpired isOpen={accountExpiredState.isOpen} message={accountExpiredState.message} settingCallback={accountExpiredState.settingCallback} />
     </Box>

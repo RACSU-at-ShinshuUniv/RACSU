@@ -14,11 +14,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
 
 import LimitPicker from './LimitPicker';
-import { SaveData } from "../modules/DataFormatter";
 import formatTimeCode from "../modules/formatTimeCode";
-import { saveDataProps } from '../modules/DataFormatter';
+import { SaveData, saveDataProps } from '../modules/DataFormatter';
 
 const generateTaskLimit = (initTaskLimit: dayjs.Dayjs) => {
   const limitList: dayjs.Dayjs[] = [];
@@ -106,8 +107,7 @@ const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, en
 
 type props = {
   modalIsOpen: boolean,
-  modalHandler: (isOpen: boolean) => void,
-  addHandler: () => void
+  modalHandler: (isOpen: boolean) => void
 }
 
 export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
@@ -162,6 +162,21 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
 
   const enableSend = (limitDate.isAfter(dayjs()) && className !== "" && taskName !== "");
 
+  const deleteSuggest = React.useCallback((deleteClassName: string) => {
+    chrome.storage.local.get(["classNameDict"]).then(localData => {
+      for (const key in localData.classNameDict) {
+        if (localData.classNameDict[key] == deleteClassName) {
+          delete localData.classNameDict[key];
+        }
+      }
+      chrome.storage.local.set({
+        classNameDict: localData.classNameDict
+      });
+      setClassName("");
+      setClassNameOptions(Object.values(localData.classNameDict));
+    });
+  }, []);
+
   React.useEffect(() => {
     let active = true;
     if (!isClassNameSelectLoading) {
@@ -185,6 +200,12 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
     };
   }, [isClassNameSelectLoading]);
 
+  React.useEffect(() => {
+    if (!openClassNameSelect) {
+      setClassNameOptions([]);
+    }
+  }, [openClassNameSelect]);
+
   return (
     <Box>
       <Modal
@@ -200,6 +221,7 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
               <Autocomplete
                 css={style.auto_complete}
                 freeSolo
+                disableClearable
                 open={openClassNameSelect}
                 onOpen={() => {
                   setOpenClassNameSelect(true);
@@ -212,7 +234,7 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="選択または入力"
+                    placeholder="選択または入力"
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (
@@ -222,8 +244,22 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                         </React.Fragment>
                       ),
                     }}
+
                   />
                 )}
+                renderOption={(props, option) => (
+                  <li {...props}>
+                    <Box display="flex" alignItems="center" width="100%">
+                      <Box onClick={() => setOpenClassNameSelect(false)} marginRight="auto" width="100%">
+                        {option}
+                      </Box>
+                      <IconButton size="small" onClick={() => deleteSuggest(option)}>
+                        <ClearIcon fontSize="inherit" />
+                      </IconButton>
+                    </Box>
+                  </li>
+                )}
+                value={className}
                 onInputChange={(_event, newInputValue) => {
                   setClassName(newInputValue);
                 }}
@@ -237,11 +273,12 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
               <Autocomplete
                 css={style.auto_complete}
                 freeSolo
+                disableClearable
                 options={['レポート提出', 'eALPSで小テスト']}
                 renderInput={(params) =>
                   <TextField
                     {...params}
-                    label="選択または入力"
+                    placeholder="選択または入力"
                   />
                 }
                 onInputChange={(_event, newInputValue) => {

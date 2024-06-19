@@ -39,10 +39,10 @@ const detectLimitType = (timeCode: dayjs.Dayjs) => {
   if (timeCode.isBefore(now)){
     return "past";
 
-  } else if (timeCode.date() == now.date()+1){
+  } else if (timeCode.format('YYYY/MM/DD') == now.add(1, "day").format('YYYY/MM/DD')){
     return "tomorrow";
 
-  } else if (timeCode.date() == now.date()){
+  } else if (timeCode.format('YYYY/MM/DD') == now.format('YYYY/MM/DD')){
     return "today";
 
   } else {

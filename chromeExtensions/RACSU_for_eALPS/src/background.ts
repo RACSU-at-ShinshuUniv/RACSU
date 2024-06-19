@@ -94,6 +94,16 @@ chrome.runtime.onMessage.addListener((message) => {
       chrome.storage.sync.get().then(res => console.log("eALPSとの連携情報を登録しました：", res));
       updateTaskData();
     }
+
+  } else if (message.type == "refresh"){
+    if (message.status == "request"){
+      setTimeout(() => {
+        chrome.runtime.sendMessage({
+          type: "refresh",
+          status: "execution"
+        }).catch((_e) => {});
+      }, 100);
+    }
   }
 });
 

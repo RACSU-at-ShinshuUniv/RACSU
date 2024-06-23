@@ -160,6 +160,7 @@ export default function LimitPicker({limitDate, limitDateHandler}: {limitDate: d
       }}
     >
       <DesktopDateTimePicker
+        sx={{width: "260px"}}
         format='YYYY/MM/DD HH:mm'
         ampm={false}
         disablePast

@@ -2,12 +2,13 @@
 "use client";
 
 import { css } from '@emotion/react';
+import color from "../color.json";
 
 import dayjs from 'dayjs';
 import Box from '@mui/material/Box';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers';
+import { DesktopDateTimePicker  } from '@mui/x-date-pickers';
 import { usePickerLayout, pickersLayoutClasses, PickersLayoutRoot, PickersLayoutContentWrapper } from '@mui/x-date-pickers/PickersLayout';
 import { PickersShortcutsItem } from '@mui/x-date-pickers/PickersShortcuts';
 import "./LimitPicker.css";
@@ -117,6 +118,14 @@ export default function LimitPicker({limitDate, limitDateHandler}: {limitDate: d
         padding: 0 16px 2px 0;
       }
 
+      /* 時間選択部のスクロールバースタイル */
+      & .MuiMultiSectionDigitalClockSection-root::-webkit-scrollbar {
+        width: 3px;
+      }
+      & .MuiMultiSectionDigitalClockSection-root::-webkit-scrollbar-thumb {
+        background-color: ${color.modal_border};
+      }
+
       /* ポップアップのスタイル */
       display: flex;
     `;
@@ -150,7 +159,7 @@ export default function LimitPicker({limitDate, limitDateHandler}: {limitDate: d
         year: "YYYY年",
       }}
     >
-      <DateTimePicker
+      <DesktopDateTimePicker
         format='YYYY/MM/DD HH:mm'
         ampm={false}
         disablePast

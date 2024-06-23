@@ -25,14 +25,14 @@ const manifest = defineManifest({
   content_scripts: [{
     matches: ["https://lms.ealps.shinshu-u.ac.jp/*/*/calendar/export.php"],
     js: ["src/autoSetting.js"],
-    run_at: "document_end"
   },{
-    matches: ["https://timetable.ealps.shinshu-u.ac.jp/portal/"],
-    js: ["src/loadFrame.js"]
+    matches: ["https://timetable.ealps.shinshu-u.ac.jp/portal/#/"],
+    js: ["src/loadFrame.js"],
+    "all_frames": true
   }],
   options_page: "pages/options/index.html",
   web_accessible_resources: [{
-    resources: ["pages/*"],
+    resources: ["pages/*", "src/*"],
     matches: ["<all_urls>"]
   }]
 });

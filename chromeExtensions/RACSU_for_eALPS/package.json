@@ -14,8 +14,6 @@
     "@emotion/styled": "^11.11.5",
     "@extend-chrome/storage": "^1.5.0",
     "@mui/icons-material": "^5.15.15",
-    "@mui/joy": "^5.0.0-beta.36",
-    "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.15",
     "@mui/x-date-pickers": "^7.7.0",
     "@types/chrome": "^0.0.266",

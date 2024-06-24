@@ -2,7 +2,7 @@ import formatTimeCode, { formattedTimeCodeProps } from "./formatTimeCode";
 
 const regExpValidEvent = /「(.*)」の提出期限が近づいています|「(.*)」の提出期限|(.*)の受験可能期間の終了|「(.*)」終了|(.*)要完了|(.*)が期限です。/;
 
-type saveDataProps = {
+export type saveDataProps = {
   [id: string]: {
     className: string,
     taskName: string,

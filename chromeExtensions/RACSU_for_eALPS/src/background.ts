@@ -49,7 +49,6 @@ const updateTaskData = async() => {
     const overwriteIcalSource = await syllabusClient.overwriteIcalClassCode(icalSource);
 
     const icalData = new IcalData(overwriteIcalSource);
-    // const saveData = icalData.removeInvalidEvent().formatToSaveData().get();
     const saveData = icalData.removeInvalidEvent().formatToSaveData().margeWith(userTask).get();
 
     const today = formatTimeCode(new Date());
@@ -93,6 +92,16 @@ chrome.runtime.onMessage.addListener((message) => {
     if (message.status == "complete"){
       chrome.storage.sync.get().then(res => console.log("eALPSとの連携情報を登録しました：", res));
       updateTaskData();
+    }
+
+  } else if (message.type == "refresh"){
+    if (message.status == "request"){
+      setTimeout(() => {
+        chrome.runtime.sendMessage({
+          type: "refresh",
+          status: "execution"
+        }).catch((_e) => {});
+      }, 100);
     }
   }
 });

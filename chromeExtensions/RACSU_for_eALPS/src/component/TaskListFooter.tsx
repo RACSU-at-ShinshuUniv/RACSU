@@ -8,7 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 const style = {
   fab: css`
     position: absolute;
-    background-color: ${color.blue_checked};
+    background-color: ${color.button.action};
     width: 45px;
     height: 45px;
     bottom: 12px;
@@ -19,7 +19,7 @@ const style = {
     }
 
     &:hover {
-      background-color: ${color.blue};
+      background-color: ${color.button.action_hover};
     }
   `
 };

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && powershell compress-archive -Force dist ../RACSU_for_eALPS_newBuild.zip",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -14,11 +14,11 @@
     "@emotion/styled": "^11.11.5",
     "@extend-chrome/storage": "^1.5.0",
     "@mui/icons-material": "^5.15.15",
-    "@mui/joy": "^5.0.0-beta.36",
-    "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.15",
+    "@mui/x-date-pickers": "^7.7.0",
     "@types/chrome": "^0.0.266",
     "@types/node": "^20.12.11",
+    "dayjs": "^1.11.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

@@ -22,31 +22,32 @@ const style = {
   },
 
   info: css`
-    color: ${color.text};
+    color: ${color.text.default};
     font-size: 16px;
   `,
 
   warning: css`
-    color: ${color.warning};
+    color: ${color.text.warning};
     font-size: 13px;
   `,
 
   button_cancel: css`
     margin-right: 4px;
     font-size: 13px;
-    color: ${color.gray};
-    border-color: ${color.gray};
+    color: ${color.text.default};
+    background-color: ${color.button.cancel};
+    border: none;
     :hover {
-      border-color: ${color.gray};
-      background-color: ${color.gray_hover};
+      border: none;
+      background-color: ${color.button.cancel_hover};
     }
   `,
 
   button_delete: css`
   font-size: 13px;
-  background-color: ${color.red};
+  background-color: ${color.button.warning};
   :hover {
-    background-color: ${color.red_hover};
+    background-color: ${color.button.warning_hover};
   }
   `,
 }

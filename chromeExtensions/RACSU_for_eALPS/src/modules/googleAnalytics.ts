@@ -46,7 +46,7 @@ async function getOrCreateSessionId() {
 }
 
 
-export async function GASend(eventName: "user" | "taskCheck" | "taskAdd" | "taskUpdateManually" | "taskDelete" | "pageOpen" | "changeSetting", eventType: string) {
+export async function GASend(eventName: "install" | "taskCheck" | "taskAdd" | "taskUpdateManually" | "taskDelete" | "pageOpen" | "changeSetting", eventType: string) {
   // console.log("GASend", eventName, eventType);
   fetch(
     `${GA_ENDPOINT}?measurement_id=${MEASUREMENT_ID}&api_secret=${API_SECRET}`,

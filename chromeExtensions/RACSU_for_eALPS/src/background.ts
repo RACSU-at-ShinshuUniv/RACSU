@@ -31,7 +31,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       url: "chrome-extension://" + chrome.runtime.id + "/pages/options/index.html"
     });
 
-    GASend("user", "install");
+    GASend("install", "new");
 
   } else {
   }

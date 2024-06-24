@@ -16,6 +16,9 @@ import StartAccountLinkModal from '../../src/component/StartAccountLinkModal';
 
 import { IcalClient } from '../../src/modules/IcalClient';
 
+import { GASend } from '../../src/modules/googleAnalytics';
+GASend("pageOpen", "options");
+
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
@@ -216,6 +219,7 @@ function App() {
             enable: false,
             message: "URLを編集"
           });
+          GASend("changeSetting", "updateIcalURLManually");
         }
         setOpenLoading(false);
       })
@@ -228,14 +232,19 @@ function App() {
     }
   };
 
-  const enableDisplayHandler = () => {
+  const enableDisplayHandler = React.useCallback(() => {
     setEnableDisplay(initStatus => {
       chrome.storage.sync.set({
         displayList: !initStatus
       });
+      if (initStatus) {
+        GASend("changeSetting", "disableDisplayPortal");
+      } else {
+        GASend("changeSetting", "enableDisplayPortal");
+      }
       return !initStatus
     })
-  }
+  }, []);
 
   return(
     <Box display="flex" alignItems="center" flexDirection="column">

@@ -9,7 +9,8 @@ const manifest = defineManifest({
   version: "1.3.2",
   manifest_version: 3,
   permissions: ["alarms", "storage", "unlimitedStorage"],
-  host_permissions: ["https://lms.ealps.shinshu-u.ac.jp/*/*/calendar/*", "https://campus-3.shinshu-u.ac.jp/syllabusj/*"],
+  // CORSを回避する必要があるドメインのみ記述
+  host_permissions: ["https://campus-3.shinshu-u.ac.jp/syllabusj/*"],
   icons: {
     16: "icon/icon16.png",
     48: "icon/icon48.png",

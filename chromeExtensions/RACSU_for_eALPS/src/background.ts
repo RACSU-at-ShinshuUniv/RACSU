@@ -2,6 +2,7 @@ import { IcalClient } from "./modules/IcalClient.js";
 import { SyllabusClient } from "./modules/SyllabusClient.js";
 import { IcalData } from "./modules/DataFormatter.js";
 import formatTimeCode from "./modules/formatTimeCode";
+import { GASend } from "./modules/googleAnalytics.js";
 
 chrome.alarms.clearAll();
 
@@ -29,6 +30,8 @@ chrome.runtime.onInstalled.addListener((details) => {
     chrome.tabs.create({
       url: "chrome-extension://" + chrome.runtime.id + "/pages/options/index.html"
     });
+
+    GASend("user", "install");
 
   } else {
   }

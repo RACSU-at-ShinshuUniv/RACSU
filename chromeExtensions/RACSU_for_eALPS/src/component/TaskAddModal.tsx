@@ -21,6 +21,9 @@ import LimitPicker from './LimitPicker';
 import formatTimeCode from "../modules/formatTimeCode";
 import { SaveData, saveDataProps } from '../modules/DataFormatter';
 
+import { GASend } from '../../src/modules/googleAnalytics';
+
+
 // 今期の間繰り返しボタンが有効化された場合の期限生成関数
 const generateTaskLimit = (initTaskLimit: dayjs.Dayjs) => {
   const limitList: dayjs.Dayjs[] = [];
@@ -86,7 +89,6 @@ const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, en
     }
   })();
 
-
   chrome.storage.local.get(["userTask", "classNameDict"]).then(localData => {
     const saveData = newData.margeWith(localData.userTask).get();
 
@@ -111,6 +113,8 @@ const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, en
       status: "request"
     });
   });
+
+  GASend("taskAdd", enableRepeat == "enable" ? "repeatEnabled" : "repeatDisabled");
 }
 
 type props = {

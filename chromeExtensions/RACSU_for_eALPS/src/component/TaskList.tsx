@@ -12,6 +12,8 @@ import AccountExpired from './AccountExpired';
 
 import Box from '@mui/material/Box';
 
+import { GASend } from '../../src/modules/googleAnalytics';
+
 function App({width}: {width: string}) {
   // ReactHook作成
   const [openModal_delFinish, setOpenModal_delFinish] = React.useState(false);
@@ -70,6 +72,7 @@ function App({width}: {width: string}) {
       type: "update",
       status: "start"
     });
+    GASend("taskUpdateManually", "execute");
   }, []);
 
   const settingHandler = React.useCallback(() => {
@@ -81,6 +84,11 @@ function App({width}: {width: string}) {
     // ローカルデータの完了フラグを立てる
     chrome.storage.local.get(["userTask"]).then(localData => {
       localData.userTask[id].finish = checked;
+      if (checked) {
+        GASend("taskCheck", "finish");
+      } else {
+        GASend("taskCheck", "redo");
+      }
 
       chrome.storage.local.set(localData).then(() => {
         // 課題データのStateを更新して再描画
@@ -103,6 +111,7 @@ function App({width}: {width: string}) {
   const delPastHandler = React.useCallback(() => {
     setOpenModal_delPast(false);
     setOpenLoading(true);
+    GASend("taskDelete", "past");
 
     chrome.storage.local.get(["userTask"]).then(localData => {
       // 超過課題を取得
@@ -138,6 +147,7 @@ function App({width}: {width: string}) {
   const delFinishHandler = React.useCallback(() => {
     setOpenModal_delFinish(false);
     setOpenLoading(true);
+    GASend("taskDelete", "finished");
 
     chrome.storage.local.get(["userTask"]).then(localData => {
       // 完了済みの課題を取得

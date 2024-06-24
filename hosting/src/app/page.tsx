@@ -10,8 +10,8 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import color from "@/color.json"
 import url from "@/url.json";
 
-import MockTaskList from '@/component/MockTaskList';
-import Paragraph, { Title, Index, Content, Description } from "@/component/Paragraph";
+import MockTaskList from '@/components/MockTaskList';
+import Paragraph, { Title, Index, Content, Description } from "@/components/Paragraph";
 
 const style = {
   main: css`

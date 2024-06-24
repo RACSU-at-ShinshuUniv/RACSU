@@ -8,7 +8,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 
-import formatTimeCode, { formattedTimeCodeProps } from "../modules/formatTimeCode";
+import dayjs from 'dayjs';
+
+import { formattedTimeCodeProps } from "../modules/formatTimeCode";
 
 type checkHandlerProps = (
   id: string,
@@ -31,14 +33,18 @@ const getSortedIds = (saveData: saveDataProps) => {
   return array.map((val) => val.key);
 }
 
-const detectLimitType = (timeCode: formattedTimeCodeProps) => {
-  const diff = ((new Date(timeCode.source).getTime()) - (new Date().getTime())) / 86400000;
-  if (diff < 0){
+const detectLimitType = (timeCode: dayjs.Dayjs) => {
+  const now = dayjs();
+
+  if (timeCode.isBefore(now)){
     return "past";
-  } else if (0 <= diff && diff < 1){
-    return "today";
-  } else if (1 <= diff && diff < 2){
+
+  } else if (timeCode.format('YYYY/MM/DD') == now.add(1, "day").format('YYYY/MM/DD')){
     return "tomorrow";
+
+  } else if (timeCode.format('YYYY/MM/DD') == now.format('YYYY/MM/DD')){
+    return "today";
+
   } else {
     return "other";
   }
@@ -112,18 +118,18 @@ function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
 
   const indexColor = () => {
     if (saveData.finish) {
-      return color.text_checked;
+      return color.text.disabled;
     } else {
-      return color.text;
+      return color.text.default;
     }
   };
 
   const timeColor = () => {
     if (type == "today") {
       if (saveData.finish) {
-        return color.red_checked;
+        return color.text.disabled;
       } else {
-        return color.red;
+        return color.text.default;
       }
     } else {
       return indexColor();
@@ -248,7 +254,6 @@ function TaskIndex({type, children}: {type: "today" | "other", children: React.R
 }
 
 function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: checkHandlerProps}) {
-  const today = formatTimeCode(new Date());
   const taskNodeList: React.ReactNode[] = [];
 
   // 各期間の表示課題数保存変数
@@ -261,7 +266,7 @@ function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: c
   const todayTaskIds: string[] = [], otherTaskIds: string[] = [];
   sortedKeys.forEach(id => {
     const task = saveData[id];
-    if (task.taskLimit.fullDate == today.fullDate && task.display){
+    if (detectLimitType(dayjs(task.taskLimit.source)) == "today" && task.display){
       todayTaskIds.push(id);
     } else if (task.display){
       otherTaskIds.push(id);
@@ -291,7 +296,7 @@ function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: c
   if (otherTaskIds.length !== 0) {
     for (let i=0; ; i++) {
       const taskLimit_thisContent = saveData[otherTaskIds[i]].taskLimit;
-      const taskLimitType_thisContent = detectLimitType(taskLimit_thisContent);
+      const taskLimitType_thisContent = detectLimitType(dayjs(taskLimit_thisContent.source));
       let taskIds_thisContent = "";
       const otherTaskNodeList_thisContent: React.ReactNode[] = [];
 
@@ -335,6 +340,15 @@ function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: c
         取得可能期間内に表示できる課題がありません。
       </Box>
     );
+  }
+
+  if (todayTaskCount+otherTaskCount !== 0) {
+    chrome.action.setBadgeText({text: `${todayTaskCount+otherTaskCount}`});
+    chrome.action.setBadgeBackgroundColor({
+      color: '#555555'
+    });
+  } else {
+    chrome.action.setBadgeText({text: ""});
   }
 
   console.log("Task list rendering");

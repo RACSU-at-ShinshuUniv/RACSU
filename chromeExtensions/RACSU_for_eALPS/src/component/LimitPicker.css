@@ -1,0 +1,7 @@
+/* 日付ピッカーの位置の調整用 */
+/* デフォルトだとアンカーの位置が入力フィールド位置に固定されているため、importantで上書き */
+.MuiPickersPopper-root:has(.customized) {
+  width: 550px;
+  height: 300px;
+  transform: translate(calc((100vw - 550px) / 2), calc((100vh - 300px) / 2)) !important;
+}

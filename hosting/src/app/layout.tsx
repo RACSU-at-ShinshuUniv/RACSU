@@ -47,13 +47,14 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#1b5aad" />
         <meta name="msapplication-TileColor" content="#1b5aad" />
         <meta name="theme-color" content="#ffffff" />
+        <meta name="google-site-verification" content="ZodySQReei3K1skGnBWnSpxBW-3UPlqq9CTj4xbQFAk" />
       </head>
+      <GoogleAnalytics gaId="G-JPBLDM47DT" />
       <body>
         <Header />
         {children}
         <Footer />
       </body>
-      <GoogleAnalytics gaId="G-JPBLDM47DT" />
     </html>
   );
 }

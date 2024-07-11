@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const style = {
   overlay: css`
     display: flex;
-    background-color: ${color.loading_background};
+    background-color: ${env.color.loading_background};
     position: fixed;
     top: 0;
     left: 0;
@@ -20,7 +20,7 @@ const style = {
   `,
 
   circle: css`
-    color: ${color.blue};
+    color: ${env.color.blue};
   `,
 
   info: css`

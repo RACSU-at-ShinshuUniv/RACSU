@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import React from 'react';
 import dayjs from 'dayjs';
@@ -130,7 +130,7 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       bgcolor: "#ffffff",
-      border: `2px solid ${color.modal_border}`,
+      border: `2px solid ${env.color.modal_border}`,
       borderRadius: "5px",
       boxShadow: 10,
       width: "75%",
@@ -141,20 +141,20 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
     button_cancel: css`
       margin-right: 4px;
       font-size: 13px;
-      color: ${color.text.default};
-      background-color: ${color.button.cancel};;
+      color: ${env.color.text.default};
+      background-color: ${env.color.button.cancel};;
       border: none;
       :hover {
         border: none;
-        background-color: ${color.button.cancel_hover};
+        background-color: ${env.color.button.cancel_hover};
       }
     `,
 
     button_ok: css`
     font-size: 13px;
-    background-color: ${color.button.ok};
+    background-color: ${env.color.button.ok};
     :hover {
-      background-color: ${color.button.ok_hover};
+      background-color: ${env.color.button.ok_hover};
     }
     `,
 
@@ -236,7 +236,7 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
         aria-labelledby="課題の手動追加"
         aria-describedby="課題の手動追加"
       >
-        <Box sx={style.window} fontSize="15px" color={color.text.default}>
+        <Box sx={style.window} fontSize="15px" color={env.color.text.default}>
           <Box display="flex" flexDirection="column" alignItems="center">
             <Box display="flex" alignItems="center" width="100%">
               <Box marginRight="auto">講義名：</Box>

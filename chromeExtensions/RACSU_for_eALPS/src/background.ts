@@ -1,4 +1,4 @@
-import { IcalClient } from "./modules/IcalClient.js";
+import { IcalClient, getMoodleURL } from "./modules/IcalClient.js";
 import { SyllabusClient } from "./modules/SyllabusClient.js";
 import { IcalData } from "./modules/DataFormatter.js";
 import formatTimeCode from "./modules/formatTimeCode";
@@ -39,9 +39,18 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 const updateTaskData = async() => {
   const userConfig = await chrome.storage.sync.get();
-
-  const moodleURL_g = `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/g/calendar/export_execute.php?userid=${userConfig.moodleGeneralId}&authtoken=${userConfig.moodleGeneralToken}&preset_what=all&preset_time=recentupcoming`;
-  const moodleURL_s = `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/${userConfig.userDepartment}/calendar/export_execute.php?userid=${userConfig.moodleSpecificId}&authtoken=${userConfig.moodleSpecificToken}&preset_what=all&preset_time=recentupcoming`;
+  const moodleURL_g = getMoodleURL({
+    expiration: userConfig.accountExpiration,
+    department: "g",
+    userid: userConfig.moodleGeneralId,
+    authtoken: userConfig.moodleGeneralToken
+  });
+  const moodleURL_s = getMoodleURL({
+    expiration: userConfig.accountExpiration,
+    department: userConfig.userDepartment,
+    userid: userConfig.moodleSpecificId,
+    authtoken: userConfig.moodleSpecificToken
+  });
 
   const icalClient = new IcalClient(moodleURL_g, moodleURL_s);
 

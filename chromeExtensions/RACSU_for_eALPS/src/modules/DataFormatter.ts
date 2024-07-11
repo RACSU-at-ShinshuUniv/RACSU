@@ -1,6 +1,5 @@
 import formatTimeCode, { formattedTimeCodeProps } from "./formatTimeCode";
-
-const regExpValidEvent = /「(.*)」の提出期限が近づいています|「(.*)」の提出期限|(.*)の受験可能期間の終了|「(.*)」終了|(.*)要完了|(.*)が期限です。/;
+import env from "../../env.json"
 
 export type saveDataProps = {
   [id: string]: {
@@ -25,7 +24,7 @@ export class IcalData {
     const validIcalData = Object.entries(this.icalEvent).map(([key, value]) => ({[key]: value})).filter(icalData => {
       const uid = Object.keys(icalData)[0];
       const isUserEvent = (icalData[uid]?.CATEGORIES !== undefined && icalData[uid].CATEGORIES == "ユーザー登録イベント");
-      const isValidSummary = (icalData[uid]?.SUMMARY !== undefined && icalData[uid].SUMMARY.match(regExpValidEvent) !== null);
+      const isValidSummary = (icalData[uid]?.SUMMARY !== undefined && icalData[uid].SUMMARY.match(new RegExp(env.regExpValidEvent)) !== null);
       const isValidLimit = (icalData[uid]?.DTEND !== undefined && (((new Date(icalData[uid].DTEND)).getTime() - today.getTime()) / 86400000) > -3);
       return ((isUserEvent || isValidSummary) && isValidLimit);
     });
@@ -39,7 +38,7 @@ export class IcalData {
     const sourceData = this.icalEvent;
 
     Object.keys(sourceData).forEach(uid => {
-      const matchedTaskName = sourceData[uid].SUMMARY.match(regExpValidEvent);
+      const matchedTaskName = sourceData[uid].SUMMARY.match(new RegExp(env.regExpValidEvent));
 
       if (matchedTaskName !== null){
         const taskName = matchedTaskName

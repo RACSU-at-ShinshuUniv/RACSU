@@ -1,5 +1,14 @@
-const regExpIcalSplitPattern = /(?=UID:)|(?=SUMMARY:)|(?=DESCRIPTION:)|(?=CLASS:)|(?=LAST-MODIFIED:)|(?=DTSTAMP:)|(?=DTSTART:)|(?=DTEND:)|(?=CATEGORIES:)/g;
-const regExpIcalIndexPattern = /(?<index>UID|SUMMARY|DESCRIPTION|CLASS|DTEND|CATEGORIES):(?<data>.*)/;
+import env from "../../env.json"
+
+export type icalDataProps = {
+  [id: string]: {
+    SUMMARY: string,
+    DESCRIPTION: string,
+    CLASS: string,
+    DTEND: string,
+    CATEGORIES: string
+  }
+};
 
 const formatDate = (date: string) => {
   return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}T${date.slice(9, 11)}:${date.slice(11, 13)}:00Z`
@@ -10,8 +19,8 @@ const icalParser = (icalText: string) => {
   icalText.replace(/\\n|\n|\t|\r| |　|\\|END:VEVENT|END:VCALENDAR/g, "").split("BEGIN:VEVENT").forEach(eachEvent => {
     const eventData: {[index: string]: string} = {};
     let uid = "";
-    eachEvent.split(regExpIcalSplitPattern).forEach(eachEventDetail => {
-      const eventDetail = eachEventDetail.match(regExpIcalIndexPattern);
+    eachEvent.split(new RegExp(env.regExpIcalSplitPattern, "g")).forEach(eachEventDetail => {
+      const eventDetail = eachEventDetail.match(new RegExp(env.regExpIcalIndexPattern));
       if (eventDetail !== null && eventDetail.groups !== undefined){
         if (eventDetail.groups.index == "UID"){
           // UIDは後で使うので一時保存
@@ -44,6 +53,10 @@ export const getAccountParams = (url: string) => {
   } else {
     return {expiration: urlParams.groups.expiration, department: urlParams.groups.department, userid: urlParams.groups.userid, authtoken: urlParams.groups.authtoken};
   }
+}
+
+export const getMoodleURL = ({expiration, department, userid, authtoken}: {expiration: string, department: string, userid: string, authtoken: string}) => {
+  return env.moodleURL.replace("$accountExpiration", expiration).replace("$department", department).replace("$moodleId", userid).replace("$moodleToken", authtoken);
 }
 
 export class IcalClient {

@@ -6,7 +6,7 @@ import path from 'path';
 const manifest = defineManifest({
   name: "RACSU for eALPS",
   description: "eALPS登録課題を一覧表示します。この拡張機能は、「eALPS支援ツール」として信州大学e-Learningセンターに認定申請中です。",
-  version: "1.3.3",
+  version: "1.3.4",
   manifest_version: 3,
   permissions: ["alarms", "storage", "unlimitedStorage"],
   // CORSを回避する必要があるドメインのみ記述
@@ -48,8 +48,17 @@ export default defineConfig({
       input: {
         // defineManifestで指定したファイルは自動でコンパイル対象になる
         // それ以外にコンパイルしたいファイルがあれば記述
-        portal: path.resolve(__dirname, 'pages/portal/index.html')
+        portal: path.resolve(__dirname, 'pages/portal/index.html'),
+        debuggerHtml: path.resolve(__dirname, 'pages/debugger/index.html'),
+        // debuggerTsx: path.resolve(__dirname, 'pages/debugger/debugger.tsx'),
       }
     },
   },
+  // MUI/Boxを使用した際に出る謎のエラー「Uncaught TypeError: createTheme_default is not a function」の防止策？
+  // https://stackoverflow.com/questions/74542488/react-material-ui-createtheme-default-is-not-a-function
+  optimizeDeps: {
+    include: [
+      "@mui/material/Box",
+    ],
+  }
 });

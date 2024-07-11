@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../../src/color.json";
+import env from "../../env.json"
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -13,6 +13,7 @@ import Switch, { SwitchProps } from '@mui/material/Switch';
 
 import Loading from '../../src/component/Loading';
 import StartAccountLinkModal from '../../src/component/StartAccountLinkModal';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 import { IcalClient } from '../../src/modules/IcalClient';
 
@@ -71,7 +72,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
 }));
 
 
-function SettingParagraph({title, description: description, children}: {title: string, description: React.ReactNode, children: React.ReactNode}) {
+function SettingParagraph({title, description: description, children}: {title: string, description?: React.ReactNode, children: React.ReactNode}) {
   const style = {
     title: css`
       font-size: 18px;
@@ -84,7 +85,7 @@ function SettingParagraph({title, description: description, children}: {title: s
       <Box marginLeft="15px">
         {children}
       </Box>
-      <Box fontSize="13px" color={color.gray} marginTop="10px" marginLeft="15px">
+      <Box fontSize="13px" color={env.color.gray} marginTop="10px" marginLeft="15px">
         {description}
       </Box>
     </Box>
@@ -139,35 +140,53 @@ function IcalUrlSection({type, title, initUrl, enableEdit, editHandler}: {type: 
 function App() {
   const style = {
     title: css`
-      color: ${color.text};
+      color: ${env.color.text};
       font-size: 24px;
       margin-left: 5px;
     `,
 
     button_edit: css`
       font-size: 13px;
-      background-color: ${color.button.cancel};
-      color: ${color.text.default};
+      background-color: ${env.color.button.cancel};
+      color: ${env.color.text.default};
 
       &:hover {
-        background-color: ${color.button.cancel_hover};
+        background-color: ${env.color.button.cancel_hover};
 
       }
     `,
 
     button_start: css`
       font-size: 13px;
-      background-color: ${color.button.ok};
+      background-color: ${env.color.button.ok};
       margin-left: 5px;
 
       &:hover {
-        background-color: ${color.button.ok_hover};
+        background-color: ${env.color.button.ok_hover};
       }
     `,
 
     display_title: css`
       font-size: 15px;
       margin-right: auto;
+    `,
+
+    link: css`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: ${env.color.blue};
+    margin-top: 5px;
+    border-bottom: 1px solid #00000000;
+
+    & .MuiSvgIcon-root {
+      font-size: 18px;
+    }
+
+    &:hover {
+      border-bottom: 1px solid ${env.color.blue};
+    }
     `
   };
 
@@ -288,6 +307,20 @@ function App() {
             <IOSSwitch sx={{ m: 1, margin: "0" }} checked={enableDisplay} onChange={enableDisplayHandler}/>
           </Box>
         </SettingParagraph>
+
+        <SettingParagraph title='その他の操作'>
+          <Box display="flex" alignItems="center">
+            <p css={style.display_title}>デバック：</p>
+            <Box display="flex" css={style.link} onClick={() => {
+              chrome.tabs.create({
+                url: "chrome-extension://" + chrome.runtime.id + "/pages/debugger/index.html"
+              });
+            }}>
+              <p>デバックツールを開く</p>
+              <LaunchIcon />
+            </Box>
+          </Box>
+        </SettingParagraph>
       </Box>
 
       <Loading isOpen={openLoading} message='連携情報を確認中'/>
@@ -308,7 +341,5 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <App />
 )

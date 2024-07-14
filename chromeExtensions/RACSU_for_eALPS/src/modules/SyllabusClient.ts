@@ -13,8 +13,15 @@ export class SyllabusClient {
       return this.classNameDict[classCode];
 
     } else {
-      const classCodeFixed = classCode.slice(0, 8).replace("Q", "G");
-      const department = classCodeFixed.slice(0,1);
+      const classCodeFixed = (() => {
+        // 教職科目かつ授業コードが9文字以上の場合は8文字でスライスして末尾2桁を00に置き換え
+        if (classCode.slice(0, 1) == "Q" && classCode.length >= 9) {
+          return classCode.slice(0, 6) + "00";
+        } else {
+          return classCode.slice(0, 8)
+        }
+      })();
+      const department = classCodeFixed.slice(0,1).replace("Q", "G");
       const term = new Date();
       term.setMonth(term.getMonth()-3);
       const syllabusUrl = env.syllabusURL.replace("$term", String(term.getFullYear())).replace("$department", department).replace("$classCode", classCodeFixed);

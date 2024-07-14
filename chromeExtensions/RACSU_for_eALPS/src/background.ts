@@ -33,6 +33,26 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     GASend("install", "new");
 
+  } else if (details.reason === "update" && details.previousVersion === "1.3.4") {
+    // 1.3.4 -> 1.3.5のアップデート
+    // 教職系の講義名データの再取得
+    (async() => {
+      const localData = await chrome.storage.local.get();
+
+      // 講義名データのうちシラバス未登録授業のコードを削除
+      Object.keys(localData.classNameDict).forEach(classCode => {
+        if (localData.classNameDict[classCode] == "シラバス未登録授業") {
+          delete localData.classNameDict[classCode]
+        }
+      });
+      await chrome.storage.local.set({
+        classNameDict: localData.classNameDict
+      });
+
+      // 課題を強制更新
+      await updateTaskData();
+    })();
+
   } else {
   }
 });
@@ -40,16 +60,16 @@ chrome.runtime.onInstalled.addListener((details) => {
 const updateTaskData = async() => {
   const userConfig = await chrome.storage.sync.get();
   const moodleURL_g = getMoodleURL({
-    expiration: userConfig.accountExpiration,
-    department: "g",
-    userid: userConfig.moodleGeneralId,
-    authtoken: userConfig.moodleGeneralToken
+    accountExpiration: userConfig.accountExpiration,
+    userDepartment: "g",
+    moodleId: userConfig.moodleGeneralId,
+    moodleToken: userConfig.moodleGeneralToken
   });
   const moodleURL_s = getMoodleURL({
-    expiration: userConfig.accountExpiration,
-    department: userConfig.userDepartment,
-    userid: userConfig.moodleSpecificId,
-    authtoken: userConfig.moodleSpecificToken
+    accountExpiration: userConfig.accountExpiration,
+    userDepartment: userConfig.userDepartment,
+    moodleId: userConfig.moodleSpecificId,
+    moodleToken: userConfig.moodleSpecificToken
   });
 
   const icalClient = new IcalClient(moodleURL_g, moodleURL_s);

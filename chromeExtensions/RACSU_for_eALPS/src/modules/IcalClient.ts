@@ -55,8 +55,8 @@ export const getAccountParams = (url: string) => {
   }
 }
 
-export const getMoodleURL = ({expiration, department, userid, authtoken}: {expiration: string, department: string, userid: string, authtoken: string}) => {
-  return env.moodleURL.replace("$accountExpiration", expiration).replace("$department", department).replace("$moodleId", userid).replace("$moodleToken", authtoken);
+export const getMoodleURL = ({accountExpiration, userDepartment, moodleId, moodleToken}: {accountExpiration: string, userDepartment: string, moodleId: string, moodleToken: string}) => {
+  return env.moodleURL.replace("$accountExpiration", accountExpiration).replace("$department", userDepartment).replace("$moodleId", moodleId).replace("$moodleToken", moodleToken);
 }
 
 export class IcalClient {
@@ -68,14 +68,18 @@ export class IcalClient {
 
   async getLatestContents(){
     try{
-      const result = await Promise.all(this.urls.map(async(url) => {
+      const rawData = await Promise.all(this.urls.map(async(url) => {
         const controller = new AbortController();
         setTimeout(() => controller.abort(), 3000);
         const res = (await fetch(url, { signal: controller.signal })).text();
         return res;
       }));
 
-      return Promise.resolve(icalParser(String(result)));
+      const result = {};
+      rawData.forEach(d => {
+        Object.assign(result, icalParser(d));
+      })
+      return Promise.resolve(result);
 
     } catch(e: any) {
       if (e.name == "AbortError"){

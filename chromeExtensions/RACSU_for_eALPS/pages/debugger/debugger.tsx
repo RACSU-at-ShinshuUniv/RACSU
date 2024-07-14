@@ -11,15 +11,24 @@ import env from "../../env.json"
 import { IcalClient, getMoodleURL, icalDataProps } from '../../src/modules/IcalClient';
 import { saveDataProps } from '../../src/modules/DataFormatter';
 
+import Loading from '../../src/component/Loading';
+
 
 function PrintJSON({jsonData}: {jsonData: {[id: string]: string | boolean | {}}}) {
-  return (
-    <>
-      {Object.keys(jsonData).map(key => (
-        <p key={key}>{key}: {String(jsonData[key])}</p>
-      ))}
-    </>
-  )
+  if (Object.keys(jsonData).length == 0) {
+    return (
+      <p>データなし</p>
+    )
+
+  } else {
+    return (
+      <>
+        {Object.keys(jsonData).map(key => (
+          <p key={key}>{key}: {String(jsonData[key])}</p>
+        ))}
+      </>
+    )
+  }
 }
 
 function PrintIcalData({icalData}: {icalData: icalDataProps}) {
@@ -58,7 +67,7 @@ function PrintIcalData({icalData}: {icalData: icalDataProps}) {
 
   if (reactNodeList.length == 0) {
     reactNodeList.push(
-      <p key="0">取得データなし</p>
+      <p key="0">データなし</p>
     );
   }
 
@@ -125,6 +134,7 @@ function Debugger() {
     icalData_s: {},
     saveData: {}
   });
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     (async() => {
@@ -132,16 +142,16 @@ function Debugger() {
       const localData = await chrome.storage.local.get();
       const moodleURL = {
         g: getMoodleURL({
-            expiration: syncData.accountExpiration,
-            department: "g",
-            userid: syncData.moodleGeneralId,
-            authtoken: syncData.moodleGeneralToken
+            accountExpiration: syncData.accountExpiration,
+            userDepartment: "g",
+            moodleId: syncData.moodleGeneralId,
+            moodleToken: syncData.moodleGeneralToken
           }),
         s: getMoodleURL({
-            expiration: syncData.accountExpiration,
-            department: syncData.userDepartment,
-            userid: syncData.moodleSpecificId,
-            authtoken: syncData.moodleSpecificToken
+            accountExpiration: syncData.accountExpiration,
+            userDepartment: syncData.userDepartment,
+            moodleId: syncData.moodleSpecificId,
+            moodleToken: syncData.moodleSpecificToken
           })
       };
       const icalClient_g = new IcalClient(moodleURL.g);
@@ -164,6 +174,7 @@ function Debugger() {
         icalData_s: icalData_s,
         saveData: localData.userTask
       });
+      setLoading(false);
     })();
   }, []);
 
@@ -215,6 +226,7 @@ function Debugger() {
         <h1>課題データ（ローカル）</h1>
         <PrintSaveData saveData={debugData.saveData} />
       </Section>
+      <Loading isOpen={loading} message='デバッグ情報を取得中'/>
     </Box>
   );
 }

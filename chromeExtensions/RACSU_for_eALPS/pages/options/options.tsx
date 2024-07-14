@@ -15,7 +15,7 @@ import Loading from '../../src/component/Loading';
 import StartAccountLinkModal from '../../src/component/StartAccountLinkModal';
 import LaunchIcon from '@mui/icons-material/Launch';
 
-import { IcalClient } from '../../src/modules/IcalClient';
+import { IcalClient, getAccountParams, getMoodleURL } from '../../src/modules/IcalClient';
 
 import { GASend } from '../../src/modules/googleAnalytics';
 GASend("pageOpen", "options");
@@ -187,6 +187,12 @@ function App() {
     &:hover {
       border-bottom: 1px solid ${env.color.blue};
     }
+    `,
+
+    error: css`
+      font-size: 16px;
+      color: ${env.color.red};
+      margin-bottom: 10px;
     `
   };
 
@@ -197,11 +203,22 @@ function App() {
   const [initUrl, setInitUrl] = React.useState({g: "", s: ""});
   const [moodleUrl, setMoodleUrl] = React.useState({g: "", s: ""});
   const [enableDisplay, setEnableDisplay] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("")
 
   React.useEffect(() => {
     chrome.storage.sync.get().then(userConfig => {
-      const moodleURL_g = userConfig.moodleGeneralId !== "" ? `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/g/calendar/export_execute.php?userid=${userConfig.moodleGeneralId}&authtoken=${userConfig.moodleGeneralToken}&preset_what=all&preset_time=recentupcoming` : "設定されていません";
-      const moodleURL_s = userConfig.moodleSpecificId !== "" ? `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/${userConfig.userDepartment}/calendar/export_execute.php?userid=${userConfig.moodleSpecificId}&authtoken=${userConfig.moodleSpecificToken}&preset_what=all&preset_time=recentupcoming` : "設定されていません";
+      const moodleURL_g = userConfig.moodleGeneralId !== "" ? getMoodleURL({
+        accountExpiration: userConfig.accountExpiration,
+        userDepartment: "g",
+        moodleId: userConfig.moodleGeneralId,
+        moodleToken: userConfig.moodleGeneralToken
+      }) : "設定されていません";
+      const moodleURL_s = userConfig.moodleSpecificId !== "" ? getMoodleURL({
+        accountExpiration: userConfig.accountExpiration,
+        userDepartment: userConfig.userDepartment,
+        moodleId: userConfig.moodleSpecificId,
+        moodleToken: userConfig.moodleSpecificToken
+      })  : "設定されていません";
 
       setEnableDisplay(userConfig.displayList);
       setInitUrl({
@@ -238,10 +255,28 @@ function App() {
             enable: false,
             message: "URLを編集"
           });
+          const {expiration: accountExpiration, department: _d, userid: moodleGeneralId, authtoken: moodleGeneralToken} = getAccountParams(moodleUrl.g);
+          const {expiration: _e, department: userDepartment, userid: moodleSpecificId, authtoken: moodleSpecificToken} = getAccountParams(moodleUrl.s);
+          chrome.storage.sync.set({
+            userDepartment: userDepartment,
+            moodleSpecificId: moodleSpecificId,
+            moodleSpecificToken: moodleSpecificToken,
+            moodleGeneralId: moodleGeneralId,
+            moodleGeneralToken: moodleGeneralToken,
+            accountExpiration: accountExpiration
+          });
+          setErrorMessage("");
           GASend("changeSetting", "updateIcalURLManually");
+
+        } else {
+          setErrorMessage("URL設定エラー：入力されたURLで正常な接続ができませんでした。");
         }
         setOpenLoading(false);
-      })
+
+      }).catch(_e => {
+        setErrorMessage("URL設定エラー：入力されたURLで正常な接続ができませんでした。");
+        setOpenLoading(false);
+      });
 
     } else {
       setEditStatus({
@@ -293,6 +328,7 @@ function App() {
             initUrl={initUrl.s}
             editHandler={setMoodleUrl}
           />
+          <p css={style.error}>{errorMessage}</p>
           <Box display="flex" marginLeft="auto" width="fit-content">
             <Button css={style.button_edit} variant="contained" onClick={enableEditHandler}>{enableStatus.message}</Button>
             <Button css={style.button_start} variant="contained" onClick={() => setOpenAutoSetting(true)}>自動設定を開始</Button>

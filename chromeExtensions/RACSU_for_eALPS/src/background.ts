@@ -33,25 +33,28 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     GASend("install", "new");
 
-  } else if (details.reason === "update" && details.previousVersion === "1.3.4") {
-    // 1.3.4 -> 1.3.5のアップデート
-    // 教職系の講義名データの再取得
-    (async() => {
-      const localData = await chrome.storage.local.get();
+  } else if (details.reason === "update") {
+    if (details.previousVersion === "1.3.4" || details.previousVersion === "1.3.5") {
+      // 1.3.4 -> 1.3.5のアップデート
+      // 1.3.5 -> 1.3.6のアップデート
+      // 教職系の講義名データの再取得
+      (async() => {
+        const localData = await chrome.storage.local.get();
 
-      // 講義名データのうちシラバス未登録授業のコードを削除
-      Object.keys(localData.classNameDict).forEach(classCode => {
-        if (localData.classNameDict[classCode] == "シラバス未登録授業") {
-          delete localData.classNameDict[classCode]
-        }
-      });
-      await chrome.storage.local.set({
-        classNameDict: localData.classNameDict
-      });
+        // 講義名データのうちシラバス未登録授業のコードを削除
+        Object.keys(localData.classNameDict).forEach(classCode => {
+          if (localData.classNameDict[classCode] == "シラバス未登録授業") {
+            delete localData.classNameDict[classCode]
+          }
+        });
+        await chrome.storage.local.set({
+          classNameDict: localData.classNameDict
+        });
 
-      // 課題を強制更新
-      await updateTaskData();
-    })();
+        // 課題を強制更新
+        await updateTaskData();
+      })();
+    }
 
   } else {
   }

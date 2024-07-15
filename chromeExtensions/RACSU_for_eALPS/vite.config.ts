@@ -6,7 +6,7 @@ import path from 'path';
 const manifest = defineManifest({
   name: "RACSU for eALPS",
   description: "eALPS登録課題を一覧表示します。この拡張機能は、「eALPS支援ツール」として信州大学e-Learningセンターに認定申請中です。",
-  version: "1.3.5",
+  version: "1.3.6",
   manifest_version: 3,
   permissions: ["alarms", "storage", "unlimitedStorage"],
   // CORSを回避する必要があるドメインのみ記述

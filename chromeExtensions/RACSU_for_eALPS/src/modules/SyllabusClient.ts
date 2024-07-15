@@ -14,8 +14,8 @@ export class SyllabusClient {
 
     } else {
       const classCodeFixed = (() => {
-        // 教職科目かつ授業コードが9文字以上の場合は8文字でスライスして末尾2桁を00に置き換え
-        if (classCode.slice(0, 1) == "Q" && classCode.length >= 9) {
+        // 授業コードが9文字以上の場合は8文字でスライスして末尾2桁を00に置き換え
+        if (classCode.length >= 9) {
           return classCode.slice(0, 6) + "00";
         } else {
           return classCode.slice(0, 8)

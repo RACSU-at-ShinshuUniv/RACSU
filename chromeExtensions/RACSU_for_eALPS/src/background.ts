@@ -151,3 +151,6 @@ chrome.storage.sync.get().then(userConfig => {
     });
   }
 });
+
+// 起動時更新
+updateTaskData();

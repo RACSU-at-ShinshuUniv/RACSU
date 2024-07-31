@@ -1,6 +1,6 @@
 # 信州大学 eALPS機能拡張 RACSU for eALPS
 ## 概要
-本サービスは、信州大学e-LearningシステムeALPSの機能を拡張するものです。
+本サービスは、信州大学e-LearningシステムeALPSの機能を拡張するものです。<br>
 信州大学在学中の学生によって運営されています。
 
 > [!NOTE]

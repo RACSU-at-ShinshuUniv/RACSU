@@ -163,9 +163,10 @@ export default function App() {
         </Box>
       </Box>
       <Box css={style.notify}>
-        <h1><span>信州大学e-Learningセンター</span> <span>eALPS支援ツール認定申請中</span></h1>
-        <p>RACSU for eALPSは、信州大学e-Learningセンターへ認定を申請中です。<br />本サービスはオープンソース（Apache-2.0 License）で開発中です。</p>
-        <p>Githubリポジトリは<a href={url.github}>こちら</a>。</p>
+        <h1><span>eALPS支援ツール「eALPluS」</span><span>認定事案</span></h1>
+        <p>RACSU for eALPSは、信州大学e-LearningセンターのeALPluS事例認定を受けています(認定日:2024年7月18日)。</p>
+        <p>詳しくは<a href={url.github}>こちら</a>をご覧下さい。</p>
+        <p>本サービスはオープンソース（Apache-2.0 License）で開発中です。</p>
       </Box>
       <Box marginX="10vw" marginBottom="40px">
         <Paragraph>

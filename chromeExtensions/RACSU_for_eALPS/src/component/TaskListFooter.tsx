@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,7 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 const style = {
   fab: css`
     position: absolute;
-    background-color: ${color.button.action};
+    background-color: ${env.color.button.action};
     width: 45px;
     height: 45px;
     bottom: 12px;
@@ -19,7 +19,7 @@ const style = {
     }
 
     &:hover {
-      background-color: ${color.button.action_hover};
+      background-color: ${env.color.button.action_hover};
     }
   `
 };

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import Box from '@mui/material/Box';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -8,7 +8,7 @@ import LaunchIcon from '@mui/icons-material/Launch';
 const style = {
   overlay: css`
     display: flex;
-    background-color: ${color.loading_background};
+    background-color: ${env.color.loading_background};
     position: fixed;
     top: 0;
     left: 0;
@@ -30,7 +30,7 @@ const style = {
     display: flex;
     align-items: center;
     font-size: 16px;
-    color: ${color.blue};
+    color: ${env.color.blue};
     margin-top: 5px;
     border-bottom: 1px solid #00000000;
 
@@ -39,7 +39,7 @@ const style = {
     }
 
     &:hover {
-      border-bottom: 1px solid ${color.blue};
+      border-bottom: 1px solid ${env.color.blue};
     }
   `
 }

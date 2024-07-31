@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -13,7 +13,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     bgcolor: "#ffffff",
-    border: `2px solid ${color.modal_border}`,
+    border: `2px solid ${env.color.modal_border}`,
     borderRadius: "5px",
     boxShadow: 10,
     width: "75%",
@@ -22,32 +22,32 @@ const style = {
   },
 
   info: css`
-    color: ${color.text.default};
+    color: ${env.color.text.default};
     font-size: 16px;
   `,
 
   warning: css`
-    color: ${color.text.warning};
+    color: ${env.color.text.warning};
     font-size: 13px;
   `,
 
   button_cancel: css`
     margin-right: 4px;
     font-size: 13px;
-    color: ${color.text.default};
-    background-color: ${color.button.cancel};
+    color: ${env.color.text.default};
+    background-color: ${env.color.button.cancel};
     border: none;
     :hover {
       border: none;
-      background-color: ${color.button.cancel_hover};
+      background-color: ${env.color.button.cancel_hover};
     }
   `,
 
   button_delete: css`
   font-size: 13px;
-  background-color: ${color.button.warning};
+  background-color: ${env.color.button.warning};
   :hover {
-    background-color: ${color.button.warning_hover};
+    background-color: ${env.color.button.warning_hover};
   }
   `,
 }

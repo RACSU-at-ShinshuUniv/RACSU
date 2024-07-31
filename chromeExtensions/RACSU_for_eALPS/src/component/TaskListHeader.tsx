@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import React from 'react';
 
@@ -18,13 +18,13 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 const style = {
   title: css`
-    color: ${color.green};
+    color: ${env.color.green};
     font-size: 16px;
     margin-left: 10px;
   `,
 
   button_other: css`
-    color: ${color.gray};
+    color: ${env.color.gray};
   `,
 
   menu_item: css`
@@ -38,7 +38,7 @@ const style = {
 
       & .MuiMenuItem-root {
         & .MuiSvgIcon-root {
-          color: ${color.gray};
+          color: ${env.color.gray};
           font-size: 18;
           margin-right: 10px;
         }
@@ -86,14 +86,14 @@ export default function TaskListHeader({lastUpdate, updateHandler, confirmDelPas
   };
 
   return (
-    <Box display="flex" alignItems="center" padding="0 10px" borderBottom={`1px solid ${color.frame_border}`}>
+    <Box display="flex" alignItems="center" padding="0 10px" borderBottom={`1px solid ${env.color.frame_border}`}>
       <img width="35px" height="35px" src="/icon/icon48.png" alt="RACSU Logo" />
       <p css={style.title}>
         eALPS 登録課題一覧（最終更新 {lastUpdate}）
       </p>
       <Box marginLeft="auto">
         <IconButton css={style.button_other} onClick={handleClick}>
-          <MoreVertIcon css={css`color: ${color.gray};`} />
+          <MoreVertIcon css={css`color: ${env.color.gray};`} />
         </IconButton>
         <Menu
           id="menu"

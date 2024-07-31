@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from 'next/font/google'
 import "@/design.css";
 
-import Header from "@/component/Header";
-import Footer from "@/component/Footer";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const noteSansJP = Noto_Sans_JP({
   subsets: ["latin"],
@@ -18,20 +20,7 @@ export const metadata: Metadata = {
     template: '%s | RACSU for eALPS',
     default: 'ホーム | RACSU for eALPS',
   },
-  description: "RACSU for eALPSで、提出忘れとおさらばしよう。eALPSと連携して、課題を自動で一覧表示・提出管理できます。",
-  openGraph: {
-    title: 'ホーム | RACSU for eALPS',
-    description: 'RACSU for eALPSで、提出忘れとおさらばしよう。eALPSと連携して、課題を自動で一覧表示・提出管理できます。',
-    images: ['/screenshot.jpg'],
-    url: 'https://racsu-shindai.web.app/'
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@RACSU_shindai',
-    title: 'ホーム | RACSU for eALPS',
-    description: 'RACSU for eALPSで、提出忘れとおさらばしよう。eALPSと連携して、課題を自動で一覧表示・提出管理できます。',
-    images: '/screenshot.jpg'
-  }
+  description: "eALPSから課題を自動取得・ポータルに一覧表示します。RACSU for eALPSで、課題の提出忘れとおさらばしよう。"
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
@@ -45,7 +34,18 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#1b5aad" />
         <meta name="msapplication-TileColor" content="#1b5aad" />
         <meta name="theme-color" content="#ffffff" />
+        <meta name="google-site-verification" content="ZodySQReei3K1skGnBWnSpxBW-3UPlqq9CTj4xbQFAk" />
+
+        <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#" />
+        <meta property="og:title" content="ホーム | RACSU for eALPS" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://racsu-shindai.web.app/" />
+        <meta property="og:image" content="https://racsu-shindai.web.app/ogp.png" />
+        <meta property="og:site_name" content="RACSU for eALPS" />
+        <meta property="og:description" content="eALPSから課題を自動取得・ポータルに一覧表示します。RACSU for eALPSで、課題の提出忘れとおさらばしよう。" />
+        <meta name="twitter:card" content="summary_large_image" />
       </head>
+      <GoogleAnalytics gaId="G-JPBLDM47DT" />
       <body>
         <Header />
         {children}

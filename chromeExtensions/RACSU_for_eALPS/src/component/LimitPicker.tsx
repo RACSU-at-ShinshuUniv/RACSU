@@ -2,7 +2,7 @@
 "use client";
 
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import dayjs from 'dayjs';
 import Box from '@mui/material/Box';
@@ -123,7 +123,7 @@ export default function LimitPicker({limitDate, limitDateHandler}: {limitDate: d
         width: 3px;
       }
       & .MuiMultiSectionDigitalClockSection-root::-webkit-scrollbar-thumb {
-        background-color: ${color.modal_border};
+        background-color: ${env.color.modal_border};
       }
 
       /* ポップアップのスタイル */

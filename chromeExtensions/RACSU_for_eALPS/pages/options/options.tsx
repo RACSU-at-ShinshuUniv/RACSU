@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../../src/color.json";
+import env from "../../env.json"
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -13,8 +13,12 @@ import Switch, { SwitchProps } from '@mui/material/Switch';
 
 import Loading from '../../src/component/Loading';
 import StartAccountLinkModal from '../../src/component/StartAccountLinkModal';
+import LaunchIcon from '@mui/icons-material/Launch';
 
-import { IcalClient } from '../../src/modules/IcalClient';
+import { IcalClient, getAccountParams, getMoodleURL } from '../../src/modules/IcalClient';
+
+import { GASend } from '../../src/modules/googleAnalytics';
+GASend("pageOpen", "options");
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -68,7 +72,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
 }));
 
 
-function SettingParagraph({title, description: description, children}: {title: string, description: React.ReactNode, children: React.ReactNode}) {
+function SettingParagraph({title, description: description, children}: {title: string, description?: React.ReactNode, children: React.ReactNode}) {
   const style = {
     title: css`
       font-size: 18px;
@@ -81,7 +85,7 @@ function SettingParagraph({title, description: description, children}: {title: s
       <Box marginLeft="15px">
         {children}
       </Box>
-      <Box fontSize="13px" color={color.gray} marginTop="10px" marginLeft="15px">
+      <Box fontSize="13px" color={env.color.gray} marginTop="10px" marginLeft="15px">
         {description}
       </Box>
     </Box>
@@ -136,35 +140,59 @@ function IcalUrlSection({type, title, initUrl, enableEdit, editHandler}: {type: 
 function App() {
   const style = {
     title: css`
-      color: ${color.text};
+      color: ${env.color.text};
       font-size: 24px;
       margin-left: 5px;
     `,
 
     button_edit: css`
       font-size: 13px;
-      background-color: ${color.button.cancel};
-      color: ${color.text.default};
+      background-color: ${env.color.button.cancel};
+      color: ${env.color.text.default};
 
       &:hover {
-        background-color: ${color.button.cancel_hover};
+        background-color: ${env.color.button.cancel_hover};
 
       }
     `,
 
     button_start: css`
       font-size: 13px;
-      background-color: ${color.button.ok};
+      background-color: ${env.color.button.ok};
       margin-left: 5px;
 
       &:hover {
-        background-color: ${color.button.ok_hover};
+        background-color: ${env.color.button.ok_hover};
       }
     `,
 
     display_title: css`
       font-size: 15px;
       margin-right: auto;
+    `,
+
+    link: css`
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: ${env.color.blue};
+    margin-top: 5px;
+    border-bottom: 1px solid #00000000;
+
+    & .MuiSvgIcon-root {
+      font-size: 18px;
+    }
+
+    &:hover {
+      border-bottom: 1px solid ${env.color.blue};
+    }
+    `,
+
+    error: css`
+      font-size: 16px;
+      color: ${env.color.red};
+      margin-bottom: 10px;
     `
   };
 
@@ -175,11 +203,22 @@ function App() {
   const [initUrl, setInitUrl] = React.useState({g: "", s: ""});
   const [moodleUrl, setMoodleUrl] = React.useState({g: "", s: ""});
   const [enableDisplay, setEnableDisplay] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("")
 
   React.useEffect(() => {
     chrome.storage.sync.get().then(userConfig => {
-      const moodleURL_g = userConfig.moodleGeneralId !== "" ? `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/g/calendar/export_execute.php?userid=${userConfig.moodleGeneralId}&authtoken=${userConfig.moodleGeneralToken}&preset_what=all&preset_time=recentupcoming` : "設定されていません";
-      const moodleURL_s = userConfig.moodleSpecificId !== "" ? `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/${userConfig.userDepartment}/calendar/export_execute.php?userid=${userConfig.moodleSpecificId}&authtoken=${userConfig.moodleSpecificToken}&preset_what=all&preset_time=recentupcoming` : "設定されていません";
+      const moodleURL_g = userConfig.moodleGeneralId !== "" ? getMoodleURL({
+        accountExpiration: userConfig.accountExpiration,
+        userDepartment: "g",
+        moodleId: userConfig.moodleGeneralId,
+        moodleToken: userConfig.moodleGeneralToken
+      }) : "設定されていません";
+      const moodleURL_s = userConfig.moodleSpecificId !== "" ? getMoodleURL({
+        accountExpiration: userConfig.accountExpiration,
+        userDepartment: userConfig.userDepartment,
+        moodleId: userConfig.moodleSpecificId,
+        moodleToken: userConfig.moodleSpecificToken
+      })  : "設定されていません";
 
       setEnableDisplay(userConfig.displayList);
       setInitUrl({
@@ -216,9 +255,28 @@ function App() {
             enable: false,
             message: "URLを編集"
           });
+          const {expiration: accountExpiration, department: _d, userid: moodleGeneralId, authtoken: moodleGeneralToken} = getAccountParams(moodleUrl.g);
+          const {expiration: _e, department: userDepartment, userid: moodleSpecificId, authtoken: moodleSpecificToken} = getAccountParams(moodleUrl.s);
+          chrome.storage.sync.set({
+            userDepartment: userDepartment,
+            moodleSpecificId: moodleSpecificId,
+            moodleSpecificToken: moodleSpecificToken,
+            moodleGeneralId: moodleGeneralId,
+            moodleGeneralToken: moodleGeneralToken,
+            accountExpiration: accountExpiration
+          });
+          setErrorMessage("");
+          GASend("changeSetting", "updateIcalURLManually");
+
+        } else {
+          setErrorMessage("URL設定エラー：入力されたURLで正常な接続ができませんでした。");
         }
         setOpenLoading(false);
-      })
+
+      }).catch(_e => {
+        setErrorMessage("URL設定エラー：入力されたURLで正常な接続ができませんでした。");
+        setOpenLoading(false);
+      });
 
     } else {
       setEditStatus({
@@ -228,14 +286,19 @@ function App() {
     }
   };
 
-  const enableDisplayHandler = () => {
+  const enableDisplayHandler = React.useCallback(() => {
     setEnableDisplay(initStatus => {
       chrome.storage.sync.set({
         displayList: !initStatus
       });
+      if (initStatus) {
+        GASend("changeSetting", "disableDisplayPortal");
+      } else {
+        GASend("changeSetting", "enableDisplayPortal");
+      }
       return !initStatus
     })
-  }
+  }, []);
 
   return(
     <Box display="flex" alignItems="center" flexDirection="column">
@@ -265,6 +328,7 @@ function App() {
             initUrl={initUrl.s}
             editHandler={setMoodleUrl}
           />
+          <p css={style.error}>{errorMessage}</p>
           <Box display="flex" marginLeft="auto" width="fit-content">
             <Button css={style.button_edit} variant="contained" onClick={enableEditHandler}>{enableStatus.message}</Button>
             <Button css={style.button_start} variant="contained" onClick={() => setOpenAutoSetting(true)}>自動設定を開始</Button>
@@ -277,6 +341,20 @@ function App() {
           <Box display="flex" alignItems="center">
             <p css={style.display_title}>eALPSポータルでの課題リスト表示：</p>
             <IOSSwitch sx={{ m: 1, margin: "0" }} checked={enableDisplay} onChange={enableDisplayHandler}/>
+          </Box>
+        </SettingParagraph>
+
+        <SettingParagraph title='その他の操作'>
+          <Box display="flex" alignItems="center">
+            <p css={style.display_title}>デバック：</p>
+            <Box display="flex" css={style.link} onClick={() => {
+              chrome.tabs.create({
+                url: "chrome-extension://" + chrome.runtime.id + "/pages/debugger/index.html"
+              });
+            }}>
+              <p>デバックツールを開く</p>
+              <LaunchIcon />
+            </Box>
           </Box>
         </SettingParagraph>
       </Box>
@@ -299,7 +377,5 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <App />
 )

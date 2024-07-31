@@ -6,13 +6,15 @@
     "dev": "next dev",
     "build": "next build && next-sitemap --config sitemap.config.js",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "npm run build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.17",
     "@mui/material": "^5.15.17",
+    "@next/third-parties": "^15.0.0-canary.42",
     "next": "14.2.3",
     "next-sitemap": "^4.2.3",
     "react": "^18",

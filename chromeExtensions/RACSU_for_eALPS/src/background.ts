@@ -1,7 +1,8 @@
-import { IcalClient } from "./modules/IcalClient.js";
+import { IcalClient, getMoodleURL } from "./modules/IcalClient.js";
 import { SyllabusClient } from "./modules/SyllabusClient.js";
 import { IcalData } from "./modules/DataFormatter.js";
 import formatTimeCode from "./modules/formatTimeCode";
+import { GASend } from "./modules/googleAnalytics.js";
 
 chrome.alarms.clearAll();
 
@@ -30,15 +31,49 @@ chrome.runtime.onInstalled.addListener((details) => {
       url: "chrome-extension://" + chrome.runtime.id + "/pages/options/index.html"
     });
 
+    GASend("install", "new");
+
+  } else if (details.reason === "update") {
+    if (details.previousVersion === "1.3.4" || details.previousVersion === "1.3.5") {
+      // 1.3.4 -> 1.3.5のアップデート
+      // 1.3.5 -> 1.3.6のアップデート
+      // 教職系の講義名データの再取得
+      (async() => {
+        const localData = await chrome.storage.local.get();
+
+        // 講義名データのうちシラバス未登録授業のコードを削除
+        Object.keys(localData.classNameDict).forEach(classCode => {
+          if (localData.classNameDict[classCode] == "シラバス未登録授業") {
+            delete localData.classNameDict[classCode]
+          }
+        });
+        await chrome.storage.local.set({
+          classNameDict: localData.classNameDict
+        });
+
+        // 課題を強制更新
+        await updateTaskData();
+      })();
+    }
+
   } else {
   }
 });
 
 const updateTaskData = async() => {
   const userConfig = await chrome.storage.sync.get();
-
-  const moodleURL_g = `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/g/calendar/export_execute.php?userid=${userConfig.moodleGeneralId}&authtoken=${userConfig.moodleGeneralToken}&preset_what=all&preset_time=recentupcoming`;
-  const moodleURL_s = `https://lms.ealps.shinshu-u.ac.jp/${userConfig.accountExpiration}/${userConfig.userDepartment}/calendar/export_execute.php?userid=${userConfig.moodleSpecificId}&authtoken=${userConfig.moodleSpecificToken}&preset_what=all&preset_time=recentupcoming`;
+  const moodleURL_g = getMoodleURL({
+    accountExpiration: userConfig.accountExpiration,
+    userDepartment: "g",
+    moodleId: userConfig.moodleGeneralId,
+    moodleToken: userConfig.moodleGeneralToken
+  });
+  const moodleURL_s = getMoodleURL({
+    accountExpiration: userConfig.accountExpiration,
+    userDepartment: userConfig.userDepartment,
+    moodleId: userConfig.moodleSpecificId,
+    moodleToken: userConfig.moodleSpecificToken
+  });
 
   const icalClient = new IcalClient(moodleURL_g, moodleURL_s);
 
@@ -116,3 +151,6 @@ chrome.storage.sync.get().then(userConfig => {
     });
   }
 });
+
+// 起動時更新
+updateTaskData();

@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import React from 'react'
 
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 import dayjs from 'dayjs';
 
@@ -118,18 +119,18 @@ function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
 
   const indexColor = () => {
     if (saveData.finish) {
-      return color.text.disabled;
+      return env.color.text.disabled;
     } else {
-      return color.text.default;
+      return env.color.text.default;
     }
   };
 
   const timeColor = () => {
     if (type == "today") {
       if (saveData.finish) {
-        return color.text.disabled;
+        return env.color.text.disabled;
       } else {
-        return color.text.default;
+        return env.color.text.default;
       }
     } else {
       return indexColor();
@@ -169,7 +170,7 @@ function TaskContainer({type, day, children, ids}: taskContainerProps) {
   const style = {
     task_day: css`
       font-size: 12px;
-      color: ${color.text};
+      color: ${env.color.text};
       margin-right: 5px;
     `,
 
@@ -181,7 +182,7 @@ function TaskContainer({type, day, children, ids}: taskContainerProps) {
       padding: 2px 3px;
       white-space: nowrap;
       color: #ffffff;
-      background-color: ${color.yellow};
+      background-color: ${env.color.yellow};
       margin-right: 5px;
       @media screen and (max-width:850px) {
         font-size: 13px;
@@ -196,7 +197,7 @@ function TaskContainer({type, day, children, ids}: taskContainerProps) {
       padding: 2px 3px;
       white-space: nowrap;
       color: #ffffff;
-      background-color: ${color.wine};
+      background-color: ${env.color.wine};
       margin-right: 5px;
       @media screen and (max-width:850px) {
         font-size: 13px;
@@ -206,7 +207,7 @@ function TaskContainer({type, day, children, ids}: taskContainerProps) {
 
   if (type == "tomorrow") {
     return (
-      <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
+      <Box display="flex" alignItems="center" borderBottom={`1px solid ${env.color.frame_border}`}>
         <Box css={style.task_index_tomorrow}>あす</Box>
         <p css={style.task_day}>{day}</p>
         <Box width="100%">
@@ -217,7 +218,7 @@ function TaskContainer({type, day, children, ids}: taskContainerProps) {
 
   } else if (type == "past") {
     return (
-      <Box className="past" display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
+      <Box className="past" display="flex" alignItems="center" borderBottom={`1px solid ${env.color.frame_border}`}>
         <Box css={style.task_index_past} id={ids}>超過</Box>
         <p css={style.task_day}>{day}</p>
         <Box width="100%">
@@ -228,7 +229,7 @@ function TaskContainer({type, day, children, ids}: taskContainerProps) {
 
   } else if (type == "other") {
     return (
-      <Box display="flex" alignItems="center" borderBottom={`1px solid ${color.frame_border}`}>
+      <Box display="flex" alignItems="center" borderBottom={`1px solid ${env.color.frame_border}`}>
         <p css={style.task_day}>{day}</p>
         <Box width="100%">
           {children}
@@ -241,9 +242,9 @@ function TaskContainer({type, day, children, ids}: taskContainerProps) {
 function TaskIndex({type, children}: {type: "today" | "other", children: React.ReactNode}) {
   const _color:string = (() => {
     if (type == "today") {
-      return color.yellow
+      return env.color.yellow
     } else {
-      return color.sky
+      return env.color.sky
     }
   })();
   return (
@@ -335,9 +336,37 @@ function App({saveData, checkHandler}: {saveData: saveDataProps, checkHandler: c
   }
 
   if (taskNodeList.length == 0) {
+    const style =  css`
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      color: ${env.color.blue};
+      border-bottom: 1px solid #00000000;
+
+      & .MuiSvgIcon-root {
+        font-size: 15px;
+      }
+
+      &:hover {
+        border-bottom: 1px solid ${env.color.blue};
+      }
+    `;
+
     taskNodeList.push(
-      <Box key="info" color={color.text} fontSize="14px">
+      <Box key="info" color={env.color.text} fontSize="14px">
         取得可能期間内に表示できる課題がありません。
+        <Box display="flex" alignItems="center" fontSize="12px">
+          （eALPS上にあるのに表示されませんか？
+          <Box display="flex" css={style} onClick={() => {
+              chrome.tabs.create({
+                url: "chrome-extension://" + chrome.runtime.id + "/pages/debugger/index.html"
+              });
+            }}>
+              <p>デバックツールで確認する</p>
+              <LaunchIcon />
+            </Box>
+            ）
+        </Box>
       </Box>
     );
   }

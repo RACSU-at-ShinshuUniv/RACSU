@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import color from "../color.json";
+import env from "../../env.json"
 
 import React from 'react';
 
@@ -17,7 +17,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     bgcolor: "#ffffff",
-    border: `2px solid ${color.modal_border}`,
+    border: `2px solid ${env.color.modal_border}`,
     borderRadius: "5px",
     boxShadow: 10,
     width: "75%",
@@ -26,12 +26,12 @@ const style = {
   },
 
   window: css`
-    color: ${color.text.default};
+    color: ${env.color.text.default};
 
     h1 {
       font-weight: normal;
       font-size: 21px;
-      color: ${color.blue};
+      color: ${env.color.blue};
     }
 
     h2 {
@@ -48,9 +48,9 @@ const style = {
     font-size: 13px;
     height: fit-content;
     margin-left: 15px;
-    background-color: ${color.button.ok};
+    background-color: ${env.color.button.ok};
     :hover {
-      background-color: ${color.button.ok_hover};
+      background-color: ${env.color.button.ok_hover};
     }
   `,
 }

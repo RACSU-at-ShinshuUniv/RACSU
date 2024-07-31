@@ -10,8 +10,8 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import color from "@/color.json"
 import url from "@/url.json";
 
-import MockTaskList from '@/component/MockTaskList';
-import Paragraph, { Title, Index, Content, Description } from "@/component/Paragraph";
+import MockTaskList from '@/components/MockTaskList';
+import Paragraph, { Title, Index, Content, Description } from "@/components/Paragraph";
 
 const style = {
   main: css`
@@ -50,7 +50,8 @@ const style = {
   background-color: #ffffff;
   color: ${color.text};
   margin: 20px auto 0 0;
-  padding: 8px 25px;
+  padding: 12px 28px;
+  font-size: 14px;
 
   &:hover {
     background-color: #e6e6e6;
@@ -152,18 +153,20 @@ export default function App() {
           <Box css={style.top_text_description}>
             <h1><span>気づかない間に、</span><span>提出期限を過ぎていた…</span></h1>
             <p><span>そんなことになる前に、</span><span>RACSUを使ってみませんか？</span></p>
-            <p><span>RACSU for eALPSは、eALPSと連携して</span><br /><span>提出期限がある課題を取得・一覧表示します。</span></p>
+            <p><span>RACSU for eALPSは、eALPSと連携して</span><br /><span>提出期限がある課題を取得し、eALPSポータルに一覧表示します。</span></p>
           </Box>
           <Button css={style.top_button} target="_blank" href={url.store} variant='contained' endIcon={<LaunchIcon />}>ブラウザにインストール</Button>
         </Box>
         <Box marginTop="30px">
-          <MockTaskList />
+          {/* <MockTaskList /> */}
+          <img src="/portal.png" css={css`width: 90vw; max-width: 520px;`}/>
         </Box>
       </Box>
       <Box css={style.notify}>
-        <h1><span>信州大学e-Learningセンター</span> <span>eALPS支援ツール認定事案</span></h1>
-        <p>RACSU for eALPSは、信州大学e-Learningセンターの認定を受け、<br />オープンソース（Apache-2.0 License）で開発中です。</p>
-        <p>Githubリポジトリは<a href={url.github}>こちら</a>。</p>
+        <h1><span>eALPS支援ツール「eALPluS」</span><span>認定事案</span></h1>
+        <p>RACSU for eALPSは、信州大学e-LearningセンターのeALPluS事例認定を受けています(認定日:2024年7月18日)。</p>
+        <p>eALPluSについて詳しくは<a href={url.ealplus}>こちら</a>をご覧下さい。</p>
+        <p>本サービスはオープンソース（Apache-2.0 License）で開発中です。</p>
       </Box>
       <Box marginX="10vw" marginBottom="40px">
         <Paragraph>

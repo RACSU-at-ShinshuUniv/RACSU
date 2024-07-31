@@ -165,7 +165,7 @@ export default function App() {
       <Box css={style.notify}>
         <h1><span>eALPS支援ツール「eALPluS」</span><span>認定事案</span></h1>
         <p>RACSU for eALPSは、信州大学e-LearningセンターのeALPluS事例認定を受けています(認定日:2024年7月18日)。</p>
-        <p>詳しくは<a href={url.github}>こちら</a>をご覧下さい。</p>
+        <p>eALPluSについて詳しくは<a href={url.ealplus}>こちら</a>をご覧下さい。</p>
         <p>本サービスはオープンソース（Apache-2.0 License）で開発中です。</p>
       </Box>
       <Box marginX="10vw" marginBottom="40px">

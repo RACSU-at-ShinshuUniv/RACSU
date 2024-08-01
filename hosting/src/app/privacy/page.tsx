@@ -19,7 +19,7 @@ export default function App() {
       <Box width="80vw" padding="20px 0">
         <Paragraph>
           <Title>プライバシーポリシー（個人情報保護方針）</Title>
-          <Description>「RACSU 信大課題リマインダ」（以下、本サービスという）は、ユーザーの個人情報について以下のとおりプライバシーポリシー（以下、「本ポリシー」という）を定めます。</Description>
+          <Description>「RACSU for eALPS」（以下、本サービスという）は、ユーザーの個人情報について以下のとおりプライバシーポリシー（以下、「本ポリシー」という）を定めます。</Description>
           <Description>本ポリシーは、本サービスがどのような個人情報を取得し、どのように利用するかを説明するものです。本ポリシーは、利用者と本サービスの利用に関わる一切の関係に適用されるものとします。</Description>
 
           <Index>・本サービスが取得する情報と利用目的</Index>

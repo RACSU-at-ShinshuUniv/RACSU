@@ -152,7 +152,7 @@ export default function App() {
           </Box>
           <Box css={style.top_text_description}>
             <h1><span>気づかない間に、</span><span>提出期限を過ぎていた…</span></h1>
-            <p><span>そんなことになる前に、</span><span>RACSUを使ってみませんか？</span></p>
+            <p><span>そうなる前に、</span><span>RACSUを使ってみませんか？</span></p>
             <p><span>RACSU for eALPSは、eALPSと連携して</span><br /><span>提出期限がある課題を取得し、eALPSポータルに一覧表示します。</span></p>
           </Box>
           <Button css={style.top_button} target="_blank" href={url.store} variant='contained' endIcon={<LaunchIcon />}>ブラウザにインストール</Button>

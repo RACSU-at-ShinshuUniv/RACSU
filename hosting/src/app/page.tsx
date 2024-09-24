@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import React from 'react'
-
 import { css } from '@emotion/react';
 import { Box, Button } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -10,7 +8,6 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import color from "@/color.json"
 import url from "@/url.json";
 
-import MockTaskList from '@/components/MockTaskList';
 import Paragraph, { Title, Index, Content, Description } from "@/components/Paragraph";
 
 const style = {
@@ -138,7 +135,24 @@ const style = {
     @media screen and (max-width:1000px) {
       margin: 20px 10px;
     }
+  `,
+
+  logo_info: css`
+    display: flex;
+    margin-top: 5px;
+
+    img {
+      height: 110px;
+      width: 110px;
+      margin: 5px 10px 0 0;
+    }
+
+    @media screen and (max-width:500px) {
+      flex-direction: column;
+      align-items: center;
+    }
   `
+
 }
 
 export default function App() {
@@ -179,6 +193,16 @@ export default function App() {
           <Index><span>PC版Chrome/Edgeで</span><span>動作確認済み</span></Index>
           <Description>その他Chromiumベースのブラウザでインストール可能です。</Description>
           <Description>Chrome以外のブラウザでご利用の際は、Chromeウェブストアからの拡張機能のインストールを許可してください。</Description>
+        </Paragraph>
+        <Paragraph>
+          <Title>ロゴについて</Title>
+          <Box css={style.logo_info}>
+            <img src="/icon/icon128.png" alt="RACSU icon"/>
+            <Box display="flex" flexDirection="column" justifyContent="center">
+              <Description>RACSU for eALPSのロゴは、eALPSのロゴをオマージュしています。</Description>
+              <Description>信州大学e-Learningセンター・著作者両者より、eALPSロゴの二次制作物として了解を得たうえで使用しています。</Description>
+            </Box>
+          </Box>
         </Paragraph>
         <Paragraph>
           <Title>共同開発者募集中！</Title>

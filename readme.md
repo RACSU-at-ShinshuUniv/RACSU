@@ -53,5 +53,72 @@ Firebase Functionsを使用しています。<br>
 ディレクトリ：functions/
 ```
 
+## 初期設定
+### Firebase関連
+```bash
+> firebase init
+```
+
+Firestore, Functions, Hosting((optionally) set up GitHub Action deploys)を選択し、以下の通り設定。
+
+```bash
+=== Firestore Setup
+
+Firestore Security Rules allow you to define how and when to allow
+requests. You can keep these rules in your project directory
+and publish them with firebase deploy.
+
+? What file should be used for Firestore Rules? firestore.rules
+? File firestore.rules already exists. Do you want to overwrite it with the Firestore Rules from the Firebase Console? No
+
+Firestore indexes allow you to perform complex queries while
+maintaining performance that scales with the size of the result
+set. You can keep index definitions in your project directory
+and publish them with firebase deploy.
+
+? What file should be used for Firestore indexes? firestore.indexes.json
+? File firestore.indexes.json already exists. Do you want to overwrite it with the Firestore Indexes from the Firebase Console? No
+```
+
+```bash
+=== Functions Setup
+
+Detected existing codebase(s): default
+
+? Would you like to initialize a new codebase, or overwrite an existing one? Overwrite
+
+Overwriting codebase default...
+
+? What language would you like to use to write Cloud Functions? JavaScript
+? Do you want to use ESLint to catch probable bugs and enforce style? No
+? File functions/package.json already exists. Overwrite? No
+i  Skipping write of functions/package.json
+? File functions/index.js already exists. Overwrite? No
+i  Skipping write of functions/index.js
++  Wrote functions/.gitignore
+? Do you want to install dependencies with npm now? Yes
+```
+
+```bash
+=== Hosting Setup
+
+Your public directory is the folder (relative to your project directory) that
+will contain Hosting assets to be uploaded with firebase deploy. If you
+have a build process for your assets, use your build's output directory.
+
+? What do you want to use as your public directory? hosting/out
+? Configure as a single-page app (rewrite all urls to /index.html)? No
+? Set up automatic builds and deploys with GitHub? No
++  Wrote hosting/404.html
++  Wrote hosting/index.html
+```
+
+### Firebaseプロジェクト追加
+```bash
+> firebase use --add default
+> firebase use --add production
+```
+
+
 ## ライセンス
 本サービスはオープンソース（Apache-2.0 License）で開発中です。

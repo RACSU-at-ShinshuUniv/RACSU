@@ -184,7 +184,7 @@ function Debugger() {
       <p>本ツールが正しく課題データを取得できているかを確認するためのページです。</p>
       <p>バグの報告等は、このページのスクリーンショットを撮影して共有してください。</p>
       <p css={css`font-weight: bold;`}>※ 課題データ（URL1）と課題データ（URL2）で、課題提出期限が設定されているイベントであるのに無効イベントとして表示される場合は、以下までお知らせください。</p>
-      <p css={css`font-weight: bold; margin-bottom: 5px;`}>お問い合わせ：racsu.shinshu-univ[at]gmail.com</p>
+      <p css={css`font-weight: bold; margin-bottom: 5px;`}>お問い合わせ：racsu.shinshu.univ[at]gmail.com</p>
       <p>データ取得日時：{dayjs().format("YYYY/MM/DD HH:mm:ss")}</p>
       <Section>
         <h1>拡張機能同期データ</h1>

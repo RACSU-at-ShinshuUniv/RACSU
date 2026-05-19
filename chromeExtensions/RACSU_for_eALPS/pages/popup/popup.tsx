@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
-import ReactDOM from 'react-dom/client';
+import ReactDOM from "react-dom/client";
 
-import TaskList from '../../src/component/TaskList';
+import TaskList from "../../src/component/TaskList";
 
-import { GASend } from '../../src/modules/googleAnalytics';
-GASend("pageOpen", "popup");
+import { GASend } from "../../src/modules/googleAnalytics";
+// GASend("pageOpen", "popup");
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <TaskList width='600px'/>
-)
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <TaskList width="600px" />,
+);

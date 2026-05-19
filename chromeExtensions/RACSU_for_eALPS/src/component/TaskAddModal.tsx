@@ -1,28 +1,27 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import env from "../../env.json"
+import { css } from "@emotion/react";
+import env from "../../env.json";
 
-import React from 'react';
-import dayjs from 'dayjs';
+import React from "react";
+import dayjs from "dayjs";
 
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import ClearIcon from '@mui/icons-material/Clear';
-import IconButton from '@mui/material/IconButton';
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import ClearIcon from "@mui/icons-material/Clear";
+import IconButton from "@mui/material/IconButton";
 
-import LimitPicker from './LimitPicker';
+import LimitPicker from "./LimitPicker";
 import formatTimeCode from "../modules/formatTimeCode";
-import { SaveData, saveDataProps } from '../modules/DataFormatter';
+import { SaveData, saveDataProps } from "../modules/DataFormatter";
 
-import { GASend } from '../../src/modules/googleAnalytics';
-
+import { GASend } from "../../src/modules/googleAnalytics";
 
 // 今期の間繰り返しボタンが有効化された場合の期限生成関数
 const generateTaskLimit = (initTaskLimit: dayjs.Dayjs) => {
@@ -36,9 +35,15 @@ const generateTaskLimit = (initTaskLimit: dayjs.Dayjs) => {
     const nextTaskLimit = taskLimit.add(1, "week");
 
     // 学期末判定
-    if (nextTaskLimit.month() <= 2 && nextTaskLimit.isAfter(dayjs(`${initTaskLimit.year()}/01/20`))) {
+    if (
+      nextTaskLimit.month() <= 2 &&
+      nextTaskLimit.isAfter(dayjs(`${initTaskLimit.year()}/01/20`))
+    ) {
       break;
-    } else if (nextTaskLimit.month() <= 7 && nextTaskLimit.isAfter(dayjs(`${initTaskLimit.year()}/08/01`))) {
+    } else if (
+      nextTaskLimit.month() <= 7 &&
+      nextTaskLimit.isAfter(dayjs(`${initTaskLimit.year()}/08/01`))
+    ) {
       break;
     } else {
       taskLimit = nextTaskLimit;
@@ -46,14 +51,18 @@ const generateTaskLimit = (initTaskLimit: dayjs.Dayjs) => {
   }
 
   return limitList;
-}
+};
 
-
-const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, enableRepeat: "enable" | "disable") => {
+const addTask = (
+  className: string,
+  taskName: string,
+  taskLimit: dayjs.Dayjs,
+  enableRepeat: "enable" | "disable",
+) => {
   // ランダムなID生成
   let id = "MT";
-  for (let i=0; i<5; i++){
-    id += Math.floor(Math.random()*10).toString();
+  for (let i = 0; i < 5; i++) {
+    id += Math.floor(Math.random() * 10).toString();
   }
 
   const newData = (() => {
@@ -63,72 +72,77 @@ const addTask = (className: string, taskName: string, taskLimit: dayjs.Dayjs, en
         [id]: {
           className: className,
           taskName: taskName,
-          taskLimit: formatTimeCode(taskLimit.second(0).millisecond(0).toDate()),
+          taskLimit: formatTimeCode(
+            taskLimit.second(0).millisecond(0).toDate(),
+          ),
           finish: false,
-          display: true
-        }
+          display: true,
+        },
       });
 
-    // 繰り返しが有効な場合
+      // 繰り返しが有効な場合
     } else {
-      const taskLimitList = generateTaskLimit(taskLimit.second(0).millisecond(0));
+      const taskLimitList = generateTaskLimit(
+        taskLimit.second(0).millisecond(0),
+      );
       const newSaveData: saveDataProps = {};
       let index = 0;
-      taskLimitList.forEach(taskLimit => {
+      taskLimitList.forEach((taskLimit) => {
         newSaveData[`${id}_${index}`] = {
           className: className,
           taskName: taskName,
-          taskLimit: formatTimeCode(taskLimit.second(0).millisecond(0).toDate()),
+          taskLimit: formatTimeCode(
+            taskLimit.second(0).millisecond(0).toDate(),
+          ),
           finish: false,
-          display: true
-        }
+          display: true,
+        };
         index++;
-      })
+      });
 
       return new SaveData(newSaveData);
     }
   })();
 
-  chrome.storage.local.get(["userTask", "classNameDict"]).then(localData => {
+  chrome.storage.local.get(["userTask", "classNameDict"]).then((localData) => {
     const saveData = newData.margeWith(localData.userTask).get();
 
-    if (Object.values(localData.classNameDict).includes(className)){
+    if (Object.values(localData.classNameDict).includes(className)) {
       // ローカルに保存
       chrome.storage.local.set({
-        userTask: saveData
+        userTask: saveData,
       });
-
     } else {
       // 新たに入力された講義名ならそれとともにローカルに保存
       localData.classNameDict[id] = className;
       chrome.storage.local.set({
         userTask: saveData,
-        classNameDict: localData.classNameDict
+        classNameDict: localData.classNameDict,
       });
     }
 
     // 画面を更新
     chrome.runtime.sendMessage({
       type: "refresh",
-      status: "request"
+      status: "request",
     });
   });
 
-  GASend("taskAdd", enableRepeat == "enable" ? "repeatEnabled" : "repeatDisabled");
-}
+  // GASend("taskAdd", enableRepeat == "enable" ? "repeatEnabled" : "repeatDisabled");
+};
 
 type props = {
-  modalIsOpen: boolean,
-  modalHandler: (isOpen: boolean) => void
-}
+  modalIsOpen: boolean;
+  modalHandler: (isOpen: boolean) => void;
+};
 
-export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
+export default function TaskAddModal({ modalIsOpen, modalHandler }: props) {
   const style = {
     window: {
-      position: 'absolute' as 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
+      position: "absolute" as "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
       bgcolor: "#ffffff",
       border: `2px solid ${env.color.modal_border}`,
       borderRadius: "5px",
@@ -142,7 +156,7 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
       margin-right: 4px;
       font-size: 13px;
       color: ${env.color.text.default};
-      background-color: ${env.color.button.cancel};;
+      background-color: ${env.color.button.cancel};
       border: none;
       :hover {
         border: none;
@@ -151,32 +165,38 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
     `,
 
     button_ok: css`
-    font-size: 13px;
-    background-color: ${env.color.button.ok};
-    :hover {
-      background-color: ${env.color.button.ok_hover};
-    }
+      font-size: 13px;
+      background-color: ${env.color.button.ok};
+      :hover {
+        background-color: ${env.color.button.ok_hover};
+      }
     `,
 
     auto_complete: css`
       width: 260px;
-    `
-  }
+    `,
+  };
 
   const [limitDate, limitDateHandler] = React.useState(dayjs());
-  const [enableRepeat, enableRepeatHandler] = React.useState<"enable" | "disable">("disable");
-  const [className, setClassName] = React.useState('');
-  const [taskName, setTaskName] = React.useState('');
+  const [enableRepeat, enableRepeatHandler] = React.useState<
+    "enable" | "disable"
+  >("disable");
+  const [className, setClassName] = React.useState("");
+  const [taskName, setTaskName] = React.useState("");
 
   const [openClassNameSelect, setOpenClassNameSelect] = React.useState(false);
-  const [classNameOptions, setClassNameOptions] = React.useState<string[] | []>([]);
-  const isClassNameSelectLoading = openClassNameSelect && classNameOptions.length === 0;
+  const [classNameOptions, setClassNameOptions] = React.useState<string[] | []>(
+    [],
+  );
+  const isClassNameSelectLoading =
+    openClassNameSelect && classNameOptions.length === 0;
 
-  const enableSend = (limitDate.isAfter(dayjs()) && className !== "" && taskName !== "");
+  const enableSend =
+    limitDate.isAfter(dayjs()) && className !== "" && taskName !== "";
 
   // サジェストの削除関数
   const deleteSuggest = React.useCallback((deleteClassName: string) => {
-    chrome.storage.local.get(["classNameDict"]).then(localData => {
+    chrome.storage.local.get(["classNameDict"]).then((localData) => {
       // 引数の講義名を配列から削除
       for (const key in localData.classNameDict) {
         if (localData.classNameDict[key] == deleteClassName) {
@@ -186,7 +206,7 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
 
       // 上書き保存
       chrome.storage.local.set({
-        classNameDict: localData.classNameDict
+        classNameDict: localData.classNameDict,
       });
 
       // 選択とサジェストを更新
@@ -204,7 +224,9 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
 
     // 非同期で講義名を取得してサジェストを更新
     (async () => {
-      const { classNameDict } = await chrome.storage.local.get(["classNameDict"]);
+      const { classNameDict } = await chrome.storage.local.get([
+        "classNameDict",
+      ]);
 
       if (active) {
         if (Object.values(classNameDict).length == 0) {
@@ -247,8 +269,10 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                 open={openClassNameSelect}
                 onOpen={() => setOpenClassNameSelect(true)}
                 onClose={() => setOpenClassNameSelect(false)}
-                onInputChange={(_event, newInputValue) => setClassName(newInputValue)}
-                getOptionDisabled={(option) => (option == "サジェストなし")}
+                onInputChange={(_event, newInputValue) =>
+                  setClassName(newInputValue)
+                }
+                getOptionDisabled={(option) => option == "サジェストなし"}
                 options={classNameOptions}
                 loading={isClassNameSelectLoading}
                 value={className}
@@ -260,20 +284,29 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                       ...params.InputProps,
                       endAdornment: (
                         <React.Fragment>
-                          {isClassNameSelectLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                          {isClassNameSelectLoading ? (
+                            <CircularProgress color="inherit" size={20} />
+                          ) : null}
                           {params.InputProps.endAdornment}
                         </React.Fragment>
-                      )
+                      ),
                     }}
                   />
                 )}
                 renderOption={(props, option) => (
                   <li {...props}>
                     <Box display="flex" alignItems="center" width="100%">
-                      <Box onClick={() => setOpenClassNameSelect(false)} marginRight="auto" width="100%">
+                      <Box
+                        onClick={() => setOpenClassNameSelect(false)}
+                        marginRight="auto"
+                        width="100%"
+                      >
                         {option}
                       </Box>
-                      <IconButton size="small" onClick={() => deleteSuggest(option)}>
+                      <IconButton
+                        size="small"
+                        onClick={() => deleteSuggest(option)}
+                      >
                         <ClearIcon fontSize="inherit" />
                       </IconButton>
                     </Box>
@@ -281,44 +314,81 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
                 )}
               />
             </Box>
-            <Box display="flex" alignItems="center" marginTop="15px" width="100%">
+            <Box
+              display="flex"
+              alignItems="center"
+              marginTop="15px"
+              width="100%"
+            >
               <Box marginRight="auto">課題の詳細：</Box>
               <Autocomplete
                 css={style.auto_complete}
                 freeSolo
                 disableClearable
-                options={['レポート提出', 'eALPSで小テスト']}
-                renderInput={(params) =>
-                  <TextField
-                    {...params}
-                    placeholder="選択または入力"
-                  />
+                options={["レポート提出", "eALPSで小テスト"]}
+                renderInput={(params) => (
+                  <TextField {...params} placeholder="選択または入力" />
+                )}
+                onInputChange={(_event, newInputValue) =>
+                  setTaskName(newInputValue)
                 }
-                onInputChange={(_event, newInputValue) => setTaskName(newInputValue)}
               />
             </Box>
-            <Box display="flex" alignItems="center" marginTop="15px" width="100%">
+            <Box
+              display="flex"
+              alignItems="center"
+              marginTop="15px"
+              width="100%"
+            >
               <Box marginRight="auto">提出締め切り：</Box>
-              <LimitPicker limitDate={limitDate} limitDateHandler={limitDateHandler}/>
+              <LimitPicker
+                limitDate={limitDate}
+                limitDateHandler={limitDateHandler}
+              />
             </Box>
-            <Box display="flex" alignItems="center" marginTop="15px" width="100%">
+            <Box
+              display="flex"
+              alignItems="center"
+              marginTop="15px"
+              width="100%"
+            >
               <Box marginRight="auto">毎週繰り返し：</Box>
               <RadioGroup
                 row
                 value={enableRepeat}
                 onChange={(event) => {
-                  enableRepeatHandler(((event.target as HTMLInputElement).value) as "enable" | "disable");
+                  enableRepeatHandler(
+                    (event.target as HTMLInputElement).value as
+                      | "enable"
+                      | "disable",
+                  );
                 }}
               >
-                <FormControlLabel value="disable" control={<Radio />} label="しない" />
-                <FormControlLabel value="enable" control={<Radio />} label="今期の間繰り返し" />
+                <FormControlLabel
+                  value="disable"
+                  control={<Radio />}
+                  label="しない"
+                />
+                <FormControlLabel
+                  value="enable"
+                  control={<Radio />}
+                  label="今期の間繰り返し"
+                />
               </RadioGroup>
             </Box>
           </Box>
 
           <Box display="flex" justifyContent="flex-end" marginTop="10px">
-            <Button css={style.button_cancel} onClick={() => modalHandler(false)} variant="outlined">キャンセル</Button>
-            <Button css={style.button_ok} onClick={() => {
+            <Button
+              css={style.button_cancel}
+              onClick={() => modalHandler(false)}
+              variant="outlined"
+            >
+              キャンセル
+            </Button>
+            <Button
+              css={style.button_ok}
+              onClick={() => {
                 addTask(className, taskName, limitDate, enableRepeat);
                 setClassName("");
                 setTaskName("");
@@ -326,7 +396,9 @@ export default function TaskAddModal({modalIsOpen, modalHandler}: props) {
               }}
               variant="contained"
               disabled={!enableSend}
-            >追加</Button>
+            >
+              追加
+            </Button>
           </Box>
         </Box>
       </Modal>

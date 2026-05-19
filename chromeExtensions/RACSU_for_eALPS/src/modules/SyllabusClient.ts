@@ -1,9 +1,14 @@
 import env from "../../env.json"
 
-export class SyllabusClient {
-  private classNameDict: {[classCode: string]: string}
+export type classNameDictProps = {
+  [classCode: string]: string
+}
 
-  constructor(initClassNameDict: {[classCode: string]: string}) {
+export class SyllabusClient {
+  private classNameDict: classNameDictProps
+
+
+  constructor(initClassNameDict: classNameDictProps) {
     this.classNameDict = initClassNameDict;
   }
 

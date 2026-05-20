@@ -12,6 +12,11 @@ import AccountExpired from "./AccountExpired";
 
 import Box from "@mui/material/Box";
 
+import {
+  localStorageDataProps,
+  syncStorageDataProps,
+} from "../../src/background";
+
 import { GASend } from "../../src/modules/googleAnalytics";
 
 function App({ width }: { width: string }) {
@@ -19,32 +24,35 @@ function App({ width }: { width: string }) {
   const [openModal_delFinish, setOpenModal_delFinish] = React.useState(false);
   const [openModal_delPast, setOpenModal_delPast] = React.useState(false);
   const [openModal_add, setOpenModal_add] = React.useState(false);
-  const [openLoading, setOpenLoading] = React.useState(false);
+  const [openLoading, setOpenLoading] = React.useState(true);
   const [accountExpiredState, setAccountExpiredState] = React.useState({
     isOpen: false,
     message: "",
     settingCallback: () => {},
   });
-  const [localDataState, setLocalDataState] = React.useState({
+  const [localDataState, setLocalDataState] = React.useState<{
+    taskData: localStorageDataProps["userTask"];
+    lastUpdate: localStorageDataProps["lastUpdate"];
+  }>({
     taskData: {},
     lastUpdate: "",
   });
+  const [displayLinkError, setDisplayLinkError] = React.useState(false);
 
   // 初期描画の非同期関数作成
   const initRendering = async () => {
-    const userConfig = await chrome.storage.sync.get();
+    const userConfig =
+      (await chrome.storage.sync.get()) as syncStorageDataProps;
+    const localData = (await chrome.storage.local.get([
+      "userTask",
+      "lastUpdate",
+    ])) as localStorageDataProps;
+    setLocalDataState({
+      taskData: localData.userTask,
+      lastUpdate: localData.lastUpdate,
+    });
 
-    if (userConfig.accountStatus == "linked") {
-      const localData = await chrome.storage.local.get([
-        "userTask",
-        "lastUpdate",
-      ]);
-      setLocalDataState({
-        taskData: localData.userTask,
-        lastUpdate: localData.lastUpdate,
-      });
-      setOpenLoading(false);
-    } else if (userConfig.accountStatus == "installed") {
+    if (userConfig.accountStatus == "installed") {
       const optionsPage = chrome.runtime.getURL("pages/options/index.html");
       setAccountExpiredState({
         isOpen: true,
@@ -63,6 +71,10 @@ function App({ width }: { width: string }) {
           chrome.storage.sync.set({
             needToSetSpecific: true,
             accountStatus: "linking",
+            moodleSpecificId: "",
+            moodleSpecificToken: "",
+            moodleGeneralId: "",
+            moodleGeneralToken: "",
           });
           open(
             `https://lms.ealps.shinshu-u.ac.jp/${thisTerm.getFullYear()}/${userConfig.userDepartment}/calendar/export.php`,
@@ -72,34 +84,26 @@ function App({ width }: { width: string }) {
         },
       });
     } else if (userConfig.accountStatus == "accountExpired") {
-      const thisTerm = new Date();
-      thisTerm.setMonth(thisTerm.getMonth() - 3);
+      const optionsPage = chrome.runtime.getURL("pages/options/index.html");
       setAccountExpiredState({
         isOpen: true,
         message: "年度変更によりeALPSとの再連携が必要です。",
         settingCallback: () => {
-          chrome.storage.sync.set({
-            needToSetSpecific: true,
-            accountStatus: "linking",
-          });
-          open(
-            `https://lms.ealps.shinshu-u.ac.jp/${thisTerm.getFullYear()}/${userConfig.userDepartment}/calendar/export.php`,
-            "_blank",
-            "width=500,height=700",
-          );
+          window.open(optionsPage, "_blank");
         },
       });
+    } else if (userConfig.accountStatus == "linkError") {
+      setDisplayLinkError(true);
     }
+
+    setOpenLoading(false);
   };
 
   // 各ボタンのハンドラー作成
   // 初回のみの定義で良いものはuseCallbackを使用
   const updateHandler = React.useCallback(() => {
     setOpenLoading(true);
-    chrome.runtime.sendMessage({
-      type: "update",
-      status: "start",
-    });
+    chrome.runtime.sendMessage("taskDataUpdate").catch((e) => console.log(e));
     // GASend("taskUpdateManually", "execute");
   }, []);
 
@@ -111,28 +115,17 @@ function App({ width }: { width: string }) {
   const checkHandler = React.useCallback((id: string, checked: boolean) => {
     // ローカルデータの完了フラグを立てる
     chrome.storage.local.get(["userTask"]).then((localData) => {
-      localData.userTask[id].finish = checked;
-      if (checked) {
-        // GASend("taskCheck", "finish");
-      } else {
-        // GASend("taskCheck", "redo");
-      }
+      const { userTask } = localData as localStorageDataProps;
+      userTask[id].finish = checked;
+      // if (checked) {
+      //   GASend("taskCheck", "finish");
+      // } else {
+      //   GASend("taskCheck", "redo");
+      // }
 
-      chrome.storage.local.set(localData).then(() => {
-        // 課題データのStateを更新して再描画
-        setLocalDataState((initData) => {
-          return {
-            lastUpdate: initData.lastUpdate,
-            taskData: localData.userTask,
-          };
-        });
-
-        // 全体へ更新メッセージ発信
+      chrome.storage.local.set({ userTask }).then(() => {
         chrome.runtime
-          .sendMessage({
-            type: "refresh",
-            status: "execution",
-          })
+          .sendMessage("taskWindowUpdateRequest")
           .catch((e) => console.log(e));
       });
     });
@@ -144,32 +137,21 @@ function App({ width }: { width: string }) {
     // GASend("taskDelete", "past");
 
     chrome.storage.local.get(["userTask"]).then((localData) => {
+      const { userTask } = localData as localStorageDataProps;
+
       // 超過課題を取得
       document.querySelectorAll(".past").forEach((pastTask) => {
         pastTask
           .querySelectorAll("input[name=finish]")
           .forEach((pastCheckbox) => {
             // ローカルデータの非表示フラグを立てる
-            localData.userTask[pastCheckbox.id].display = false;
+            userTask[pastCheckbox.id].display = false;
           });
       });
 
-      // 課題データのStateを更新して再描画
-      setLocalDataState((initData) => {
-        return {
-          lastUpdate: initData.lastUpdate,
-          taskData: localData.userTask,
-        };
-      });
-
-      // ローカルに保存
-      chrome.storage.local.set(localData).then(() => {
-        // 全体へ更新メッセージ発信
+      chrome.storage.local.set({ userTask }).then(() => {
         chrome.runtime
-          .sendMessage({
-            type: "refresh",
-            status: "execution",
-          })
+          .sendMessage("taskWindowUpdateRequest")
           .catch((e) => console.log(e));
       });
 
@@ -184,30 +166,19 @@ function App({ width }: { width: string }) {
     // GASend("taskDelete", "finished");
 
     chrome.storage.local.get(["userTask"]).then((localData) => {
+      const { userTask } = localData as localStorageDataProps;
+
       // 完了済みの課題を取得
       document
         .querySelectorAll("input[name=finish]:checked")
         .forEach((checkbox) => {
           // ローカルデータの非表示フラグを立てる
-          localData.userTask[checkbox.id].display = false;
+          userTask[checkbox.id].display = false;
         });
 
-      // 課題データのStateを更新して再描画
-      setLocalDataState((initData) => {
-        return {
-          lastUpdate: initData.lastUpdate,
-          taskData: localData.userTask,
-        };
-      });
-
-      // ローカルに保存
-      chrome.storage.local.set(localData).then(() => {
-        // 全体へ更新メッセージ発信
+      chrome.storage.local.set({ userTask }).then(() => {
         chrome.runtime
-          .sendMessage({
-            type: "refresh",
-            status: "execution",
-          })
+          .sendMessage("taskWindowUpdateRequest")
           .catch((e) => console.log(e));
       });
 
@@ -220,36 +191,25 @@ function App({ width }: { width: string }) {
   React.useEffect(() => {
     // 課題更新のイベントリスナー作成
     chrome.runtime.onMessage.addListener((message) => {
-      if (message.type == "update") {
-        if (message.status == "complete") {
-          chrome.storage.local
-            .get(["userTask", "lastUpdate"])
-            .then((localData) => {
-              // 課題データのStateを更新して再描画
-              setLocalDataState({
-                lastUpdate: localData.lastUpdate,
-                taskData: localData.userTask,
-              });
-
-              // ローディング解除
-              setOpenLoading(false);
-            });
-        }
-      } else if (message.type == "refresh") {
-        if (message.status == "execution") {
-          chrome.storage.local
-            .get(["userTask", "lastUpdate"])
-            .then((localData) => {
-              // 課題データのStateを更新して再描画
-              setLocalDataState({
-                lastUpdate: localData.lastUpdate,
-                taskData: localData.userTask,
-              });
+      if (message == "taskWindowUpdate") {
+        chrome.storage.local
+          .get(["userTask", "lastUpdate"])
+          .then((localData) => {
+            // 課題データのStateを更新して再描画
+            const { userTask, lastUpdate } = localData as localStorageDataProps;
+            setLocalDataState({
+              lastUpdate: lastUpdate,
+              taskData: userTask,
             });
 
-          // ローディング解除
-          setOpenLoading(false);
-        }
+            // ローディング解除
+            setOpenLoading(false);
+          });
+      } else if (
+        message == "taskWindowReload" ||
+        message == "autoSetupComplete"
+      ) {
+        window.location.reload();
       }
     });
 
@@ -266,6 +226,7 @@ function App({ width }: { width: string }) {
         confirmDelFinishHandler={() => setOpenModal_delFinish(true)}
         confirmDelPastHandler={() => setOpenModal_delPast(true)}
         settingHandler={settingHandler}
+        displayLinkError={displayLinkError}
       />
       <Box padding="0 10px" height="300px" overflow="auto">
         <Contents

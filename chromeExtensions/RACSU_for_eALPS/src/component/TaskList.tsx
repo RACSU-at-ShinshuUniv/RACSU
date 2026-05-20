@@ -18,6 +18,7 @@ import {
 } from "../../src/background";
 
 import { GASend } from "../../src/modules/googleAnalytics";
+import UpdateMessageModal from "./UpdateMessageModal";
 
 function App({ width }: { width: string }) {
   // ReactHook作成
@@ -38,6 +39,7 @@ function App({ width }: { width: string }) {
     lastUpdate: "",
   });
   const [displayLinkError, setDisplayLinkError] = React.useState(false);
+  const [updateMessageTargetVersion, setUpdateMessageTargetVersion] = React.useState("");
 
   // 初期描画の非同期関数作成
   const initRendering = async () => {
@@ -51,6 +53,7 @@ function App({ width }: { width: string }) {
       taskData: localData.userTask,
       lastUpdate: localData.lastUpdate,
     });
+    setUpdateMessageTargetVersion(userConfig.updateMessageTargetVersion ?? "");
 
     if (userConfig.accountStatus == "installed") {
       const optionsPage = chrome.runtime.getURL("pages/options/index.html");
@@ -258,6 +261,7 @@ function App({ width }: { width: string }) {
         message={accountExpiredState.message}
         settingCallback={accountExpiredState.settingCallback}
       />
+      <UpdateMessageModal updateMessageTargetVersion={updateMessageTargetVersion} />
     </Box>
   );
 }

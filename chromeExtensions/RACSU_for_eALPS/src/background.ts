@@ -30,6 +30,7 @@ export type syncStorageDataProps = {
   accountExpiration: string;
   displayList: boolean;
   errorMessage?: string;
+  updateMessageTargetVersion?: string;
 };
 
 chrome.alarms.clearAll();
@@ -87,6 +88,30 @@ chrome.runtime.onInstalled.addListener((details) => {
         // 課題を強制更新
         await updateTaskData();
       })();
+    } else if (details.previousVersion === "1.3.7.2") {
+      // 1.3.7.2 -> 1.3.8のアップデート
+      // 講義名データのうちシラバス未登録授業のコードを再取得
+      chrome.storage.sync.set({
+        updateMessageTargetVersion: "1.3.8"
+      });
+
+      (async () => {
+        const localData =
+          (await chrome.storage.local.get()) as localStorageDataProps;
+
+        // 講義名データのうちシラバス未登録授業のコードを削除
+        Object.keys(localData.classNameDict).forEach((classCode) => {
+          if (localData.classNameDict[classCode] == "シラバス未登録授業") {
+            delete localData.classNameDict[classCode];
+          }
+        });
+        await chrome.storage.local.set({
+          classNameDict: localData.classNameDict,
+        });
+
+        // 課題を強制更新
+        await updateTaskData();
+      })();
     }
   } else {
   }
@@ -94,6 +119,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 const updateTaskData = async () => {
   const isBlank = (value: string | null | undefined): boolean => {
+    console.log("isBlank check:", value);
     return value == null || value.trim() === "";
   };
   const userConfig = (await chrome.storage.sync.get()) as syncStorageDataProps;

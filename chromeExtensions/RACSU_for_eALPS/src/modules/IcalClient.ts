@@ -54,7 +54,7 @@ const icalParser = (icalText: string) => {
 
 export const getAccountParams = (url: string) => {
   const urlParams = url.match(
-    /https\:\/\/(.+?)\.shinshu-u\.ac\.jp\/(?<expiration>\d\d\d\d)\/(?<department>.)\/calendar\/export_execute\.php\?userid\=(?<userid>.+?)\&authtoken=(?<authtoken>.+?)\&.+/,
+    /https\:\/\/(.+?)\.shinshu-u\.ac\.jp\/(?<expiration>\d\d\d\d)\/(?<department>[^/]+)\/calendar\/export_execute\.php\?userid\=(?<userid>.+?)\&authtoken=(?<authtoken>.+?)\&.+/,
   );
 
   if (urlParams == null || urlParams.groups == undefined) {

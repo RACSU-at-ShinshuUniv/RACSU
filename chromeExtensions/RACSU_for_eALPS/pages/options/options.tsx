@@ -23,6 +23,7 @@ import {
 
 import { GASend } from "../../src/modules/googleAnalytics";
 import { syncStorageDataProps } from "../../src/background";
+import UserDataDeleteConfirmModal from "../../src/component/UserDataDeleteConfirmModal";
 // GASend("pageOpen", "options");
 
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -192,6 +193,16 @@ function App() {
       }
     `,
 
+    button_reset: css`
+      font-size: 13px;
+      background-color: ${env.color.button.warning};
+      margin-left: 5px;
+
+      &:hover {
+        background-color: ${env.color.button.warning_hover};
+      }
+    `,
+
     display_title: css`
       font-size: 15px;
       margin-right: auto;
@@ -228,6 +239,10 @@ function App() {
 
   const [openAutoSetting, setOpenAutoSetting] = React.useState(false);
   const [openInitAutoSetting, setOpenInitAutoSetting] = React.useState(false);
+  const [openAllDataDeleteConfirmModal, setOpenAllDataDeleteConfirmModal] =
+    React.useState(false);
+  const [openTaskDataDeleteConfirmModal, setOpenTaskDataDeleteConfirmModal] =
+    React.useState(false);
   const [openLoading, setOpenLoading] = React.useState(false);
   const [enableStatus, setEditStatus] = React.useState({
     enable: false,
@@ -281,11 +296,16 @@ function App() {
 
     chrome.runtime.onMessage.addListener((message) => {
       if (message == "autoSetupComplete") {
-        window.open(
-          "https://timetable.ealps.shinshu-u.ac.jp/portal/",
-          "_blank",
-        );
-        window.location.reload();
+        chrome.runtime
+          .sendMessage("taskDataUpdate")
+          .then(() => {
+            window.open(
+              "https://timetable.ealps.shinshu-u.ac.jp/portal/",
+              "_blank",
+            );
+            window.location.reload();
+          })
+          .catch((e) => console.log(e));
       }
     });
   }, []);
@@ -304,12 +324,10 @@ function App() {
             });
             const {
               expiration: accountExpiration,
-              department: _d,
               userid: moodleGeneralId,
               authtoken: moodleGeneralToken,
             } = getAccountParams(moodleUrl.g);
             const {
-              expiration: _e,
               department: userDepartment,
               userid: moodleSpecificId,
               authtoken: moodleSpecificToken,
@@ -321,8 +339,10 @@ function App() {
               moodleGeneralId: moodleGeneralId,
               moodleGeneralToken: moodleGeneralToken,
               accountExpiration: accountExpiration,
+              accountStatus: "linked",
             });
             setErrorMessage("");
+            setUserStatus("linked");
             // GASend("changeSetting", "updateIcalURLManually");
           } else {
             setErrorMessage(
@@ -477,6 +497,24 @@ function App() {
               <LaunchIcon />
             </Box>
           </Box>
+
+          <Box display="flex" alignItems="center" marginTop="20px">
+            <p css={style.display_title}>データの削除：</p>
+            <Button
+              css={style.button_reset}
+              variant="contained"
+              onClick={() => setOpenTaskDataDeleteConfirmModal(true)}
+            >
+              課題データを削除
+            </Button>
+            <Button
+              css={style.button_reset}
+              variant="contained"
+              onClick={() => setOpenAllDataDeleteConfirmModal(true)}
+            >
+              すべてのデータを削除
+            </Button>
+          </Box>
         </SettingParagraph>
       </Box>
 
@@ -492,6 +530,48 @@ function App() {
         loadingHandler={setOpenLoading}
         enableClose={false}
         headerMessage="RACSUをインストールしていただきありがとうございます！"
+      />
+      <UserDataDeleteConfirmModal
+        modalIsOpen={openTaskDataDeleteConfirmModal}
+        modalHandler={setOpenTaskDataDeleteConfirmModal}
+        deleteType="すべての課題データ"
+        deleteHandler={() => {
+          chrome.storage.local.clear();
+          chrome.storage.local.set({
+            classNameDict: {},
+            userTask: {},
+            lastUpdate: "",
+          });
+          window.location.reload();
+        }}
+      />
+      <UserDataDeleteConfirmModal
+        modalIsOpen={openAllDataDeleteConfirmModal}
+        modalHandler={setOpenAllDataDeleteConfirmModal}
+        deleteType="すべてのデータ"
+        deleteHandler={() => {
+          chrome.storage.local.clear();
+          chrome.storage.sync.clear();
+          chrome.storage.sync.set({
+            needToSetGeneral: false,
+            needToSetSpecific: false,
+            userDepartment: "",
+            moodleGeneralId: "",
+            moodleGeneralToken: "",
+            moodleSpecificId: "",
+            moodleSpecificToken: "",
+            accountStatus: "installed",
+            accountExpiration: "",
+            displayList: true,
+            errorMessage: "",
+          });
+          chrome.storage.local.set({
+            classNameDict: {},
+            userTask: {},
+            lastUpdate: "",
+          });
+          window.location.reload();
+        }}
       />
     </Box>
   );

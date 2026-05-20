@@ -17,7 +17,7 @@ import {
   syncStorageDataProps,
 } from "../../src/background";
 
-import { GASend } from "../../src/modules/googleAnalytics";
+// import { GASend } from "../../src/modules/googleAnalytics";
 import UpdateMessageModal from "./UpdateMessageModal";
 
 function App({ width }: { width: string }) {
@@ -39,7 +39,8 @@ function App({ width }: { width: string }) {
     lastUpdate: "",
   });
   const [displayLinkError, setDisplayLinkError] = React.useState(false);
-  const [updateMessageTargetVersion, setUpdateMessageTargetVersion] = React.useState("");
+  const [updateMessageTargetVersion, setUpdateMessageTargetVersion] =
+    React.useState("");
 
   // 初期描画の非同期関数作成
   const initRendering = async () => {
@@ -261,7 +262,9 @@ function App({ width }: { width: string }) {
         message={accountExpiredState.message}
         settingCallback={accountExpiredState.settingCallback}
       />
-      <UpdateMessageModal updateMessageTargetVersion={updateMessageTargetVersion} />
+      <UpdateMessageModal
+        updateMessageTargetVersion={updateMessageTargetVersion}
+      />
     </Box>
   );
 }

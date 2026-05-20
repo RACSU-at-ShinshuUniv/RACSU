@@ -21,7 +21,7 @@ import {
   getMoodleURL,
 } from "../../src/modules/IcalClient";
 
-import { GASend } from "../../src/modules/googleAnalytics";
+// import { GASend } from "../../src/modules/googleAnalytics";
 import { syncStorageDataProps } from "../../src/background";
 import UserDataDeleteConfirmModal from "../../src/component/UserDataDeleteConfirmModal";
 // GASend("pageOpen", "options");

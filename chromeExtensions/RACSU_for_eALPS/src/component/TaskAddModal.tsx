@@ -20,8 +20,9 @@ import IconButton from "@mui/material/IconButton";
 import LimitPicker from "./LimitPicker";
 import formatTimeCode from "../modules/formatTimeCode";
 import { SaveData, saveDataProps } from "../modules/DataFormatter";
+import { localStorageDataProps } from "../background";
 
-import { GASend } from "../../src/modules/googleAnalytics";
+// import { GASend } from "../../src/modules/googleAnalytics";
 
 // 今期の間繰り返しボタンが有効化された場合の期限生成関数
 const generateTaskLimit = (initTaskLimit: dayjs.Dayjs) => {
@@ -105,19 +106,20 @@ const addTask = (
   })();
 
   chrome.storage.local.get(["userTask", "classNameDict"]).then((localData) => {
-    const saveData = newData.margeWith(localData.userTask).get();
+    const { userTask, classNameDict } = localData as localStorageDataProps;
+    const saveData = newData.margeWith(userTask).get();
 
-    if (Object.values(localData.classNameDict).includes(className)) {
+    if (Object.values(classNameDict).includes(className)) {
       // ローカルに保存
       chrome.storage.local.set({
         userTask: saveData,
       });
     } else {
       // 新たに入力された講義名ならそれとともにローカルに保存
-      localData.classNameDict[id] = className;
+      classNameDict[id] = className;
       chrome.storage.local.set({
         userTask: saveData,
-        classNameDict: localData.classNameDict,
+        classNameDict: classNameDict,
       });
     }
 
@@ -196,21 +198,23 @@ export default function TaskAddModal({ modalIsOpen, modalHandler }: props) {
   // サジェストの削除関数
   const deleteSuggest = React.useCallback((deleteClassName: string) => {
     chrome.storage.local.get(["classNameDict"]).then((localData) => {
+      const { classNameDict } = localData as localStorageDataProps;
+
       // 引数の講義名を配列から削除
-      for (const key in localData.classNameDict) {
-        if (localData.classNameDict[key] == deleteClassName) {
-          delete localData.classNameDict[key];
+      for (const key in classNameDict) {
+        if (classNameDict[key] == deleteClassName) {
+          delete classNameDict[key];
         }
       }
 
       // 上書き保存
       chrome.storage.local.set({
-        classNameDict: localData.classNameDict,
+        classNameDict: classNameDict,
       });
 
       // 選択とサジェストを更新
       setClassName("");
-      setClassNameOptions(Object.values(localData.classNameDict));
+      setClassNameOptions(Object.values(classNameDict));
     });
   }, []);
 
@@ -223,9 +227,9 @@ export default function TaskAddModal({ modalIsOpen, modalHandler }: props) {
 
     // 非同期で講義名を取得してサジェストを更新
     (async () => {
-      const { classNameDict } = await chrome.storage.local.get([
+      const { classNameDict } = (await chrome.storage.local.get([
         "classNameDict",
-      ]);
+      ])) as localStorageDataProps;
 
       if (active) {
         if (Object.values(classNameDict).length == 0) {

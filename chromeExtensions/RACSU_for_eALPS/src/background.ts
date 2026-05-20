@@ -5,7 +5,7 @@ import {
 } from "./modules/SyllabusClient.js";
 import { IcalData, saveDataProps } from "./modules/DataFormatter.js";
 import formatTimeCode from "./modules/formatTimeCode";
-import { GASend } from "./modules/googleAnalytics.js";
+// import { GASend } from "./modules/googleAnalytics.js";
 
 export type localStorageDataProps = {
   classNameDict: classNameDictProps;

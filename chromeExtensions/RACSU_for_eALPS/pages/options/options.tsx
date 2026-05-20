@@ -22,6 +22,7 @@ import {
 } from "../../src/modules/IcalClient";
 
 import { GASend } from "../../src/modules/googleAnalytics";
+import { syncStorageDataProps } from "../../src/background";
 // GASend("pageOpen", "options");
 
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -214,6 +215,10 @@ function App() {
       }
     `,
 
+    info: css`
+      font-size: 15px;
+    `,
+
     error: css`
       font-size: 16px;
       color: ${env.color.red};
@@ -232,9 +237,11 @@ function App() {
   const [moodleUrl, setMoodleUrl] = React.useState({ g: "", s: "" });
   const [enableDisplay, setEnableDisplay] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [userStatus, setUserStatus] = React.useState("");
 
   React.useEffect(() => {
-    chrome.storage.sync.get().then((userConfig) => {
+    chrome.storage.sync.get().then((d) => {
+      const userConfig = d as syncStorageDataProps;
       const moodleURL_g =
         userConfig.moodleGeneralId !== ""
           ? getMoodleURL({
@@ -263,6 +270,7 @@ function App() {
         g: moodleURL_g,
         s: moodleURL_s,
       });
+      setUserStatus(userConfig.accountStatus);
 
       if (userConfig.accountStatus == "installed") {
         setOpenInitAutoSetting(true);
@@ -272,7 +280,7 @@ function App() {
     });
 
     chrome.runtime.onMessage.addListener((message) => {
-      if (message.type == "setting" && message.status == "complete") {
+      if (message == "autoSetupComplete") {
         window.open(
           "https://timetable.ealps.shinshu-u.ac.jp/portal/",
           "_blank",
@@ -363,6 +371,14 @@ function App() {
         <p css={style.title}>RACSU for eALPS 拡張機能オプション</p>
       </Box>
       <Box>
+        <SettingParagraph title="ユーザー情報">
+          <Box display="flex" alignItems="center">
+            <p css={style.display_title}>ステータス：</p>
+            <Box display="flex" css={style.info}>
+              <p>{userStatus}</p>
+            </Box>
+          </Box>
+        </SettingParagraph>
         <SettingParagraph
           title="eALPS連携設定"
           description={
@@ -442,6 +458,22 @@ function App() {
               }}
             >
               <p>デバックツールを開く</p>
+              <LaunchIcon />
+            </Box>
+          </Box>
+
+          <Box display="flex" alignItems="center" marginTop="10px">
+            <p css={style.display_title}>お問い合わせ：</p>
+            <Box
+              display="flex"
+              css={style.link}
+              onClick={() => {
+                chrome.tabs.create({
+                  url: env.contactFormURL,
+                });
+              }}
+            >
+              <p>お問い合わせページを開く</p>
               <LaunchIcon />
             </Box>
           </Box>

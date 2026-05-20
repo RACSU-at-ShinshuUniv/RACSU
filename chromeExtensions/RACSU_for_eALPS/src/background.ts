@@ -7,13 +7,13 @@ import { IcalData, saveDataProps } from "./modules/DataFormatter.js";
 import formatTimeCode from "./modules/formatTimeCode";
 import { GASend } from "./modules/googleAnalytics.js";
 
-type localStorageDataProps = {
+export type localStorageDataProps = {
   classNameDict: classNameDictProps;
   userTask: saveDataProps;
   lastUpdate: string;
 };
 
-type syncStorageDataProps = {
+export type syncStorageDataProps = {
   needToSetGeneral: boolean;
   needToSetSpecific: boolean;
   userDepartment: string;
@@ -29,6 +29,7 @@ type syncStorageDataProps = {
     | "accountExpired";
   accountExpiration: string;
   displayList: boolean;
+  errorMessage?: string;
 };
 
 chrome.alarms.clearAll();
@@ -48,6 +49,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       accountStatus: "installed",
       accountExpiration: "",
       displayList: true,
+      errorMessage: "",
     });
     chrome.storage.local.set({
       classNameDict: {},
@@ -98,51 +100,40 @@ const updateTaskData = async () => {
 
   // アカウントがリンク状態ではないなら自動更新をスキップ
   if (userConfig.accountStatus !== "linked") {
+    chrome.runtime.sendMessage("taskWindowReload").catch((e) => console.log(e));
     return;
   }
 
-  // データ完備を確認
+  // データが完備されていない場合は連携エラーとして処理
   if (
     isBlank(userConfig.accountExpiration) ||
     isBlank(userConfig.userDepartment)
   ) {
     chrome.storage.sync.set({
-      accountStatus: "linkError_env",
+      accountStatus: "linkError",
+      errorMessage: "accountExpiration or userDepartment is blank",
     });
-    chrome.runtime
-      .sendMessage({
-        type: "update",
-        status: "error",
-      })
-      .catch((e) => console.log(e));
+    chrome.runtime.sendMessage("taskWindowReload").catch((e) => console.log(e));
     return;
   } else if (
     isBlank(userConfig.moodleGeneralId) ||
     isBlank(userConfig.moodleGeneralToken)
   ) {
     chrome.storage.sync.set({
-      accountStatus: "linkError_general",
+      accountStatus: "linkError",
+      errorMessage: "moodleGeneralId or moodleGeneralToken is blank",
     });
-    chrome.runtime
-      .sendMessage({
-        type: "update",
-        status: "error",
-      })
-      .catch((e) => console.log(e));
+    chrome.runtime.sendMessage("taskWindowReload").catch((e) => console.log(e));
     return;
   } else if (
     isBlank(userConfig.moodleSpecificId) ||
     isBlank(userConfig.moodleSpecificToken)
   ) {
     chrome.storage.sync.set({
-      accountStatus: "linkError_specific",
+      accountStatus: "linkError",
+      errorMessage: "moodleSpecificId or moodleSpecificToken is blank",
     });
-    chrome.runtime
-      .sendMessage({
-        type: "update",
-        status: "error",
-      })
-      .catch((e) => console.log(e));
+    chrome.runtime.sendMessage("taskWindowReload").catch((e) => console.log(e));
     return;
   }
 
@@ -158,7 +149,8 @@ const updateTaskData = async () => {
     moodleId: userConfig.moodleSpecificId,
     moodleToken: userConfig.moodleSpecificToken,
   });
-
+  console.log("Moodle URL (general):", moodleURL_g);
+  console.log("Moodle URL (specific):", moodleURL_s);
   const icalClient = new IcalClient(moodleURL_g, moodleURL_s);
 
   try {
@@ -167,26 +159,17 @@ const updateTaskData = async () => {
       "classNameDict",
     ])) as localStorageDataProps;
     const icalSource = await icalClient.getLatestContents();
+
+    // 正常なデータ取得ができなかった場合は連携エラーとして処理
     if (icalSource.status == "invalidDataError") {
-      if (icalSource.data == moodleURL_g) {
-        chrome.storage.sync.set({
-          accountStatus: "linkError_general",
-        });
-      } else if (icalSource.data == moodleURL_s) {
-        chrome.storage.sync.set({
-          accountStatus: "linkError_specific",
-        });
-      } else {
-        chrome.storage.sync.set({
-          accountStatus: "linkError",
-        });
-      }
+      chrome.storage.sync.set({
+        accountStatus: "linkError",
+        errorMessage: `Invalid URL: ${icalSource.data}`,
+      });
       chrome.runtime
-        .sendMessage({
-          type: "update",
-          status: "error",
-        })
+        .sendMessage("taskWindowReload")
         .catch((e) => console.log(e));
+      return;
     }
 
     const syllabusClient = new SyllabusClient(classNameDict);
@@ -207,27 +190,16 @@ const updateTaskData = async () => {
       lastUpdate: `${today.date} ${today.time}`,
     });
     chrome.runtime
-      .sendMessage({
-        type: "update",
-        status: "complete",
-      })
+      .sendMessage("taskWindowUpdate")
+      .then(() => console.log("send taskWindowUpdate"))
       .catch((e) => console.log(e));
     console.log("課題の更新が完了しました：", saveData);
   } catch (e) {
-    chrome.runtime
-      .sendMessage({
-        type: "update",
-        status: "error",
-      })
-      .catch((e) => console.log(e));
-  } finally {
-    console.log("描画を更新");
-    chrome.runtime
-      .sendMessage({
-        type: "refresh",
-        status: "execution",
-      })
-      .catch((e) => console.log(e));
+    chrome.storage.sync.set({
+      accountStatus: "linkError",
+      errorMessage: e instanceof Error ? e.message : String(e),
+    });
+    chrome.runtime.sendMessage("taskWindowReload").catch((e) => console.log(e));
   }
 };
 
@@ -241,37 +213,20 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
 // メッセージリスナー登録
 chrome.runtime.onMessage.addListener((message) => {
-  console.log("サービスワーカーでメッセージを受信しました：", message);
+  console.log("サービスワーカーでメッセージを受信：", message);
 
-  if (message.type == "update") {
-    if (message.status == "start") {
-      updateTaskData();
-    } else if (message.status == "error") {
-      chrome.runtime
-        .sendMessage({
-          type: "refresh",
-          status: "execution",
-        })
-        .catch((_e) => {});
-    }
-  } else if (message.type == "setting") {
-    if (message.status == "complete") {
-      chrome.storage.sync
-        .get()
-        .then((res) => console.log("eALPSとの連携情報を登録しました：", res));
-      updateTaskData();
-    }
-  } else if (message.type == "refresh") {
-    if (message.status == "request") {
-      setTimeout(() => {
-        chrome.runtime
-          .sendMessage({
-            type: "refresh",
-            status: "execution",
-          })
-          .catch((_e) => {});
-      }, 100);
-    }
+  if (message == "taskDataUpdate") {
+    updateTaskData();
+    return;
+  } else if (message == "taskWindowUpdate") {
+    return;
+  } else if (message == "taskWindowUpdateRequest") {
+    chrome.runtime.sendMessage("taskWindowUpdate").catch((e) => console.log(e));
+    return;
+  } else if (message == "taskWindowReload") {
+    return;
+  } else {
+    return;
   }
 });
 

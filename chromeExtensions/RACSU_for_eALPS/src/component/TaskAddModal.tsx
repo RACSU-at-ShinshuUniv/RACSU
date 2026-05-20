@@ -122,10 +122,9 @@ const addTask = (
     }
 
     // 画面を更新
-    chrome.runtime.sendMessage({
-      type: "refresh",
-      status: "request",
-    });
+    chrome.runtime
+      .sendMessage("taskWindowUpdateRequest")
+      .catch((e) => console.log(e));
   });
 
   // GASend("taskAdd", enableRepeat == "enable" ? "repeatEnabled" : "repeatDisabled");

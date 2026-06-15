@@ -69,10 +69,33 @@ export default function UpdateMessageModal({
   updateMessageTargetVersion,
 }: props) {
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
+  const [modalContents, setModalContents] = React.useState<React.ReactNode>();
 
   React.useEffect(() => {
     if (updateMessageTargetVersion == "1.3.8") {
       setModalIsOpen(true);
+      setModalContents(
+        <div>
+          <p css={style.content}>
+            ・一部の大学院授業の取得に対応しました。
+            <br />
+            （設定ページより「自動設定を開始」を実行してください）
+          </p>
+          <p css={style.content}>
+            ・不具合/要望お問い合わせフォームを追加しました。
+          </p>
+        </div>,
+      );
+    } else if (updateMessageTargetVersion == "1.3.8.1") {
+      // 2026/05/25 追加
+      setModalIsOpen(true);
+      setModalContents(
+        <div>
+          <p css={style.content}>
+            ・eALPSとの連携エラーが多発する問題を解消しました。
+          </p>
+        </div>,
+      );
     }
   }, [updateMessageTargetVersion]);
 
@@ -94,14 +117,7 @@ export default function UpdateMessageModal({
             バージョン {updateMessageTargetVersion}{" "}
             へのアップデートが完了しました！
           </p>
-          <p css={style.content}>
-            ・一部の大学院授業の取得に対応しました。
-            <br />
-            （設定ページより「自動設定を開始」を実行してください）
-          </p>
-          <p css={style.content}>
-            ・不具合/要望お問い合わせフォームを追加しました。
-          </p>
+          {modalContents}
           <Box display="flex" justifyContent="flex-end" marginTop="10px">
             <Button
               css={style.button_cancel}

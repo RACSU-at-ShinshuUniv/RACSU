@@ -33,9 +33,16 @@ export type syncStorageDataProps = {
   updateMessageTargetVersion?: string;
 };
 
+const isBlank = (value: string | null | undefined): boolean => {
+  console.log("isBlank check:", value);
+  return value == null || value.trim() === "";
+};
+
 chrome.alarms.clearAll();
 
 chrome.runtime.onInstalled.addListener((details) => {
+  console.log(details);
+
   if (details.reason == "install") {
     // インストール直後
     chrome.storage.sync.clear();
@@ -92,7 +99,7 @@ chrome.runtime.onInstalled.addListener((details) => {
       // 1.3.7.2 -> 1.3.8のアップデート
       // 講義名データのうちシラバス未登録授業のコードを再取得
       chrome.storage.sync.set({
-        updateMessageTargetVersion: "1.3.8"
+        updateMessageTargetVersion: "1.3.8",
       });
 
       (async () => {
@@ -112,16 +119,44 @@ chrome.runtime.onInstalled.addListener((details) => {
         // 課題を強制更新
         await updateTaskData();
       })();
+    } else if (details.previousVersion == "1.3.8") {
+      // 1.3.8 -> 1.3.8.1のアップデート
+      // 講義名データのうちシラバス未登録授業のコードを再取得
+      chrome.storage.sync.set({
+        updateMessageTargetVersion: "1.3.8.1",
+      });
+
+      (async () => {
+        const userConfig =
+          (await chrome.storage.sync.get()) as syncStorageDataProps;
+
+        if (userConfig.accountStatus == "linkError") {
+          if (
+            isBlank(userConfig.accountExpiration) ||
+            isBlank(userConfig.userDepartment) ||
+            isBlank(userConfig.moodleGeneralId) ||
+            isBlank(userConfig.moodleGeneralToken) ||
+            isBlank(userConfig.moodleSpecificId) ||
+            isBlank(userConfig.moodleSpecificToken)
+          ) {
+            return;
+          } else {
+            // 連携エラーの原因となっていた項目が全て埋まっている場合は、連携状態に戻す
+            await chrome.storage.sync.set({
+              accountStatus: "linked",
+              errorMessage: "",
+            });
+            await updateTaskData();
+            return;
+          }
+        }
+      })();
+    } else {
     }
-  } else {
   }
 });
 
 const updateTaskData = async () => {
-  const isBlank = (value: string | null | undefined): boolean => {
-    console.log("isBlank check:", value);
-    return value == null || value.trim() === "";
-  };
   const userConfig = (await chrome.storage.sync.get()) as syncStorageDataProps;
 
   // アカウントがリンク状態ではないなら自動更新をスキップ
@@ -220,11 +255,9 @@ const updateTaskData = async () => {
       .then(() => console.log("send taskWindowUpdate"))
       .catch((e) => console.log(e));
     console.log("課題の更新が完了しました：", saveData);
-  } catch (e) {
-    chrome.storage.sync.set({
-      accountStatus: "linkError",
-      errorMessage: e instanceof Error ? e.message : String(e),
-    });
+  } catch (e: any) {
+    // ここに来るのはネットワークエラー系だから、無視してOK
+    console.log(e);
     chrome.runtime.sendMessage("taskWindowReload").catch((e) => console.log(e));
   }
 };

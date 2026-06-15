@@ -27,6 +27,7 @@ const style = {
   info_help: css`
     font-size: 14px;
     margin-top: 20px;
+    text-align: center;
   `,
 
   link: css`
@@ -87,17 +88,27 @@ export default function AccountExpired({
         </Box>
         <p css={style.info_help}>
           うまくいかない場合は、
-          <Box css={style.link_inline} onClick={() => {
-            const optionsPage = chrome.runtime.getURL("pages/options/index.html");
-            window.open(optionsPage, "_blank");
-          }}>
+          <Box
+            css={style.link_inline}
+            onClick={() => {
+              const optionsPage = chrome.runtime.getURL(
+                "pages/options/index.html",
+              );
+              window.open(optionsPage, "_blank");
+            }}
+          >
             <p>設定ページ</p>
             <LaunchIcon />
           </Box>
-          を確認、または
-          <Box css={style.link_inline} onClick={() => {
-            window.open(env.contactFormURL, "_blank");
-          }}>
+          を確認、
+          <br />
+          または
+          <Box
+            css={style.link_inline}
+            onClick={() => {
+              window.open(env.contactFormURL, "_blank");
+            }}
+          >
             <p>お問い合わせページ</p>
             <LaunchIcon />
           </Box>

@@ -100,51 +100,43 @@ export class IcalClient {
   }
 
   async getLatestContents() {
-    try {
-      const rawData = await Promise.all(
-        this.urls.map(async (url) => {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 3000);
+    const rawData = await Promise.all(
+      this.urls.map(async (url) => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-          try {
-            const res = await fetch(url, { signal: controller.signal });
-            const text = await res.text();
-            return [url, text] as const;
-          } finally {
-            clearTimeout(timeoutId);
-          }
-        }),
-      );
+        try {
+          const res = await fetch(url, { signal: controller.signal });
+          const text = await res.text();
+          return [url, text] as const;
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      }),
+    );
 
-      const invalidData = rawData.find(
-        ([, text]) => !text.includes("PRODID:-//Moodle Pty Ltd//"),
-      );
+    const invalidData = rawData.find(
+      ([, text]) => !text.includes("PRODID:-//Moodle Pty Ltd//"),
+    );
 
-      if (invalidData) {
-        const [errorUrl] = invalidData;
-
-        return Promise.resolve({
-          status: "invalidDataError",
-          data: errorUrl,
-        });
-      }
-
-      const data = {};
-      rawData.forEach(([, text]) => {
-        Object.assign(data, icalParser(text));
-      });
+    if (invalidData) {
+      const [errorUrl] = invalidData;
 
       return Promise.resolve({
-        status: "success",
-        data,
+        status: "invalidDataError",
+        data: errorUrl,
       });
-
-    } catch (e: any) {
-      if (e.name === "AbortError") {
-        throw new Error("接続がタイムアウトしました。");
-      }
-      throw new Error(e instanceof Error ? e.message : "不明なエラーが発生しました。");
     }
+
+    const data = {};
+    rawData.forEach(([, text]) => {
+      Object.assign(data, icalParser(text));
+    });
+
+    return Promise.resolve({
+      status: "success",
+      data,
+    });
   }
 
   async isValidUrl() {

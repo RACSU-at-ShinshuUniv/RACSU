@@ -518,7 +518,18 @@ function App() {
         </SettingParagraph>
       </Box>
 
-      <Loading isOpen={openLoading} message="連携情報を確認中" />
+      <Loading
+        isOpen={openLoading}
+        message="連携情報を確認中"
+        exContents={
+          <Box marginTop="20px" textAlign="center" fontSize="15px">
+            <p>このページが長時間表示されている場合、すでに連携が済んでいる可能性があります。</p>
+            <p>
+              F5キーでこのページを再読み込み、またはeALPSにアクセスしてみてください。
+            </p>
+          </Box>
+        }
+      />
       <StartAccountLinkModal
         modalIsOpen={openAutoSetting}
         modalHandler={setOpenAutoSetting}

@@ -150,7 +150,7 @@ export default function TaskListHeader({
               <p>設定ページ</p>
               <LaunchIcon />
             </Box>
-            より再連携してください。
+            より再度「自動設定を開始」してください。
           </p>
         </Box>
       )}

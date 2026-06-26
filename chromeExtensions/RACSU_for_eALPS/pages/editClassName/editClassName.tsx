@@ -105,8 +105,44 @@ function App() {
     setSaveMessage("");
 
     try {
+      const changedClassNameEntries = Object.entries(classNames)
+        .map(([classCode, className]) => ({
+          before: savedClassNames[classCode],
+          after: className,
+        }))
+        .filter(
+          (classNameEntry) =>
+            classNameEntry.before !== undefined &&
+            classNameEntry.before !== classNameEntry.after,
+        );
+
+      const localData = (await chrome.storage.local.get([
+        "userTask",
+      ])) as Partial<localStorageDataProps>;
+      const userTask = localData.userTask ?? {};
+      const updatedUserTask: localStorageDataProps["userTask"] =
+        Object.fromEntries(
+          Object.entries(userTask).map(([id, task]) => {
+            const changedClassNameEntry = changedClassNameEntries.find(
+              (classNameEntry) =>
+                task.display && task.className === classNameEntry.before,
+            );
+
+            return [
+              id,
+              changedClassNameEntry === undefined
+                ? task
+                : {
+                    ...task,
+                    className: changedClassNameEntry.after,
+                  },
+            ];
+          }),
+        );
+
       await chrome.storage.local.set({
         classNameDict: classNames,
+        userTask: updatedUserTask,
       });
       setSavedClassNames(classNames);
       setSaveMessage("保存しました。");
@@ -138,8 +174,8 @@ function App() {
         marginBottom="28px"
       >
         <img
-          width="35px"
-          height="35px"
+          width="45px"
+          height="45px"
           src="/icon/icon48.png"
           alt="RACSU Logo"
         />

@@ -49,8 +49,8 @@ export default defineConfig({
         // defineManifestで指定したファイルは自動でコンパイル対象になる
         // それ以外にコンパイルしたいファイルがあれば記述
         portal: path.resolve(__dirname, 'pages/portal/index.html'),
-        debuggerHtml: path.resolve(__dirname, 'pages/debugger/index.html'),
-        // debuggerTsx: path.resolve(__dirname, 'pages/debugger/debugger.tsx'),
+        debugger: path.resolve(__dirname, 'pages/debugger/index.html'),
+        editClassName: path.resolve(__dirname, 'pages/editClassName/index.html'),
       }
     },
   },

@@ -96,6 +96,22 @@ export default function UpdateMessageModal({
           </p>
         </div>,
       );
+    } else if (updateMessageTargetVersion == "1.3.9") {
+      // 2026/06/27 追加
+      setModalIsOpen(true);
+      setModalContents(
+        <div>
+          <p css={style.content}>
+            ・授業名の手動変更ができるようになりました。
+            <br />
+            （右上︙メニュー＞「授業名の編集」）
+            <br />
+            <br />
+            現在、信州大学キャンパス情報システムの刷新により、授業名が自動取得できなくなっております。
+            お手数をおかけいたしますが、手動での授業名入力をお願いいたします。
+          </p>
+        </div>,
+      );
     }
   }, [updateMessageTargetVersion]);
 

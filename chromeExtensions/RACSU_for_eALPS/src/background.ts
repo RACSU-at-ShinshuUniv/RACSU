@@ -151,6 +151,11 @@ chrome.runtime.onInstalled.addListener((details) => {
           }
         }
       })();
+    } else if (details.previousVersion == "1.3.8.1") {
+      // 1.3.8.1 -> 1.3.9のアップデート
+      chrome.storage.sync.set({
+        updateMessageTargetVersion: "1.3.9",
+      });
     } else {
     }
   }

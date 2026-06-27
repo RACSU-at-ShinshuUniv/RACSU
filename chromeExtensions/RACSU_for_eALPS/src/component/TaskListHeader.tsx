@@ -17,6 +17,7 @@ import AutoDeleteIcon from "@mui/icons-material/AutoDelete";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LaunchIcon from "@mui/icons-material/Launch";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 
 const style = {
   title: css`
@@ -95,7 +96,14 @@ export default function TaskListHeader({
     setAnchorEl(event.currentTarget);
   };
   const handleClose = (
-    type: "refresh" | "delPast" | "delFinish" | "setting" | "contact" | "close",
+    type:
+      | "refresh"
+      | "delPast"
+      | "delFinish"
+      | "setting"
+      | "editClassName"
+      | "contact"
+      | "close",
   ) => {
     switch (type) {
       case "refresh":
@@ -112,6 +120,13 @@ export default function TaskListHeader({
 
       case "setting":
         settingHandler();
+        break;
+
+      case "editClassName":
+        window.open(
+          chrome.runtime.getURL("pages/editClassName/index.html"),
+          "_blank",
+        );
         break;
 
       case "contact":
@@ -187,6 +202,10 @@ export default function TaskListHeader({
           <MenuItem onClick={() => handleClose("setting")}>
             <SettingsOutlinedIcon />
             設定
+          </MenuItem>
+          <MenuItem onClick={() => handleClose("editClassName")}>
+            <DriveFileRenameOutlineIcon />
+            授業名の編集
           </MenuItem>
           <MenuItem onClick={() => handleClose("contact")}>
             <QuestionAnswerIcon />

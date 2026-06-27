@@ -8,6 +8,7 @@ import ReactDOM from "react-dom/client";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Switch, { SwitchProps } from "@mui/material/Switch";
 
@@ -87,23 +88,37 @@ function SettingParagraph({
   children: React.ReactNode;
 }) {
   const style = {
+    section: css`
+      padding: 24px;
+      border-bottom: 1px solid #e4e8ef;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    `,
     title: css`
       font-size: 18px;
-      margin-bottom: 10px;
+      font-weight: 700;
+      margin: 0 0 16px;
+    `,
+    contents: css`
+      margin-left: 0;
+    `,
+    description: css`
+      color: ${env.color.gray};
+      font-size: 13px;
+      line-height: 1.7;
+      margin-top: 12px;
+      margin-left: 0;
     `,
   };
   return (
-    <Box marginTop="30px">
+    <Box css={style.section}>
       <p css={style.title}>{title}</p>
-      <Box marginLeft="15px">{children}</Box>
-      <Box
-        fontSize="13px"
-        color={env.color.gray}
-        marginTop="10px"
-        marginLeft="15px"
-      >
-        {description}
-      </Box>
+      <Box css={style.contents}>{children}</Box>
+      {description !== undefined && (
+        <Box css={style.description}>{description}</Box>
+      )}
     </Box>
   );
 }
@@ -122,13 +137,19 @@ function IcalUrlSection({
   editHandler: any;
 }) {
   const style = {
+    row: css`
+      gap: 16px;
+      margin-bottom: 12px;
+    `,
     title: css`
+      width: 140px;
+      flex-shrink: 0;
       font-size: 15px;
-      margin-right: 20px;
+      margin: 0;
     `,
 
     textField: css`
-      width: 400px;
+      width: min(520px, 100%);
 
       .MuiInputBase-root {
         padding: 6px;
@@ -142,7 +163,7 @@ function IcalUrlSection({
   };
 
   return (
-    <Box display="flex" alignItems="center" marginBottom="10px">
+    <Box css={style.row} display="flex" alignItems="center">
       <p css={style.title}>{title}</p>
       <TextField
         css={style.textField}
@@ -167,10 +188,26 @@ function IcalUrlSection({
 
 function App() {
   const style = {
+    page: css`
+      min-height: 100vh;
+      background: #f6f8fb;
+      color: ${env.color.text};
+    `,
+
+    header: css`
+      width: min(760px, calc(100vw - 32px));
+    `,
+
     title: css`
       color: ${env.color.text};
       font-size: 24px;
-      margin-left: 5px;
+      font-weight: 700;
+      margin: 0 0 0 12px;
+    `,
+
+    content: css`
+      width: min(760px, calc(100vw - 32px));
+      border-radius: 8px;
     `,
 
     button_edit: css`
@@ -380,17 +417,28 @@ function App() {
   }, []);
 
   return (
-    <Box display="flex" alignItems="center" flexDirection="column">
-      <Box display="flex" marginTop="50px" marginBottom="40px">
+    <Box
+      css={style.page}
+      display="flex"
+      alignItems="center"
+      flexDirection="column"
+      padding="48px 16px"
+    >
+      <Box
+        css={style.header}
+        display="flex"
+        alignItems="center"
+        marginBottom="28px"
+      >
         <img
-          width="35px"
-          height="35px"
+          width="45px"
+          height="45px"
           src="/icon/icon48.png"
           alt="RACSU Logo"
         />
         <p css={style.title}>RACSU for eALPS 拡張機能オプション</p>
       </Box>
-      <Box>
+      <Paper css={style.content} elevation={0}>
         <SettingParagraph title="ユーザー情報">
           <Box display="flex" alignItems="center">
             <p css={style.display_title}>ステータス：</p>
@@ -498,6 +546,25 @@ function App() {
             </Box>
           </Box>
 
+          <Box display="flex" alignItems="center" marginTop="10px">
+            <p css={style.display_title}>授業名の修正：</p>
+            <Box
+              display="flex"
+              css={style.link}
+              onClick={() => {
+                chrome.tabs.create({
+                  url:
+                    "chrome-extension://" +
+                    chrome.runtime.id +
+                    "/pages/editClassName/index.html",
+                });
+              }}
+            >
+              <p>授業名の編集ページを開く</p>
+              <LaunchIcon />
+            </Box>
+          </Box>
+
           <Box display="flex" alignItems="center" marginTop="20px">
             <p css={style.display_title}>データの削除：</p>
             <Button
@@ -516,7 +583,7 @@ function App() {
             </Button>
           </Box>
         </SettingParagraph>
-      </Box>
+      </Paper>
 
       <Loading
         isOpen={openLoading}

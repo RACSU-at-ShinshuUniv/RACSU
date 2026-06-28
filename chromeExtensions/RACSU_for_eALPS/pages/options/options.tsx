@@ -265,6 +265,8 @@ function App() {
 
     info: css`
       font-size: 15px;
+      max-width: 80%;
+      overflow-wrap: anywhere;
     `,
 
     error: css`
@@ -289,6 +291,7 @@ function App() {
   const [moodleUrl, setMoodleUrl] = React.useState({ g: "", s: "" });
   const [enableDisplay, setEnableDisplay] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [linkErrorMessages, setLinkErrorMessages] = React.useState<string | undefined>();
   const [userStatus, setUserStatus] = React.useState("");
 
   React.useEffect(() => {
@@ -323,6 +326,7 @@ function App() {
         s: moodleURL_s,
       });
       setUserStatus(userConfig.accountStatus);
+      setLinkErrorMessages(userConfig.errorMessage);
 
       if (userConfig.accountStatus == "installed") {
         setOpenInitAutoSetting(true);
@@ -446,6 +450,14 @@ function App() {
               <p>{userStatus}</p>
             </Box>
           </Box>
+          {userStatus == "linkError" && (
+            <Box display="flex" alignItems="center" marginTop="10px">
+              <p css={style.display_title}>エラー内容：</p>
+              <Box display="flex" css={style.info}>
+                <p>{linkErrorMessages}</p>
+              </Box>
+            </Box>
+          )}
         </SettingParagraph>
         <SettingParagraph
           title="eALPS連携設定"
@@ -590,7 +602,9 @@ function App() {
         message="連携情報を確認中"
         exContents={
           <Box marginTop="20px" textAlign="center" fontSize="15px">
-            <p>このページが長時間表示されている場合、すでに連携が済んでいる可能性があります。</p>
+            <p>
+              このページが長時間表示されている場合、すでに連携が済んでいる可能性があります。
+            </p>
             <p>
               F5キーでこのページを再読み込み、またはeALPSにアクセスしてみてください。
             </p>

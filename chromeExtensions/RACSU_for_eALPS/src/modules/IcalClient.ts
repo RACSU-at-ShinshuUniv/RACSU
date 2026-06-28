@@ -100,17 +100,40 @@ export class IcalClient {
   }
 
   async getLatestContents() {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+      try {
+        await fetch("https://clients3.google.com/generate_204", {
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    } catch (error) {
+      return Promise.reject({
+        status: "networkError",
+      });
+    }
+
     const rawData = await Promise.all(
       this.urls.map(async (url) => {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-
         try {
-          const res = await fetch(url, { signal: controller.signal });
-          const text = await res.text();
-          return [url, text] as const;
-        } finally {
-          clearTimeout(timeoutId);
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+          try {
+            const res = await fetch(url, { signal: controller.signal });
+            const text = await res.text();
+            return [url, text] as const;
+          } finally {
+            clearTimeout(timeoutId);
+          }
+        } catch (error) {
+          return Promise.reject({
+            status: "networkError",
+          });
         }
       }),
     );
@@ -121,9 +144,8 @@ export class IcalClient {
 
     if (invalidData) {
       const [errorUrl] = invalidData;
-
-      return Promise.resolve({
-        status: "invalidDataError",
+      return Promise.reject({
+        status: "invalidUrl",
         data: errorUrl,
       });
     }

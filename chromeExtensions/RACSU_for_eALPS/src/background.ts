@@ -225,19 +225,6 @@ const updateTaskData = async () => {
       "classNameDict",
     ])) as localStorageDataProps;
     const icalSource = await icalClient.getLatestContents();
-
-    // 正常なデータ取得ができなかった場合は連携エラーとして処理
-    if (icalSource.status == "invalidDataError") {
-      chrome.storage.sync.set({
-        accountStatus: "linkError",
-        errorMessage: `Invalid URL: ${icalSource.data}`,
-      });
-      chrome.runtime
-        .sendMessage("taskWindowReload")
-        .catch((e) => console.log(e));
-      return;
-    }
-
     const syllabusClient = new SyllabusClient(classNameDict);
     const overwriteIcalSource = await syllabusClient.overwriteIcalClassCode(
       icalSource.data,
@@ -261,8 +248,13 @@ const updateTaskData = async () => {
       .catch((e) => console.log(e));
     console.log("課題の更新が完了しました：", saveData);
   } catch (e: any) {
-    // ここに来るのはネットワークエラー系だから、無視してOK
-    console.log(e);
+    if (e.status == "networkError") {
+    } else if (e.status == "invalidUrl") {
+      chrome.storage.sync.set({
+        accountStatus: "linkError",
+        errorMessage: `Invalid URL: ${e.data}`,
+      });
+    }
     chrome.runtime.sendMessage("taskWindowReload").catch((e) => console.log(e));
   }
 };

@@ -1,20 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import env from "../../env.json"
+import { css } from "@emotion/react";
+import env from "../../env.json";
 
-import React from 'react';
+import React from "react";
 
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
+import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AutoDeleteIcon from "@mui/icons-material/AutoDelete";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import LaunchIcon from "@mui/icons-material/Launch";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 
 const style = {
   title: css`
@@ -44,39 +47,90 @@ const style = {
         }
       }
     }
-  `
+  `,
+
+  error: css`
+    font-size: 14px;
+    color: ${env.color.text.warning};
+  `,
+
+  link_inline: css`
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    color: ${env.color.text.warning};
+    margin-top: 5px;
+    border-bottom: 1px solid #00000000;
+
+    & .MuiSvgIcon-root {
+      font-size: 16px;
+    }
+
+    &:hover {
+      border-bottom: 1px solid ${env.color.text.warning};
+    }
+  `,
 };
 
 type props = {
-  lastUpdate: string,
-  updateHandler: () => void,
-  confirmDelPastHandler: () => void,
-  confirmDelFinishHandler: () => void,
-  settingHandler: () => void
-}
+  lastUpdate: string;
+  updateHandler: () => void;
+  confirmDelPastHandler: () => void;
+  confirmDelFinishHandler: () => void;
+  settingHandler: () => void;
+  displayLinkError?: boolean;
+};
 
-export default function TaskListHeader({lastUpdate, updateHandler, confirmDelPastHandler, confirmDelFinishHandler, settingHandler}: props) {
+export default function TaskListHeader({
+  lastUpdate,
+  updateHandler,
+  confirmDelPastHandler,
+  confirmDelFinishHandler,
+  settingHandler,
+  displayLinkError = false,
+}: props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (type: "refresh" | "delPast" | "delFinish" | "setting" | "close") => {
+  const handleClose = (
+    type:
+      | "refresh"
+      | "delPast"
+      | "delFinish"
+      | "setting"
+      | "editClassName"
+      | "contact"
+      | "close",
+  ) => {
     switch (type) {
       case "refresh":
-        updateHandler()
+        updateHandler();
         break;
 
       case "delFinish":
-        confirmDelFinishHandler()
+        confirmDelFinishHandler();
         break;
 
       case "delPast":
-        confirmDelPastHandler()
+        confirmDelPastHandler();
         break;
 
       case "setting":
-        settingHandler()
+        settingHandler();
+        break;
+
+      case "editClassName":
+        window.open(
+          chrome.runtime.getURL("pages/editClassName/index.html"),
+          "_blank",
+        );
+        break;
+
+      case "contact":
+        window.open(env.contactFormURL, "_blank");
         break;
 
       case "close":
@@ -86,22 +140,50 @@ export default function TaskListHeader({lastUpdate, updateHandler, confirmDelPas
   };
 
   return (
-    <Box display="flex" alignItems="center" padding="0 10px" borderBottom={`1px solid ${env.color.frame_border}`}>
+    <Box
+      display="flex"
+      alignItems="center"
+      padding="0 10px"
+      borderBottom={`1px solid ${env.color.frame_border}`}
+      zIndex="9999"
+    >
       <img width="35px" height="35px" src="/icon/icon48.png" alt="RACSU Logo" />
-      <p css={style.title}>
-        eALPS 登録課題一覧（最終更新 {lastUpdate}）
-      </p>
+      <p css={style.title}>eALPS 登録課題一覧（最終更新 {lastUpdate}）</p>
+      {displayLinkError && (
+        <Box marginLeft="10px">
+          <p css={style.error}>
+            ※eALPS連携エラー。
+            <Box
+              css={style.link_inline}
+              onClick={() => {
+                const optionsPage = chrome.runtime.getURL(
+                  "pages/options/index.html",
+                );
+                window.open(optionsPage, "_blank");
+              }}
+            >
+              <p>設定ページ</p>
+              <LaunchIcon />
+            </Box>
+            より再度「自動設定を開始」してください。
+          </p>
+        </Box>
+      )}
       <Box marginLeft="auto">
         <IconButton css={style.button_other} onClick={handleClick}>
-          <MoreVertIcon css={css`color: ${env.color.gray};`} />
+          <MoreVertIcon
+            css={css`
+              color: ${env.color.gray};
+            `}
+          />
         </IconButton>
         <Menu
           id="menu"
           anchorEl={anchorEl}
           open={open}
           onClose={() => handleClose("close")}
-          transformOrigin={{ horizontal: 'right', vertical: 'top' }} // アンカーに接地する位置
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }} // アンカー位置
+          transformOrigin={{ horizontal: "right", vertical: "top" }} // アンカーに接地する位置
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }} // アンカー位置
           css={style.menu_item}
         >
           <MenuItem onClick={() => handleClose("refresh")}>
@@ -121,8 +203,16 @@ export default function TaskListHeader({lastUpdate, updateHandler, confirmDelPas
             <SettingsOutlinedIcon />
             設定
           </MenuItem>
+          <MenuItem onClick={() => handleClose("editClassName")}>
+            <DriveFileRenameOutlineIcon />
+            授業名の編集
+          </MenuItem>
+          <MenuItem onClick={() => handleClose("contact")}>
+            <QuestionAnswerIcon />
+            お問い合わせ
+          </MenuItem>
         </Menu>
       </Box>
     </Box>
-  )
+  );
 }

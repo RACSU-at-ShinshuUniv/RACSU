@@ -1,21 +1,21 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
-import env from "../../env.json"
+import { css } from "@emotion/react";
+import env from "../../env.json";
 
-import React from 'react';
+import React from "react";
 
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const style = {
   window_sx: {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     bgcolor: "#ffffff",
     border: `2px solid ${env.color.modal_border}`,
     borderRadius: "5px",
@@ -53,42 +53,61 @@ const style = {
       background-color: ${env.color.button.ok_hover};
     }
   `,
-}
+};
 
 type props = {
-  modalIsOpen: boolean,
-  modalHandler: (isOpen: boolean) => void,
-  loadingHandler: (isOpen: boolean) => void,
-  enableClose?: boolean,
-  headerMessage?: string
-}
+  modalIsOpen: boolean;
+  modalHandler: (isOpen: boolean) => void;
+  loadingHandler: (isOpen: boolean) => void;
+  enableClose?: boolean;
+  headerMessage?: string;
+};
 
-export default function DeleteConfirmModal({modalIsOpen, modalHandler, loadingHandler, enableClose=true, headerMessage=""}: props) {
+export default function StartAccountLinkModal({
+  modalIsOpen,
+  modalHandler,
+  loadingHandler,
+  enableClose = true,
+  headerMessage = "",
+}: props) {
   const options = [
-    { label: "人文学部", value: "l"},
-    { label: "教育学部", value: "e"},
-    { label: "経法学部", value: "j"},
-    { label: "理学部", value: "s"},
-    { label: "医学部", value: "m"},
-    { label: "工学部", value: "t"},
-    { label: "農学部", value: "a"},
-    { label: "繊維学部", value: "f"}
+    { label: "人文学部", value: "l" },
+    { label: "教育学部", value: "e" },
+    { label: "経法学部", value: "j" },
+    { label: "理学部", value: "s" },
+    { label: "医学部", value: "m" },
+    { label: "工学部", value: "t" },
+    { label: "農学部", value: "a" },
+    { label: "繊維学部", value: "f" },
+    { label: "院）総合医理工学研究科", value: "st" },
+    { label: "院）総合理工学研究科", value: "st" },
+    { label: "院）総合人文社会科学研究科", value: "ua" },
+    { label: "院）教育学研究科", value: "e" },
   ];
 
-  const [department, setDepartment] = React.useState<{label: string, value: string} | null>(null);
+  const [department, setDepartment] = React.useState<{
+    label: string;
+    value: string;
+  } | null>(null);
 
   const startHandler = () => {
     modalHandler(false);
     loadingHandler(true);
-    chrome.storage.sync.set({
-      needToSetSpecific: true,
-      accountStatus: "linking"
-    }).then(() => {
-      const thisTerm = new Date();
-      thisTerm.setMonth(thisTerm.getMonth()-3);
-      open(`https://lms.ealps.shinshu-u.ac.jp/${thisTerm.getFullYear()}/${department?.value}/calendar/export.php`, "_blank", "width=500,height=700");
-    })
-  }
+    chrome.storage.sync
+      .set({
+        needToSetSpecific: true,
+        accountStatus: "linking",
+      })
+      .then(() => {
+        const thisTerm = new Date();
+        thisTerm.setMonth(thisTerm.getMonth() - 3);
+        open(
+          `https://lms.ealps.shinshu-u.ac.jp/${thisTerm.getFullYear()}/${department?.value}/calendar/export.php`,
+          "_blank",
+          "width=500,height=700",
+        );
+      });
+  };
 
   return (
     <div>
@@ -104,15 +123,27 @@ export default function DeleteConfirmModal({modalIsOpen, modalHandler, loadingHa
           <p>別タブでACSUログインページが開きます。</p>
           <p>ログイン後、数回ページ遷移をして連携情報を取得します。</p>
 
-          <Box display="flex" alignItems="center" justifyContent="center" marginTop="18px">
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            marginTop="18px"
+          >
             <Autocomplete
               disablePortal
               id="combo-box-demo"
               options={options}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="学部を選択" />}
-              isOptionEqualToValue={(option, selectedValue) => option.value === selectedValue.value}
-              onChange={(_event: any, newValue: {label: string, value: string} | null) => {
+              renderInput={(params) => (
+                <TextField {...params} label="学部を選択" />
+              )}
+              isOptionEqualToValue={(option, selectedValue) =>
+                option.value === selectedValue.value
+              }
+              onChange={(
+                _event: any,
+                newValue: { label: string; value: string } | null,
+              ) => {
                 setDepartment(newValue);
               }}
             />
@@ -121,7 +152,9 @@ export default function DeleteConfirmModal({modalIsOpen, modalHandler, loadingHa
               onClick={startHandler}
               variant="contained"
               disabled={department == null}
-            >連携を開始</Button>
+            >
+              連携を開始
+            </Button>
           </Box>
         </Box>
       </Modal>

@@ -1,17 +1,19 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import React from 'react'
+import { css } from "@emotion/react";
+import { Box, Button } from "@mui/material";
+import LaunchIcon from "@mui/icons-material/Launch";
 
-import { css } from '@emotion/react';
-import { Box, Button } from '@mui/material';
-import LaunchIcon from '@mui/icons-material/Launch';
-
-import color from "@/color.json"
+import color from "@/color.json";
 import url from "@/url.json";
 
-import MockTaskList from '@/components/MockTaskList';
-import Paragraph, { Title, Index, Content, Description } from "@/components/Paragraph";
+import Paragraph, {
+  Title,
+  Index,
+  Content,
+  Description,
+} from "@/components/Paragraph";
 
 const style = {
   main: css`
@@ -31,7 +33,7 @@ const style = {
     min-height: calc(100vh - 60px);
     box-sizing: border-box;
 
-    @media screen and (min-width:1000px) {
+    @media screen and (min-width: 1000px) {
       flex-direction: row;
       justify-content: center;
     }
@@ -41,25 +43,25 @@ const style = {
     display: flex;
     flex-direction: column;
     margin-right: 0;
-    @media screen and (min-width:1000px) {
+    @media screen and (min-width: 1000px) {
       margin-right: 30px;
     }
   `,
 
   top_button: css`
-  background-color: #ffffff;
-  color: ${color.text};
-  margin: 20px auto 0 0;
-  padding: 12px 28px;
-  font-size: 14px;
-
-  &:hover {
-    background-color: #e6e6e6;
-  }
-
-  .MuiSvgIcon-root {
+    background-color: #ffffff;
     color: ${color.text};
-  }
+    margin: 20px auto 0 0;
+    padding: 12px 28px;
+    font-size: 14px;
+
+    &:hover {
+      background-color: #e6e6e6;
+    }
+
+    .MuiSvgIcon-root {
+      color: ${color.text};
+    }
   `,
 
   top_text_title: css`
@@ -84,7 +86,7 @@ const style = {
     &::before {
       position: absolute;
       bottom: 0;
-      content: '';
+      content: "";
       width: calc(100% + 50px);
       border-bottom: 2px solid #ffffff;
       transform: translateX(-5px);
@@ -95,8 +97,8 @@ const style = {
     text-align: start;
     margin-top: 20px;
     margin-right: 0;
-    @media screen and (min-width:1000px) {
-      margin-right: 5vw
+    @media screen and (min-width: 1000px) {
+      margin-right: 5vw;
     }
 
     & h1 {
@@ -135,11 +137,27 @@ const style = {
       display: inline-block;
     }
 
-    @media screen and (max-width:1000px) {
+    @media screen and (max-width: 1000px) {
       margin: 20px 10px;
     }
-  `
-}
+  `,
+
+  logo_info: css`
+    display: flex;
+    margin-top: 5px;
+
+    img {
+      height: 110px;
+      width: 110px;
+      margin: 5px 10px 0 0;
+    }
+
+    @media screen and (max-width: 500px) {
+      flex-direction: column;
+      align-items: center;
+    }
+  `,
+};
 
 export default function App() {
   return (
@@ -151,43 +169,111 @@ export default function App() {
             <p>for eALPS</p>
           </Box>
           <Box css={style.top_text_description}>
-            <h1><span>気づかない間に、</span><span>提出期限を過ぎていた…</span></h1>
-            <p><span>そうなる前に、</span><span>RACSUを使ってみませんか？</span></p>
-            <p><span>RACSU for eALPSは、eALPSと連携して</span><br /><span>提出期限がある課題を取得し、eALPSポータルに一覧表示します。</span></p>
+            <h1>
+              <span>気づかない間に、</span>
+              <span>提出期限を過ぎていた…</span>
+            </h1>
+            <p>
+              <span>そうなる前に、</span>
+              <span>RACSUを使ってみませんか？</span>
+            </p>
+            <p>
+              <span>RACSU for eALPSは、eALPSと連携して</span>
+              <br />
+              <span>
+                提出期限がある課題を取得し、eALPSポータルに一覧表示します。
+              </span>
+            </p>
           </Box>
-          <Button css={style.top_button} target="_blank" href={url.store} variant='contained' endIcon={<LaunchIcon />}>ブラウザにインストール</Button>
+          <Button
+            css={style.top_button}
+            target="_blank"
+            href={url.store}
+            variant="contained"
+            endIcon={<LaunchIcon />}
+          >
+            ブラウザにインストール
+          </Button>
         </Box>
         <Box marginTop="30px">
           {/* <MockTaskList /> */}
-          <img src="/portal.png" css={css`width: 90vw; max-width: 520px;`}/>
+          <img
+            src="/portal.png"
+            css={css`
+              width: 90vw;
+              max-width: 520px;
+            `}
+          />
         </Box>
       </Box>
       <Box css={style.notify}>
-        <h1><span>eALPS支援ツール「eALPluS」</span><span>認定事案</span></h1>
-        <p>RACSU for eALPSは、信州大学e-LearningセンターのeALPluS事例認定を受けています(認定日:2024年7月18日)。</p>
-        <p>eALPluSについて詳しくは<a href={url.ealplus}>こちら</a>をご覧下さい。</p>
+        <h1>
+          <span>eALPS支援ツール「eALPluS」</span>
+          <span>認定事案</span>
+        </h1>
+        <p>
+          RACSU for
+          eALPSは、信州大学e-LearningセンターのeALPluS事例認定を受けています(認定日:2024年7月18日)。
+        </p>
+        <p>
+          eALPluSについて詳しくは<a href={url.ealplus}>こちら</a>をご覧下さい。
+        </p>
         <p>本サービスはオープンソース（Apache-2.0 License）で開発中です。</p>
       </Box>
       <Box marginX="10vw" marginBottom="40px">
         <Paragraph>
           <Title>RACSU for eALPSとは？</Title>
-          <Index><span>RACSU for eALPSは、</span><span>eALPS上で課された課題を自動で取得し、eALPSポータルに一覧表示する拡張機能です。</span></Index>
-          <Description>eALPSシステムのカレンダーエクスポート機能を用いて、RACSUが課題を自動取得・一覧表示します。</Description>
+          <Index>
+            <span>RACSU for eALPSは、</span>
+            <span>
+              eALPS上で課された課題を自動で取得し、eALPSポータルに一覧表示する拡張機能です。
+            </span>
+          </Index>
+          <Description>
+            eALPSシステムのカレンダーエクスポート機能を用いて、RACSUが課題を自動取得・一覧表示します。
+          </Description>
         </Paragraph>
         <Paragraph>
           <Title>対応ブラウザ</Title>
-          <Index><span>PC版Chrome/Edgeで</span><span>動作確認済み</span></Index>
-          <Description>その他Chromiumベースのブラウザでインストール可能です。</Description>
-          <Description>Chrome以外のブラウザでご利用の際は、Chromeウェブストアからの拡張機能のインストールを許可してください。</Description>
+          <Index>
+            <span>PC版Chrome/Edgeで</span>
+            <span>動作確認済み</span>
+          </Index>
+          <Description>
+            その他Chromiumベースのブラウザでインストール可能です。
+          </Description>
+          <Description>
+            Chrome以外のブラウザでご利用の際は、Chromeウェブストアからの拡張機能のインストールを許可してください。
+          </Description>
+        </Paragraph>
+        <Paragraph>
+          <Title>ロゴについて</Title>
+          <Box css={style.logo_info}>
+            <img src="/icon/icon128.png" alt="RACSU icon" />
+            <Box display="flex" flexDirection="column" justifyContent="center">
+              <Description>
+                RACSU for eALPSのロゴは、eALPSのロゴをオマージュしています。
+              </Description>
+              <Description>
+                信州大学e-Learningセンター・著作者両者より、eALPSロゴの二次制作物として了解を得たうえで使用しています。
+              </Description>
+            </Box>
+          </Box>
         </Paragraph>
         <Paragraph>
           <Title>共同開発者募集中！</Title>
-          <Description>RACSU for eALPSは信州大学に在学中の学生によって開発・運営されています。</Description>
-          <Description>共同開発者を募集中です。一緒に開発しませんか？</Description>
-          <Description>詳しくはracsu.shinshu-univ[at]gmail.comまでお問い合わせください！</Description>
+          <Description>
+            RACSU for
+            eALPSは信州大学に在学中の学生によって開発・運営されています。
+          </Description>
+          <Description>
+            共同開発者を募集中です。一緒に開発しませんか？
+          </Description>
+          <Description>
+            詳しくはracsu.shinshu.univ[at]gmail.comまでお問い合わせください！
+          </Description>
         </Paragraph>
       </Box>
-
     </main>
   );
 }

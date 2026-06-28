@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import React from 'react'
+import React from "react";
 
-import { css } from '@emotion/react';
-import { Box, Button } from '@mui/material';
-import Link from 'next/link';
+import { css } from "@emotion/react";
+import { Box, Button } from "@mui/material";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import color from "@/color.json";
@@ -22,7 +22,7 @@ const style = {
     height: 50px;
     width: 50px;
     margin: 5px 10px 5px 20px;
-    @media screen and (max-width:850px) {
+    @media screen and (max-width: 850px) {
       height: 40px;
       width: 40px;
       margin: 5px 10px 5px 15px;
@@ -38,7 +38,7 @@ const style = {
 
   icon_text: css`
     font-size: 25px;
-    @media screen and (max-width:850px) {
+    @media screen and (max-width: 850px) {
       font-size: 23px;
     }
   `,
@@ -66,24 +66,24 @@ const style = {
         }
       }
     }
-  `
-}
+  `,
+};
 
 export default function Footer() {
   const pathName = usePathname();
 
   const isCurrentPath = (linkTo: string) => {
-    if(pathName == linkTo) {
-      return "current"
+    if (pathName == linkTo) {
+      return "current";
     }
-  }
+  };
 
   return (
     <>
       <Box css={style.footer}>
         <Box>
           <Link css={style.icon_link} href="/">
-            <img src="/icon/iconmono.png" alt="RACSU icon" css={style.icon}/>
+            <img src="/icon/iconmono.png" alt="RACSU icon" css={style.icon} />
             <Box display="flex" alignItems="flex-end" marginBottom="8px">
               <p css={style.icon_text}>RACSU</p>
               <p css={style.icon_text_sub}>for eALPS</p>
@@ -92,16 +92,32 @@ export default function Footer() {
         </Box>
         <Box css={style.nav}>
           <ul>
-            <li className={isCurrentPath("/")}><Link href="/">トップ</Link></li>
-            <li><a href={url.store} target="_blank">インストール</a></li>
-            <li className={isCurrentPath("/usage/")}><Link href="/usage/">使い方</Link></li>
-            <li className={isCurrentPath("/fqa/")}><Link href="/fqa/">FQA</Link></li>
-            <li className={isCurrentPath("/privacy/")}><Link href="/privacy/">プライバシーポリシー</Link></li>
-            <li><a href={url.github} target="_blank">Github</a></li>
-            <li>お問い合わせ：racsu.shinshu-univ[at]gmail.com </li>
+            <li className={isCurrentPath("/")}>
+              <Link href="/">トップ</Link>
+            </li>
+            <li>
+              <a href={url.store} target="_blank">
+                インストール
+              </a>
+            </li>
+            <li className={isCurrentPath("/usage/")}>
+              <Link href="/usage/">使い方</Link>
+            </li>
+            <li className={isCurrentPath("/fqa/")}>
+              <Link href="/fqa/">FQA</Link>
+            </li>
+            <li className={isCurrentPath("/privacy/")}>
+              <Link href="/privacy/">プライバシーポリシー</Link>
+            </li>
+            <li>
+              <a href={url.github} target="_blank">
+                Github
+              </a>
+            </li>
+            <li>お問い合わせ：racsu.shinshu.univ[at]gmail.com </li>
           </ul>
         </Box>
       </Box>
     </>
-  )
+  );
 }

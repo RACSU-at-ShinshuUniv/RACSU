@@ -7,6 +7,7 @@ import React from 'react'
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
 import LaunchIcon from '@mui/icons-material/Launch';
 
 import dayjs from 'dayjs';
@@ -21,6 +22,8 @@ type checkHandlerProps = (
 type saveDataProps = {
   [id: string]: {
     className: string,
+    classUrl?: string,
+    classId?: string,
     taskName: string,
     display: boolean,
     finish: boolean,
@@ -55,6 +58,8 @@ type taskItemProps = {
   id: string,
   saveData: {
     className: string,
+    classUrl?: string,
+    classId?: string,
     taskName: string,
     display: boolean,
     finish: boolean,
@@ -93,15 +98,26 @@ function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
     `,
 
     task_li_cName: css`
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 3px;
       margin-left: 10px;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       max-width: 30vw;
       @media screen and (max-width:535px) {
         max-width: 80px;
       }
+    `,
+
+    task_class_name: css`
+      overflow: hidden;
+      text-overflow: ellipsis;
+    `,
+
+    task_launch_icon: css`
+      flex-shrink: 0;
+      font-size: 15px;
+      cursor: pointer;
     `,
 
     task_li_tName: css`
@@ -152,7 +168,22 @@ function TaskItem({id, saveData, checkHandler, type="other"}: taskItemProps) {
       label={
         <ul css={[style.task_ul, css`color: ${indexColor()};`]}>
           <li css={[style.task_li_time, css`color: ${timeColor()};`]} className="taskLimitTime">{saveData.taskLimit.time}</li>
-          <li css={style.task_li_cName}>{saveData.className}</li>
+          <li css={style.task_li_cName}>
+            <span css={style.task_class_name}>{saveData.className}</span>
+            {saveData.classUrl && (
+              <Tooltip title="授業ページを開く" arrow>
+                <LaunchIcon
+                  css={style.task_launch_icon}
+                  aria-label={`${saveData.className}を別タブで開く`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    chrome.tabs.create({url: saveData.classUrl});
+                  }}
+                />
+              </Tooltip>
+            )}
+          </li>
           <li css={style.task_li_tName}>{saveData.taskName}</li>
         </ul>
       }/>

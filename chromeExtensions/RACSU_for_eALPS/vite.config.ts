@@ -13,6 +13,7 @@ const manifest = defineManifest({
   // CORSを回避する必要があるドメインのみ記述
   host_permissions: [
     "https://campus-3.shinshu-u.ac.jp/syllabusj/*",
+    "https://lms.ealps.shinshu-u.ac.jp/courseInfo/*",
     "https://clients3.google.com/generate_204",
   ],
   icons: {

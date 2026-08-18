@@ -25,6 +25,7 @@ import {
 // import { GASend } from "../../src/modules/googleAnalytics";
 import { syncStorageDataProps } from "../../src/background";
 import UserDataDeleteConfirmModal from "../../src/component/UserDataDeleteConfirmModal";
+import { useDummyTaskGenerator } from "./generateDummyTasks";
 // GASend("pageOpen", "options");
 
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -202,7 +203,17 @@ function App() {
       color: ${env.color.text};
       font-size: 24px;
       font-weight: 700;
-      margin: 0 0 0 12px;
+      margin: 0;
+    `,
+
+    titleBox: css`
+      margin-left: 12px;
+    `,
+
+    dummyTaskMessage: css`
+      color: ${env.color.gray};
+      font-size: 12px;
+      margin: 3px 0 0;
     `,
 
     content: css`
@@ -274,6 +285,11 @@ function App() {
       color: ${env.color.red};
       margin-bottom: 10px;
     `,
+
+    dummyTaskIcon: css`
+      cursor: default;
+      user-select: none;
+    `,
   };
 
   const [openAutoSetting, setOpenAutoSetting] = React.useState(false);
@@ -293,6 +309,8 @@ function App() {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [linkErrorMessages, setLinkErrorMessages] = React.useState<string | undefined>();
   const [userStatus, setUserStatus] = React.useState("");
+  const { handleIconClick, message: dummyTaskMessage } =
+    useDummyTaskGenerator();
 
   React.useEffect(() => {
     chrome.storage.sync.get().then((d) => {
@@ -435,12 +453,19 @@ function App() {
         marginBottom="28px"
       >
         <img
+          css={style.dummyTaskIcon}
           width="45px"
           height="45px"
           src="/icon/icon48.png"
           alt="RACSU Logo"
+          onClick={handleIconClick}
         />
-        <p css={style.title}>RACSU for eALPS 拡張機能オプション</p>
+        <Box css={style.titleBox}>
+          <p css={style.title}>RACSU for eALPS 拡張機能オプション</p>
+          {dummyTaskMessage && (
+            <p css={style.dummyTaskMessage}>{dummyTaskMessage}</p>
+          )}
+        </Box>
       </Box>
       <Paper css={style.content} elevation={0}>
         <SettingParagraph title="ユーザー情報">
